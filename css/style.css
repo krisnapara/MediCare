@@ -1559,309 +1559,144 @@ main {
 }
 
 
-/* ================================== LOGIN & REGISTER PAGE ================================== */
-
-/* Hapus padding dan margin default dari body untuk halaman ini */
+/* ================================== AUTHENTICATION STYLES (REGISTER/LOGIN) ================================== */
 .auth-page-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f8f8f8;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: center; /* Memusatkan horizontal */
+    align-items: center; /* Memusatkan vertikal */
     min-height: 100vh;
+    padding: 20px;
+    background-color: #f0f8ff; /* Latar belakang untuk halaman auth */
 }
 
 .auth-container {
     display: flex;
     width: 90%;
-    max-width: 1000px; /* Batas maksimum lebar container */
-    margin: 20px;
-    background-color: white;
+    max-width: 450px; /* Batasi lebar agar hanya kotak formulir */
+    background-color: #fff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-}
-
-/* ---------------- Kolom Kiri: Image/Info Side (Dengan Gambar Latar) ---------------- */
-.auth-info-side {
-    flex: 1;
-    /* BACKGROUND IMAGE BARU */
-    background-image: url('assets/images/124.jpg'); 
-    background-color: #007bff; /* Fallback */
-    background-size: cover;
-    background-position: center;
-    padding: 50px 30px;
-    color: white;
-    display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    position: relative;
-    transition: background-color 0.6s ease;
 }
 
-/* Tambahkan text-shadow agar teks terlihat di atas gambar */
-.auth-logo .logo-black,
-.auth-logo .logo-blue,
-.auth-info-side h1,
-.auth-info-side p,
-.switch-btn {
-    color: white;
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
-    z-index: 2; 
-}
-
-/* Styling Kolom Kiri saat berada di halaman Register */
-.auth-info-side.register-mode {
-    background-image: url('assets/images/124.jpg'); /* Gambar yang sama */
-    background-color: #333; /* Warna gelap sebagai fallback */
-    justify-content: space-around;
-}
-
-.auth-logo {
-    position: absolute;
-    top: 30px;
-    left: 30px;
-    font-size: 1.8rem;
-    font-weight: bold;
-}
-
-.auth-logo .logo-black {
-    color: white; 
-}
-
-.auth-logo .logo-blue {
-    color: white; 
-}
-
-.auth-info-side h1 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    font-weight: 700;
-}
-
-.auth-info-side p {
-    font-size: 1.1rem;
-    margin-bottom: 30px;
-    opacity: 0.9;
-    max-width: 300px;
-}
-
-/* Tombol Beralih (Switch Button) - Sekarang berupa tautan <a> */
-.switch-btn {
-    background-color: transparent;
-    color: white;
-    border: 2px solid white;
-    padding: 12px 30px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    text-decoration: none; 
-    display: inline-block;
-}
-
-.switch-btn:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
+/* Menyembunyikan elemen info/gambar samping kiri yang mungkin ada dari layout lama */
 
 
-/* ---------------- Kolom Kanan: Form Side ---------------- */
-.auth-form-side {
-    flex: 1;
-    padding: 50px 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
-.auth-form {
+.card-top-img {
     width: 100%;
-    max-width: 350px;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Memastikan kolom form mengambil seluruh lebar container */
+.auth-form-side {
+    width: 100%; 
+    padding: 30px;
 }
 
 .auth-form h2 {
-    font-size: 1.8rem;
-    color: #333;
     text-align: center;
-    margin-bottom: 30px;
+    color: #007bff;
+    margin-bottom: 25px;
 }
 
-/* Social Login Buttons */
-.social-login {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
-}
 
-.social-btn {
-    flex: 1;
-    padding: 12px 0;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: white;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.3s;
-}
-
-.social-btn:hover {
-    background-color: #f0f0f0;
-}
-
-.social-btn.google {
-    color: #db4437; 
-}
-
-.social-btn.facebook {
-    color: #4267b2; 
-}
-
-.separator {
-    text-align: center;
-    margin: 20px 0;
-    font-size: 0.9rem;
-    color: #999;
-}
-
-/* Form Inputs */
-.input-group {
-    margin-bottom: 20px;
-}
-
-.input-group label {
-    display: block;
-    font-size: 0.9rem;
-    color: #555;
-    margin-bottom: 5px;
-    font-weight: 600;
-}
-
-.input-group input {
+.input-group input[type="text"],
+.input-group input[type="email"],
+.input-group input[type="password"] {
     width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 1rem;
     transition: border-color 0.3s;
 }
 
-.input-group input:focus {
-    border-color: #007bff;
-    outline: none;
+/* Social Login */
+.social-login {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
 }
-
-.forgot-password {
-    text-align: right;
-    margin-bottom: 25px;
-}
-
-.forgot-password a {
-    color: #007bff;
-    text-decoration: none;
-    font-size: 0.9rem;
-}
-
-/* Submit Button */
-.auth-submit-btn {
-    width: 100%;
-    background-color: #007bff;
-    color: white;
-    padding: 15px;
-    border: none;
+.social-btn {
+    flex: 1;
+    padding: 10px;
     border-radius: 8px;
     cursor: pointer;
+    font-size: 0.9rem;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+}
+.social-btn.google {
+    color: #d9534f; /* Merah */
+}
+.social-btn.facebook {
+    color: #3b5998; /* Biru */
+}
+
+/* Separator */
+.separator {
+    text-align: center;
+    margin: 25px 0;
+    font-size: 0.85rem;
+    color: #aaa;
+    position: relative;
+}
+
+.auth-submit-btn {
+    display: block;
+    width: 80%;
+    margin: 10px auto 0 auto;
+    padding: 12px;
     font-size: 1.1rem;
     font-weight: bold;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
     transition: background-color 0.3s;
 }
 
-.auth-submit-btn:hover {
-    background-color: #0056b3;
+.forgot-password {
+    text-align: center; /* Memusatkan link di dalamnya */
+    margin-bottom: 20px; /* Jarak sebelum tombol submit */
+    margin-top: -5px; /* Sedikit naik agar dekat dengan input */
+}
+.forgot-password a {
+    color: #007bff;
+    text-decoration: none;
 }
 
-
-/* ================================== Halaman Auth (Login & Register) ================================== */
-
-/* Container utama untuk halaman auth - Menjadi Single Card */
-.auth-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; 
-    width: 90%; 
-    max-width: 450px; /* Lebar maksimum card */
-    margin: 80px auto; 
-    background-color: #fff;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Bayangan yang lebih jelas */
-    border-radius: 20px; 
-    overflow: hidden; /* PENTING: Agar gambar di dalam terpotong sesuai radius card */
-    min-height: auto; 
-    flex-direction: column; 
+.forgot-password a:hover {
+    color: #007bff;
+    text-decoration:underline;
 }
 
-/* ---------------- Gambar di Bagian Atas Card ---------------- */
-.auth-image-top {
-    width: 100%;
-    height: 180px; /* Ketinggian gambar */
-    overflow: hidden; 
-}
-
-.card-top-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Memastikan gambar mengisi area tanpa terdistorsi */
-    display: block;
-}
-
-/* Hapus elemen dua kolom lama */
-.auth-info-side {
-    display: none; 
-}
-.auth-info-side.register-mode {
-    display: none;
-}
-
-
-/* ---------------- Kolom Formulir ---------------- */
-.auth-form-side {
-    flex: none; 
-    width: 100%; 
-    padding: 30px; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 0 0 20px 20px; /* Sudut bawah membulat, sudut atas datar */
-}
-
-.auth-form {
-    width: 100%;
-}
-
-.auth-logo.centered-logo {
-    display: block;
-    text-align: center;
-    margin-bottom: 10px; /* Kurangi margin agar lebih dekat dengan judul */
-}
-
-/* Link Beralih di Bagian Bawah Form */
 .switch-link-bottom {
-    margin-top: 25px;
     text-align: center;
+    margin-top: 20px;
     font-size: 0.95rem;
 }
 .switch-link-bottom a {
-    color: #007bff;
+    /* MODIFIKASI WARNA */
+    color: #007bff; /* Merah Terang (Contoh) */
+    /* Akhir MODIFIKASI */
+
     text-decoration: none;
     font-weight: 600;
 }
 .switch-link-bottom a:hover {
+    color: #007bff; /* Warna sedikit lebih gelap saat di-hover */
     text-decoration: underline;
 }
 
+
+/* ================================== END AUTHENTICATION STYLES ================================== */
 /* ---------------- Responsive Design Auth Pages ---------------- */
 @media (max-width: 900px) {
     .auth-container {
