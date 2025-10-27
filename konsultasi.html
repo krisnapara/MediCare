@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konseling Online | Medicare</title>
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Print Style -->
+    <style>
+        @media print {
+            .header, .consult-hero, .steps-progress, .appointment-actions {
+                display: none !important;
+            }
+            .appointment-result {
+                box-shadow: none !important;
+                border: 2px solid #000 !important;
+                margin: 0 !important;
+                padding: 20px !important;
+            }
+            body {
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+        <header class="header">
+        <div class="logo">
+            <img src="assets/images/logo.jpg" alt="Logo Medicare">
+            <span class="logo-black">Medi</span><span class="logo-blue">Care</span>
+        </div>
+    
+            <nav class="nav">
+            <ul>
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="artikel.html">Artikel</a></li>
+                <li><a href="tentang.html">Tentang kami</a></li>
+                <li><a href="konsultasi.html" class="active">Konsultasi</a></li> 
+            </ul>
+            </nav>
+    
+            <div class="profile-icon">
+                <a href="profil.html">
+                    <img src="assets/images/profil.jpg" alt="Foto profil pengguna">
+                </a>
+            </div>
+        </header>
+
+    <main class="online-counseling-page">
+        
+        <section class="consult-hero">
+            <div class="consult-hero-container">
+                <div class="consult-hero-content">
+                    <h1>Konseling Online</h1>
+                    <p>Isi formulir di bawah ini untuk membuat janji konseling online dengan psikolog kami.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="counseling-steps-section">
+            <div class="main-container">
+                <!-- Progress Steps -->
+                <div class="steps-progress">
+                    <div class="step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Data Diri</div>
+                    </div>
+                    <div class="step" data-step="2">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Kondisi & Tujuan</div>
+                    </div>
+                    <div class="step" data-step="3">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Jadwal & Konsultasi</div>
+                    </div>
+                </div>
+
+                <!-- Step Forms -->
+                <form id="counselingForm" class="counseling-form">
+                    
+                    <!-- Step 1: Data Diri -->
+                    <div class="form-step active" id="step1">
+                        <h2 class="step-title">Data Diri</h2>
+                        
+                        <div class="form-group">
+                            <label for="fullName">Nama Lengkap</label>
+                            <input type="text" id="fullName" name="fullName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="nik">NIK</label>
+                            <input type="text" id="nik" name="nik" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="birthDate">Tanggal Lahir</label>
+                            <input type="date" id="birthDate" name="birthDate" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="gender">Jenis Kelamin</label>
+                            <select id="gender" name="gender" required>
+                                <option value="">Pilih Jenis Kelamin</option>
+                                <option value="Laki-laki">Laki-laki</option>
+                                <option value="Perempuan">Perempuan</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Nomor Telepon</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn-next" data-next="2">Lanjut</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 2: Kondisi & Tujuan -->
+                    <div class="form-step" id="step2">
+                        <h2 class="step-title">Kondisi & Tujuan Konsultasi</h2>
+                        
+                        <div class="form-group">
+                            <label for="feeling">Bagaimana perasaan kamu akhir-akhir ini?</label>
+                            <textarea id="feeling" name="feeling" rows="3" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="frequency">Seberapa sering kamu merasa seperti itu?</label>
+                            <select id="frequency" name="frequency" required>
+                                <option value="">Pilih Frekuensi</option>
+                                <option value="Hampir setiap hari">Hampir setiap hari</option>
+                                <option value="Beberapa kali seminggu">Beberapa kali seminggu</option>
+                                <option value="Sekali seminggu">Sekali seminggu</option>
+                                <option value="Jarang">Jarang</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="goal">Apa yang paling ingin kamu dapatkan dari sesi ini?</label>
+                            <textarea id="goal" name="goal" rows="3" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Apakah kamu pernah melakukan konsultasi sebelumnya?</label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="previousConsultation" value="Ya" required>
+                                    <span class="radio-custom"></span>
+                                    Ya
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="previousConsultation" value="Tidak" required>
+                                    <span class="radio-custom"></span>
+                                    Tidak
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn-prev" data-prev="1">Kembali</button>
+                            <button type="button" class="btn-next" data-next="3">Lanjut</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 3: Jadwal & Konsultasi -->
+                    <div class="form-step" id="step3">
+                        <h2 class="step-title">Jadwal & Konsultasi</h2>
+                        
+                        <div class="form-group">
+                            <label for="doctor">Pilih Psikolog</label>
+                            <select id="doctor" name="doctor" required>
+                                <option value="">Pilih Psikolog</option>
+                                <option value="dr. Sinta Maharani, M.Psi">dr. Sinta Maharani, M.Psi</option>
+                                <option value="dr. Andi Pratama, M.Psi">dr. Andi Pratama, M.Psi</option>
+                                <option value="dr. Maya Sari, M.Psi">dr. Maya Sari, M.Psi</option>
+                                <option value="dr. Rizky Aditya, M.Psi">dr. Rizky Aditya, M.Psi</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="consultDate">Pilih Tanggal Konsultasi</label>
+                            <input type="date" id="consultDate" name="consultDate" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="consultTime">Pilih Waktu Konsultasi</label>
+                            <select id="consultTime" name="consultTime" required>
+                                <option value="">Pilih Waktu</option>
+                                <option value="08:00 - 09:00">08:00 - 09:00</option>
+                                <option value="09:30 - 10:30">09:30 - 10:30</option>
+                                <option value="11:00 - 12:00">11:00 - 12:00</option>
+                                <option value="13:00 - 14:00">13:00 - 14:00</option>
+                                <option value="14:30 - 15:30">14:30 - 15:30</option>
+                                <option value="16:00 - 17:00">16:00 - 17:00</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="consultType">Jenis Konsultasi</label>
+                            <select id="consultType" name="consultType" required>
+                                <option value="">Pilih Jenis Konsultasi</option>
+                                <option value="Video Call">Video Call</option>
+                                <option value="Chat">Chat</option>
+                                <option value="Telepon">Telepon</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn-prev" data-prev="2">Kembali</button>
+                            <button type="submit" class="btn-submit">Konfirmasi Janji</button>
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="js/konseling-online.js"></script>
+</body>
+</html>
