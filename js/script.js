@@ -1,11 +1,16 @@
 // JavaScript untuk interaksi sederhana
 document.addEventListener('DOMContentLoaded', function() {
-    // Tambahkan kelas aktif ke menu navigasi saat di klik
+    // Set menu aktif berdasarkan halaman saat ini
+    setActiveMenuByPage();
+
+    // Tambahkan event listener untuk klik menu navigasi
     const navLinks = document.querySelectorAll('nav ul li a');
     
     navLinks.forEach(link => {
-        link.addEventListener('click', function() {
+        link.addEventListener('click', function(e) {
+            // Hapus active dari semua menu
             navLinks.forEach(l => l.classList.remove('active'));
+            // Tambahkan active ke menu yang diklik
             this.classList.add('active');
         });
     });
@@ -49,7 +54,28 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Fungsi untuk set menu aktif berdasarkan halaman
+function setActiveMenuByPage() {
+    const currentPage = window.location.pathname.split('/').pop();
+    const navLinks = document.querySelectorAll('nav ul li a');
+    
+    // Reset semua menu
+    navLinks.forEach(link => link.classList.remove('active'));
+    
+    // Set menu aktif berdasarkan halaman saat ini
+    navLinks.forEach(link => {
+        const linkHref = link.getAttribute('href');
+        
+        // Handle berbagai kondisi
+        if ((currentPage === '' || currentPage === 'index.html') && linkHref === 'index.html') {
+            link.classList.add('active');
+        } else if (currentPage === linkHref) {
+            link.classList.add('active');
+        }
+    });
+}
 
+// Fungsi untuk redirect ke halaman chatbot dari tombol pop-up
 function goToChatbotPage() {
     window.location.href = 'chatbot.html';
 }

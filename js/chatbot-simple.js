@@ -1,6 +1,10 @@
 // JavaScript untuk halaman chatbot sederhana
 document.addEventListener('DOMContentLoaded', function() {
     initializeSimpleChatbot();
+    
+    // Untuk halaman chatbot, pastikan tidak ada menu yang aktif
+    const navLinks = document.querySelectorAll('nav ul li a');
+    navLinks.forEach(link => link.classList.remove('active'));
 });
 
 function initializeSimpleChatbot() {
@@ -95,9 +99,4 @@ function showMessageConfirmation(message) {
             style.parentNode.removeChild(style);
         }
     }, 3000);
-}
-
-// Fungsi untuk redirect ke halaman chatbot (jika diperlukan dari halaman lain)
-function goToChatbotPage() {
-    window.location.href = 'chatbot.html';
 }
