@@ -5,52 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Konseling Online | Medicare</title>
     <link rel="stylesheet" href="css/style.css">
-    
-    <!-- Print Style -->
-    <style>
-        @media print {
-            .header, .consult-hero, .steps-progress, .appointment-actions {
-                display: none !important;
-            }
-            .appointment-result {
-                box-shadow: none !important;
-                border: 2px solid #000 !important;
-                margin: 0 !important;
-                padding: 20px !important;
-            }
-            body {
-                padding: 0 !important;
-                margin: 0 !important;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/konsultasi.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
-    
-        <header class="header">
+    <header class="header">
         <div class="logo">
-            <img src="assets/images/logo.jpg" alt="Logo Medicare">
-            <span class="logo-black">Medi</span><span class="logo-blue">Care</span>
+            <img src="assets/images/logo.png" alt="Logo Medicare">
+            <span class="logo-text">MediCare</span>
         </div>
     
-            <nav class="nav">
+        <nav class="nav">
             <ul>
                 <li><a href="index.html">Beranda</a></li>
                 <li><a href="artikel.html">Artikel</a></li>
                 <li><a href="tentang.html">Tentang kami</a></li>
                 <li><a href="konsultasi.html" class="active">Konsultasi</a></li> 
             </ul>
-            </nav>
+        </nav>
     
-            <div class="profile-icon">
-                <a href="profil.html">
-                    <img src="assets/images/profil.jpg" alt="Foto profil pengguna">
-                </a>
-            </div>
-        </header>
+        <div class="profile-icon">
+            <a href="profil.html">
+                <img src="assets/images/profil.jpg" alt="Foto profil pengguna">
+            </a>
+        </div>
+    </header>
 
     <main class="online-counseling-page">
-        
         <section class="consult-hero">
             <div class="consult-hero-container">
                 <div class="consult-hero-content">
@@ -62,7 +43,6 @@
 
         <section class="counseling-steps-section">
             <div class="main-container">
-                <!-- Progress Steps -->
                 <div class="steps-progress">
                     <div class="step active" data-step="1">
                         <div class="step-number">1</div>
@@ -78,10 +58,8 @@
                     </div>
                 </div>
 
-                <!-- Step Forms -->
                 <form id="counselingForm" class="counseling-form">
                     
-                    <!-- Step 1: Data Diri -->
                     <div class="form-step active" id="step1">
                         <h2 class="step-title">Data Diri</h2>
                         
@@ -106,7 +84,6 @@
                                 <option value="">Pilih Jenis Kelamin</option>
                                 <option value="Laki-laki">Laki-laki</option>
                                 <option value="Perempuan">Perempuan</option>
-                                <option value="Lainnya">Lainnya</option>
                             </select>
                         </div>
                         
@@ -125,7 +102,6 @@
                         </div>
                     </div>
                     
-                    <!-- Step 2: Kondisi & Tujuan -->
                     <div class="form-step" id="step2">
                         <h2 class="step-title">Kondisi & Tujuan Konsultasi</h2>
                         
@@ -172,18 +148,17 @@
                         </div>
                     </div>
                     
-                    <!-- Step 3: Jadwal & Konsultasi -->
                     <div class="form-step" id="step3">
                         <h2 class="step-title">Jadwal & Konsultasi</h2>
                         
                         <div class="form-group">
-                            <label for="doctor">Pilih Psikolog</label>
+                            <label for="doctor">Pilih Psikolog dan Psikiater</label>
                             <select id="doctor" name="doctor" required>
-                                <option value="">Pilih Psikolog</option>
+                                <option value="">Pilih Psikolog dan Psikiater</option>
                                 <option value="dr. Sinta Maharani, M.Psi">dr. Sinta Maharani, M.Psi</option>
                                 <option value="dr. Andi Pratama, M.Psi">dr. Andi Pratama, M.Psi</option>
-                                <option value="dr. Maya Sari, M.Psi">dr. Maya Sari, M.Psi</option>
-                                <option value="dr. Rizky Aditya, M.Psi">dr. Rizky Aditya, M.Psi</option>
+                                <option value="dr. Ade Muliadi, Sp.KJ">dr. Ade Muliadi, Sp.KJ</option>
+                                <option value="dr. Gede Danendra Suputra, Sp.KJ">dr. Danendra Suputra, Sp.KJ</option>
                             </select>
                         </div>
                         
@@ -225,8 +200,102 @@
             </div>
         </section>
 
-    </main>
+        <section id="appointmentResult" class="appointment-result-container" style="display: none;">
+            <div class="appointment-result">
+                <div class="appointment-header">
+                    <div class="appointment-success-icon">✓</div>
+                    <h2>Konsultasi Berhasil Dijadwalkan!</h2>
+                    <p>Detail konsultasi Anda telah berhasil dicetak dan dikirim ke email Anda.</p>
+                </div>
 
+                <div class="appointment-details">
+                    <div class="detail-section">
+                        <h3>Informasi Pasien</h3>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <span class="detail-label">Nama Lengkap</span>
+                                <span class="detail-value" id="resultName">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Email</span>
+                                <span class="detail-value" id="resultEmail">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">No. Telepon</span>
+                                <span class="detail-value" id="resultPhone">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Tanggal Lahir</span>
+                                <span class="detail-value" id="resultBirthDate">-</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3>Detail Konsultasi</h3>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <span class="detail-label">Psikolog</span>
+                                <span class="detail-value" id="resultDoctor">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Tanggal</span>
+                                <span class="detail-value" id="resultDate">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Waktu</span>
+                                <span class="detail-value" id="resultTime">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Jenis Konsultasi</span>
+                                <span class="detail-value" id="resultType">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="appointment-instructions">
+                    <div class="instructions-header">
+                        Petunjuk Konsultasi
+                    </div>
+                    <div class="instructions-content">
+                        <p>Berikut adalah petunjuk untuk konsultasi online Anda:</p>
+                        <ul>
+                            <li>Pastikan koneksi internet stabil sebelum sesi dimulai</li>
+                            <li>Siapkan ruangan yang nyaman dan privasi terjaga</li>
+                            <li>Gunakan headset untuk kualitas audio yang lebih baik</li>
+                            <li>Bergabunglah 5 menit sebelum jadwal konsultasi dimulai</li>
+                            <li>Siapkan pertanyaan atau topik yang ingin didiskusikan</li>
+                        </ul>
+                        <div class="note-box">
+                            <strong>Catatan:</strong> 
+                            <div id="telegramNote"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="appointment-actions">
+                    <button class="btn-download">Download Hasil</button>
+                    <button class="btn-print">Print</button>
+                    <button class="btn-back">Kembali ke Beranda</button>
+                </div>
+            </div>
+        </section>
+        
+    </main> <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/id.js"></script>
     <script src="js/konseling-online.js"></script>
+
+
+    <script>
+    // Cek status login saat mengakses halaman konsultasi
+    document.addEventListener('DOMContentLoaded', function() {
+        const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
+        
+        if (!isLoggedIn) {
+            alert('Anda harus login terlebih dahulu untuk mengakses halaman konsultasi.');
+            window.location.href = 'login.html?return=konsultasi.html';
+        }
+    });
+</script>
 </body>
 </html>

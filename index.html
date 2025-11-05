@@ -5,38 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beranda | medicare</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/beranda.css">
+    <link rel="stylesheet" href="css/auth.css">
     </head>
 <body>
 
-        <header class="header">
-            <div class="logo">
-                <img src="assets/images/logo.jpg"  alt="Logo Medicare"> 
-                <span class="logo-black">Medi</span><span class="logo-blue">Care</span>
-            </div>
-        
-
-            <nav class="nav">
-             <ul>
+    <header class="header">
+        <div class="logo">
+            <img src="assets/images/logo.png" alt="Logo Medicare"> 
+            <span class="logo-text">MediCare</span>
+        </div>
+    
+        <nav class="nav">
+            <ul>
                 <li><a href="index.html" class="active">Beranda</a></li>
                 <li><a href="artikel.html">Artikel</a></li>
                 <li><a href="tentang.html">Tentang kami</a></li>
                 <li><a href="konsultasi.html">Konsultasi</a></li> 
             </ul>
-            </nav>
+        </nav>
 
-            <div class="profile-icon">
-                <a href="profil.html">
-                    <img src="assets/images/profil.jpg" alt="Foto profil pengguna">
-                </a>
-            </div>
-        </header>
-        
+        <div class="profile-icon">
+            <a href="profil.html">
+                <img src="assets/images/profil.jpg" alt="Foto profil pengguna">
+            </a>
+        </div>
+    </header>
+    
     <main>
         <section class="hero-section">
             <div class="hero-content">
-                <h1>Lorem ipsum dolor sit amet, onsectetur tempor incididunt ut labore et dolore magna</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse accumsan lacus vel facilisis.</p>
-                <a href="konsultasi.html" class="btn-primary">Konsultasi Sekarang</a>
+                <h1>Kesehatan Mental Anda Prioritas Kami</h1>
+                <p>MediCare hadir untuk memberikan dukungan dan konsultasi kesehatan mental yang mudah diakses. Dengan tenaga profesional, kami siap membantu Anda melalui masa sulit.</p>
+                <a href="#" onclick="authRedirect('konsultasi.html'); return false;" class="btn-primary">Konsultasi Sekarang</a>
             </div>
             <div class="hero-image">
                 <img src="assets/images/background.jpg" alt="Dokter memberikan konsultasi online kepada pasien">
@@ -57,59 +58,199 @@
             </div>
         </section>
 
-        <section class="layout-section">
-            <div class="layout-card card-a">
-                <h3>Lorem Ipsum Dolor</h3>
-                <div class="list-2-columns">
-                    <p>Lorem Ipsum</p>
-                    <p>Lorem Ipsum</p>
-                    <p>Lorem Ipsum</p>
-                    <p>Lorem Ipsum</p>
-                    <p>Lorem Ipsum</p>
-                    <p>Lorem Ipsum</p>
+        <section class="mental-health-section">
+            <h2>Jenis-Jenis Gangguan Mental</h2>
+            <div class="mental-health-grid">
+                <div class="health-card">
+                    <div class="health-image">
+                        <img src="assets/images/depresi.jpg" alt="Gangguan Depresi">
+                    </div>
+                <div class="health-content">
+                    <h4>Gangguan Depresi</h4>
+                    <p>Perasaan sedih yang mendalam dan berkepanjangan, kehilangan minat pada aktivitas yang biasa dinikmati.</p>
                 </div>
+            </div>
+        
+                <div class="health-card">
+                    <div class="health-image">
+                        <img src="assets/images/kecemasan.jpg" alt="Gangguan Kecemasan">
+                    </div>
+                <div class="health-content">
+                    <h4>Gangguan Kecemasan</h4>
+                    <p>Rasa cmas dan khawatir berlebihan yang mengganggu aktivitas sehari-hari dan sulit dikendalikan.</p>
+                </div>
+            </div>
+        
+                <div class="health-card">
+                    <div class="health-image">
+                        <img src="assets/images/bipolar.jpg" alt="Gangguan Bipolar">
+                </div>
+                <div class="health-content">
+                    <h4>Gangguan Bipolar</h4>
+                    <p>Perubahan mood ekstrem antara episode manic (energi tinggi) dan depresif (energi rendah).</p>
+                </div>
+            </div>
+        
+                <div class="health-card">
+                    <div class="health-image">
+                        <img src="assets/images/ocd.jpg" alt="Gangguan OCD">
+                </div>
+                    <div class="health-content">
+                        <h4>Gangguan OCD</h4>
+                        <p>Pola pikiran obsesif dan perilaku kompulsif yang berulang-ulang dan sulit dikendalikan.</p>
+                    </div>
+                </div>
+            </div>
+    
+                    <div class="explore-section">
+                        <p>Pelajari lebih lanjut tentang berbagai jenis gangguan mental dan penanganannya</p>
+                        <a href="https://ayosehat.kemkes.go.id/jenis-gangguan-mental" target="_blank" class="btn-explore">
+                            <span>Jelajah Selengkapnya</span>
+                            <span class="explore-icon">🌐</span>
+                        </a>
+                    </div>
+        </section>
+    
+        <section class="video-therapy">
+    <h2>Ayo Tonton Dulu!!</h2>
+    <p>Tonton video membantu menambah pengetahuan dan mengurangi kecemasan serta meningkatkan mood Anda</p>
+    
+    <div class="video-player-container">
+        <div class="video-navigation-wrapper">
+            <button class="nav-btn prev-btn" onclick="previousVideo()" title="Video Sebelumnya">&#10094;</button>
+
+            <div class="video-wrapper">
+                <video id="video-player" controls controlslist="nodownload" poster="assets/images/background4.jpg">
+                    <source src="assets/videos/mental1.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung elemen video.
+                </video>
+                
+                <button onclick="playPauseVideo()" class="video-btn-overlay" id="play-pause-video-btn">▶</button>
+            </div>
+            
+            <button class="nav-btn next-btn" onclick="nextVideo()" title="Video Selanjutnya">&#10095;</button>
+        </div>
+    </div>
+</section>
+
+ <section class="mood-tracker">
+            <h2>Bagaimana Perasaan Anda Hari Ini?</h2>
+
+            <div id="mood-options" class="mood-options">
+                <button class="mood-btn" data-mood="happy">
+                    <span class="mood-emoji">😊</span>
+                    <span class="mood-text">Bahagia</span>
+                </button>
+                <button class="mood-btn" data-mood="neutral">
+                    <span class="mood-emoji">😐</span>
+                    <span class="mood-text">Biasa Saja</span>
+                </button>
+                <button class="mood-btn" data-mood="sad">
+                    <span class="mood-emoji">😔</span>
+                    <span class="mood-text">Sedih</span>
+                </button>
+                <button class="mood-btn" data-mood="anxious">
+                    <span class="mood-emoji">😰</span>
+                    <span class="mood-text">Cemas</span>
+                </button>
+                <button class="mood-btn" data-mood="angry">
+                    <span class="mood-emoji">😠</span>
+                    <span class="mood-text">Marah</span>
+                </button>
             </div>
 
-            <div class="layout-card card-b">
-                <h3>Lorem Ipsum Dolor</h3>
-                <div class="list-3-columns">
-                    <p>Lorem Ipsum</p>
-                    <p>Lorem Ipsum</p>
-                    <p>Lorem Ipsum</p>
-                    <p>Lorem Ipsum</p>
-                    <p>Lorem Ipsum</p>
-                    <p>Lorem Ipsum</p>
-                </div>
-            </div>
+            <div id="mood-feedback" class="mood-feedback"></div>
         </section>
     </main>
 
     <footer class="footer">
-        <div class="footer-logo">
+        <div class="footer-container">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img src="assets/images/logo.png" alt="Logo Medicare">
+                    <span class="logo-text">MediCare</span>
+                </div>
+                <p class="footer-description">
+                    MediCare menyediakan layanan konsultasi kesehatan mental gratis dengan tenaga profesional 
+                    untuk membantu Anda melalui masa sulit dan mencapai kesejahteraan mental yang optimal.
+                </p>
+                <div class="social-links">
+                    <a href="#" class="social-link">📘 Facebook</a>
+                    <a href="#" class="social-link">📷 Instagram</a>
+                    <a href="#" class="social-link">🐦 Twitter</a>
+                    <a href="#" class="social-link">📺 YouTube</a>
+                </div>
             </div>
-        <div class="footer-links">
-            <h4>Link Terkait</h4>
-            <ul>
-                <li><a href="https://www.idionline.org/" target="_blank">Ikatan Dokter Indonesia (IDI)</a></li>
-                <li><a href="https://www.intothelightid.org/" target="_blank">Into The Light Indonesia</a></li>
-                <li><a href="https://kemkes.go.id/" target="_blank">Kementerian Kesehatan</a></li>
-            </ul>
+
+            <div class="footer-section">
+                <h4>Layanan Cepat</h4>
+                <ul class="footer-links">
+                    <li><a href="konsultasi.html">🔗 Konsultasi Online</a></li>
+                    <li><a href="chatbot.html">🤖 Chatbot 2S/7</a></li>
+                    <li><a href="artikel.html">📚 Artikel Kesehatan</a></li>
+                    <li><a href="tes-kesehatan.html">🧪 Tes Kesehatan Mental</a></li>
+                    <li><a href="komunitas.html">👥 Forum Komunitas</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Link Terkait</h4>
+                <ul class="footer-links">
+                    <li><a href="https://www.idionline.org/" target="_blank">🏥 Ikatan Dokter Indonesia (IDI)</a></li>
+                    <li><a href="https://www.intothelightid.org/" target="_blank">💜 Into The Light Indonesia</a></li>
+                    <li><a href="https://kemkes.go.id/" target="_blank">🇮🇩 Kementerian Kesehatan</a></li>
+                    <li><a href="https://www.who.int/indonesia" target="_blank">🌍 WHO Indonesia</a></li>
+                    <li><a href="https://pdskji.org/" target="_blank">🧠 Perhimpunan Dokter Spesialis Kedokteran Jiwa</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Kontak & Darurat</h4>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span class="contact-icon">📍</span>
+                        <span>Jl. Muliadi Panjang No.110, Canggu, Kuta Utara, Badung, Bali</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📧</span>
+                        <span>MediCare18@gmail.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📞</span>
+                        <span>081336465210</span>
+                    </div>
+                    <div class="contact-item emergency">
+                        <span class="contact-icon">🆘</span>
+                        <span><strong>Darurat: 119 ext. 8</strong></span>
+                    </div>
+                </div>
+                
+                <div class="newsletter">
+                    <h5>Newsletter</h5>
+                    <p>Dapatkan tips kesehatan mental mingguan</p>
+                    <div class="newsletter-form">
+                        <input type="email" placeholder="Email Anda">
+                        <button class="btn-subscribe">Subscribe</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="footer-contact">
-            <h4>Kontak</h4>
-            <ul>
-                <li>Jl. Muliadi Panjang No.110, Canggu, Kec. Kuta Utara, Kabupaten Badung, Bali</li>
-                <li>MediCare18@gmail.com</li>
-                <li>081336465210</li>
-            </ul>
+        
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <p>&copy; 2018 MediCare. All rights reserved. | Dedicated to Mental Health Awareness</p>
+                <div class="footer-bottom-links">
+                    <a href="privacy.html">Kebijakan Privasi</a>
+                    <a href="terms.html">Syarat & Ketentuan</a>
+                    <a href="sitemap.html">Sitemap</a>
+                </div>
             </div>
+        </div>
     </footer>
 
-<div class="chatbot-container">
-    <button class="chatbot-toggle-btn" onclick="goToChatbotPage()">
-        🤖
-    </button>
-</div>
+    <div class="chatbot-container">
+        <button class="chatbot-toggle-btn" onclick="goToChatbotPage()">𒆙</button>
+    </div>
 
     <script src="js/script.js"></script>
 </body>

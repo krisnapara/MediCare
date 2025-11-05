@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | Medicare</title>
-    <link rel="stylesheet" href="css/style.css"> 
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body class="auth-page-body">
@@ -12,19 +13,11 @@
     <div class="auth-container single-card"> 
         
         <div class="auth-image-top">
-            <img src="assets/images/background2.jpg" alt="Gambar Latar Login" class="card-top-img">
+            <img src="assets/images/background3.jpg" alt="Gambar Latar Login" class="card-top-img">
         </div>
 
         <div class="auth-form-side full-width">
             <div class="auth-form">
-                
-                <h2>Masuk ke Akun Anda</h2>
-                
-                <div class="social-login">
-                    <button class="social-btn google"><i class="fab fa-google"></i> Google</button>
-                    <button class="social-btn facebook"><i class="fab fa-facebook-f"></i> Facebook</button>
-                </div>
-                <div class="separator">ATAU GUNAKAN EMAIL</div>
 
                 <div class="input-group">
                     <input type="email" id="email" name="email" placeholder="Masukkan email Anda" required>
@@ -37,26 +30,46 @@
                     <a href="#">Lupa Kata Sandi?</a>
                 </div>
                 
-                <button type="button" class="auth-submit-btn">Masuk</button>
+             <div class="separator">ATAU GUNAKAN EMAIL</div>
+                
+                <div class="social-login">
+                    <button class="social-btn google"><i class="fab fa-google"></i> Google</button>
+                    <button class="social-btn facebook"><i class="fab fa-facebook-f"></i> Facebook</button>
+                </div>
+
+                <button type="button" class="auth-submit-btn" onclick="handleLogin()">Masuk</button>
                 
                 <div class="switch-link-bottom">
-                    Belum punya akun? <a href="register.html">Daftar Sekarang</a>
+                    Belum punya akun? <a href="register.html" id="register-link">Daftar Sekarang</a>
                 </div>
             </div>
         </div>
   </div>
 
   <script>
+    function handleLogin() {
+        // Langsung redirect ke beranda atau halaman tujuan
+        const urlParams = new URLSearchParams(window.location.search);
+        const returnUrl = urlParams.get('return');
+        
+        if (returnUrl) {
+            window.location.href = returnUrl;
+        } else {
+            window.location.href = 'index.html';
+        }
+    }
+
+    // Handle register link dengan return URL
     document.addEventListener('DOMContentLoaded', function() {
-        const loginBtn = document.querySelector('.auth-submit-btn');
-        loginBtn.addEventListener('click', function(e) {
-            e.preventDefault(); // Mencegah navigasi default
-            // Simulasi login berhasil (ganti dengan validasi backend jika ada)
-            alert('Login berhasil! Mengarahkan ke halaman utama...');
-            window.location.href = 'index.html'; // Redirect ke index
-        });
+        const registerLink = document.getElementById('register-link');
+        const urlParams = new URLSearchParams(window.location.search);
+        const returnUrl = urlParams.get('return');
+        
+        if (returnUrl && registerLink) {
+            registerLink.href = `register.html?return=${encodeURIComponent(returnUrl)}`;
+        }
     });
-</script>
+  </script>
 
 </body>
 </html>

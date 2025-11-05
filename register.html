@@ -4,23 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register | Medicare</title>
-    <link rel="stylesheet" href="css/style.css"> 
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
 </head>
 <body class="auth-page-body">
 
     <div class="auth-container single-card"> 
         
         <div class="auth-image-top">
-            <img src="assets/images/background2.jpg" alt="Gambar Latar Register" class="card-top-img">
+            <img src="assets/images/background3.jpg" alt="Gambar Latar Register" class="card-top-img">
         </div>
 
         <div class="auth-form-side full-width">
             <div class="auth-form">
-             
-                <h2>Register</h2>
+                <div class="input-group">
+                    <input type="text" id="name" name="name" placeholder="Masukkan nama Anda" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" id="email" name="email" placeholder="Masukkan email Anda" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" name="password" placeholder="Buat kata sandi" required>
+                </div>
+
+                <div class="input-group">
+                    <input type="password" id="confirm-password" name="confirm-password" placeholder="Konfirmasi kata sandi" required>
+                </div>
                 
+                <div class="separator">ATAU DAFTAR DENGAN EMAIL</div>
+            
                 <div class="social-login">
                     <button class="social-btn google">
                     <i class="fab fa-google"></i> Google
@@ -31,23 +44,10 @@
                     </button>
                 </div>
                 
-                <div class="separator">ATAU DAFTAR DENGAN EMAIL</div>
-                <form action="index.html" method="POST">
-                    <div class="input-group">
-                        <input type="text" id="name" name="name" placeholder="Masukkan nama Anda" required>
-                    </div>
-                    <div class="input-group">
-                        <input type="email" id="email" name="email" placeholder="Masukkan email Anda" required>
-                    </div>
-                    <div class="input-group">
-                        <input type="password" id="password" name="password" placeholder="Buat kata sandi" required>
-                    </div>
-                    
-                    <button type="submit" class="btn-primary auth-submit-btn">Daftar</button>
-                </form>
+                <button type="button" class="btn-primary auth-submit-btn" onclick="handleRegister()">Daftar</button>
                 
                 <div class="switch-link-bottom">
-                    Sudah punya akun? <a href="login.html">Masuk di Sini</a>
+                    Sudah punya akun? <a href="login.html" id="login-link">Masuk di Sini</a>
                 </div>
             </div>
         </div>
@@ -55,16 +55,29 @@
     </div>
     
     <script>
+    function handleRegister() {
+        // Langsung redirect ke login tanpa validasi
+        const urlParams = new URLSearchParams(window.location.search);
+        const returnUrl = urlParams.get('return');
+        
+        if (returnUrl) {
+            window.location.href = `login.html?return=${encodeURIComponent(returnUrl)}`;
+        } else {
+            window.location.href = 'login.html';
+        }
+    }
+
+    // Handle login link dengan return URL
     document.addEventListener('DOMContentLoaded', function() {
-        const form = document.querySelector('form');
-        form.addEventListener('submit', function(e) {
-            e.preventDefault(); // Mencegah submit default
-            // Simulasi register berhasil (ganti dengan validasi backend jika ada)
-            alert('Registrasi berhasil! Mengarahkan ke halaman login...');
-            window.location.href = 'login.html'; // Redirect ke login
-        });
+        const loginLink = document.getElementById('login-link');
+        const urlParams = new URLSearchParams(window.location.search);
+        const returnUrl = urlParams.get('return');
+        
+        if (returnUrl && loginLink) {
+            loginLink.href = `login.html?return=${encodeURIComponent(returnUrl)}`;
+        }
     });
-</script>
+    </script>
 
 </body>
 </html>

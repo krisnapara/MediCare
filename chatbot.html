@@ -3,36 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot | medicare</title>
+    <title>Chatbot | Medicare</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/chatbot.css">
 </head>
-<body>
+<body class="chatbot-body">
+    <!-- Header -->
+    <header class="chat-header">
+        <button class="back-button" onclick="window.location.href='index.html'">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+    </header>
 
-    <main class="simple-chatbot-page fullscreen-chatbot">
-        <div class="chatbot-window-simple">
-            <div class="chat-header-simple minimal">
-                <a href="index.html" class="back-btn" title="Kembali ke Beranda">
-                    &larr;
-                </a>
-                <div class="chat-title-info">
-                    <div class="chat-title-simple">
-                        <strong>MedihowCareBot</strong>
+    <main class="chatbot-main-layout">
+        <div class="chat-container">
+            <!-- Welcome Message -->
+            <div class="welcome-section" id="welcomeSection">
+                <div class="welcome-icon">
+                    <img src="assets/images/muliadi.jpg" alt="MediCare Bot">
                 </div>
-            
-            </div>
-        </div>
-            
-            <div class="chat-body-simple">
-                <div class="message received centered">
-                    Halo! Saya medicare chatbot. Ada yang bisa saya bantu terkait kesehatan atau layanan kami?
+                <h1>Halo, saya MediCareBot </h1>
+                <p>Ada yang bisa saya bantu terkait kesehatan mental atau layanan MediCare?</p>
+                
+                <div class="suggestion-grid">
+                    <div class="suggestion-card" data-message="Saya butuh konsultasi dengan psikolog atau psikiater">
+                        <div class="suggestion-icon">👥</div>
+                        <div class="suggestion-content">
+                            <h4>Konsultasi Psikolog atau Psikiater</h4>
+                            <p>Jadwalkan sesi dengan profesional</p>
+                        </div>
+                    </div>
+                    <div class="suggestion-card" data-message="Apa saja layanan MediCare?">
+                        <div class="suggestion-icon">🏥</div>
+                        <div class="suggestion-content">
+                            <h4>Layanan Kami</h4>
+                            <p>Eksplorasi fasilitas MediCare</p>
+                        </div>
+                    </div>
+                    <div class="suggestion-card" data-message="Berapa biaya konsultasi?">
+                        <div class="suggestion-icon">💰</div>
+                        <div class="suggestion-content">
+                            <h4>Informasi Biaya</h4>
+                            <p>Lihat tarif konsultasi</p>
+                        </div>
+                    </div>
+                    <div class="suggestion-card" data-message="Bantuan darurat kesehatan mental">
+                        <div class="suggestion-icon">🆘</div>
+                        <div class="suggestion-content">
+                            <h4>Bantuan Darurat</h4>
+                            <p>Kontak untuk keadaan mendesak</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <div class="chat-input-simple">
-                <input type="text" placeholder="Tanyakan sesuatu...">
-                <button class="send-btn-simple">→</button>
+
+            <!-- Chat Messages -->
+            <div class="messages-container" id="messagesContainer" style="display: none;">
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Messages will be inserted here by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="input-section">
+                <div class="input-container">
+                    <div class="input-wrapper">
+                        <textarea 
+                            id="userInput" 
+                            placeholder="Tanyakan apapun tentang kesehatan mental..." 
+                            rows="1"
+                            class="message-input"
+                        ></textarea>
+                        <button id="sendButton" class="send-button" disabled>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2 21L23 12L2 3V10L17 12L2 14V21Z" fill="currentColor"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="input-footer">
+                        <p>MediCare Assistant · Dapat membuat kesalahan. Periksa informasi penting.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
+
+    <script src="js/chatbot.js"></script>
 </body>
 </html>

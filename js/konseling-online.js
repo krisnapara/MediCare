@@ -1,21 +1,94 @@
 // JavaScript for Online Counseling Form
+
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('counselingForm');
     const steps = document.querySelectorAll('.form-step');
     const progressSteps = document.querySelectorAll('.step');
     const nextButtons = document.querySelectorAll('.btn-next');
     const prevButtons = document.querySelectorAll('.btn-prev');
+    const appointmentResult = document.getElementById('appointmentResult');
+    
+    // VARIABEL INI TIDAK DIGUNAKAN, JADI SAYA HAPUS
+    // const mainContent = document.querySelector('.online-counseling-page');
+
     let currentStep = 1;
+
+    const today = new Date().toISOString().split('T')[0];
+
+    // Ambil elemen input tanggal
+    const birthDateInput = document.getElementById('birthDate');
+    const consultDateInput = document.getElementById('consultDate');
+
+    // Pastikan Flatpickr tersedia sebelum inisialisasi
+    if (typeof flatpickr !== 'undefined') {
+        
+        // 1. Inisialisasi Flatpickr untuk Tanggal Lahir (Birth Date)
+        flatpickr(birthDateInput, {
+            dateFormat: "Y-m-d", 
+            enableTime: false,
+            
+            // OPSI KUNCI 1: Dropdown Tahun & Batas Mundur Jauh (1900)
+            yearSelectorType: "dropdown", 
+            minDate: "1900-01-01", 
+            maxDate: today,       // Batas maksimal hari ini
+            
+            locale: "id", 
+            disableMobile: true 
+        });
+        
+        // 2. Inisialisasi Flatpickr untuk Tanggal Konsultasi (Consult Date)
+        flatpickr(consultDateInput, {
+            dateFormat: "Y-m-d",
+            enableTime: false,
+            
+            // OPSI KUNCI 2: Dropdown Tahun untuk Konsultasi
+            yearSelectorType: "dropdown", 
+            
+            minDate: today, // Minimal hari ini
+            
+            // OPSI KRITIS: Menetapkan batas maksimal yang sangat jauh di masa depan
+            maxDate: "2100-01-01", 
+            
+            locale: "id",
+            disableMobile: true
+        });
+
+    } else {
+        // Fallback jika Flatpickr gagal dimuat
+        if (birthDateInput) {
+             birthDateInput.setAttribute('max', today);
+             birthDateInput.setAttribute('min', '1900-01-01');
+        }
+        if (consultDateInput) {
+             consultDateInput.setAttribute('max', '2100-01-01');
+             consultDateInput.setAttribute('min', today);
+        }
+    }
+    
+    // --- AKHIR PENGATURAN KALENDER ---
+    
+    function getTelegramHandle(doctorName) {
+        const myTelegramUsername = "johnismyuncle"; // GANTI INI DENGAN USERNAME TELEGRAM ANDA
+        
+        const doctorHandles = {
+            "dr. Sinta Maharani, M.Psi": myTelegramUsername,
+            "dr. Andi Pratama, M.Psi": myTelegramUsername,
+            "dr. Ade Muliadi, Sp.KJ": myTelegramUsername,
+            "dr. Gede Danendra Suputra, Sp.KJ": myTelegramUsername
+        };
+        
+        return doctorHandles[doctorName] || myTelegramUsername;
+    }
 
     // Initialize the form
     showStep(currentStep);
 
     // Next button functionality
     nextButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function(e) {
+            e.preventDefault(); 
             const nextStep = parseInt(this.getAttribute('data-next'));
             
-            // Validate current step before proceeding
             if (validateStep(currentStep)) {
                 currentStep = nextStep;
                 updateProgress();
@@ -26,7 +99,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Previous button functionality
     prevButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function(e) {
+            e.preventDefault(); 
             const prevStep = parseInt(this.getAttribute('data-prev'));
             currentStep = prevStep;
             updateProgress();
@@ -39,11 +113,8 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         
         if (validateStep(currentStep)) {
-            // Collect all form data
             const formData = collectFormData();
-            
-            // Show appointment result card
-            showAppointmentResult(formData);
+            displayAppointmentResult(formData);
         }
     });
 
@@ -77,17 +148,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to validate the current step
     function validateStep(stepNumber) {
         const currentStepElement = document.getElementById(`step${stepNumber}`);
-        const inputs = currentStepElement.querySelectorAll('input, select, textarea');
+        if (!currentStepElement) return false;
+        
+        const inputs = currentStepElement.querySelectorAll('input[required]:not([type="radio"]), select[required], textarea[required]');
         let isValid = true;
         
         inputs.forEach(input => {
-            if (input.hasAttribute('required') && !input.value.trim()) {
+            let inputValid = true;
+
+            if (!input.value.trim()) {
+                inputValid = false;
+            }
+
+            if (!inputValid) {
                 isValid = false;
                 highlightError(input);
             } else {
                 removeErrorHighlight(input);
                 
-                // Additional validation for specific fields
                 if (input.type === 'email' && input.value) {
                     if (!isValidEmail(input.value)) {
                         isValid = false;
@@ -100,6 +178,23 @@ document.addEventListener('DOMContentLoaded', function() {
                         isValid = false;
                         highlightError(input, 'Format NIK tidak valid (harus 16 digit)');
                     }
+                }
+            }
+        });
+        
+        const radioGroups = currentStepElement.querySelectorAll('.radio-group');
+        radioGroups.forEach(group => {
+            const radios = group.querySelectorAll('input[type="radio"]');
+            
+            if (radios.length > 0 && radios[0].hasAttribute('required')) {
+                const groupName = radios[0].name;
+                if (!document.querySelector(`input[name="${groupName}"]:checked`)) {
+                    isValid = false;
+                    const label = group.previousElementSibling;
+                    if(label) highlightError(label, 'Pilihan ini wajib diisi');
+                } else {
+                    const label = group.previousElementSibling;
+                    if(label) removeErrorHighlight(label);
                 }
             }
         });
@@ -121,15 +216,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to highlight input errors
     function highlightError(input, message = 'Field ini wajib diisi') {
-        input.style.borderColor = '#dc3545';
+        let parentNode = input.parentNode;
         
-        // Remove existing error message if any
-        const existingError = input.parentNode.querySelector('.error-message');
+        const existingError = parentNode.querySelector('.error-message');
         if (existingError) {
             existingError.remove();
         }
-        
-        // Add error message
+
+        if (input.tagName === 'LABEL') {
+             input.style.color = '#dc3545';
+        } else {
+             input.style.borderColor = '#dc3545';
+        }
+       
         const errorElement = document.createElement('div');
         errorElement.className = 'error-message';
         errorElement.style.color = '#dc3545';
@@ -137,15 +236,20 @@ document.addEventListener('DOMContentLoaded', function() {
         errorElement.style.marginTop = '5px';
         errorElement.textContent = message;
         
-        input.parentNode.appendChild(errorElement);
+        parentNode.appendChild(errorElement);
     }
 
     // Function to remove error highlighting
     function removeErrorHighlight(input) {
-        input.style.borderColor = '';
+        let parentNode = input.parentNode;
         
-        // Remove error message if exists
-        const existingError = input.parentNode.querySelector('.error-message');
+        if (input.tagName === 'LABEL') {
+             input.style.color = '';
+        } else {
+             input.style.borderColor = '';
+        }
+        
+        const existingError = parentNode.querySelector('.error-message');
         if (existingError) {
             existingError.remove();
         }
@@ -157,7 +261,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Step 1: Data Diri
             fullName: document.getElementById('fullName').value,
             nik: document.getElementById('nik').value,
-            birthDate: formatDate(document.getElementById('birthDate').value),
+            birthDate: document.getElementById('birthDate').value,
             gender: document.getElementById('gender').value,
             email: document.getElementById('email').value,
             phone: document.getElementById('phone').value,
@@ -170,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Step 3: Jadwal & Konsultasi
             doctor: document.getElementById('doctor').value,
-            consultDate: formatDate(document.getElementById('consultDate').value),
+            consultDate: document.getElementById('consultDate').value,
             consultTime: document.getElementById('consultTime').value,
             consultType: document.getElementById('consultType').value,
             
@@ -195,7 +299,10 @@ document.addEventListener('DOMContentLoaded', function() {
     function formatDate(dateString) {
         if (!dateString) return '';
         const date = new Date(dateString);
-        return date.toLocaleDateString('id-ID', {
+        const offset = date.getTimezoneOffset();
+        const correctedDate = new Date(date.getTime() + (offset * 60 * 1000));
+        
+        return correctedDate.toLocaleDateString('id-ID', {
             weekday: 'long',
             year: 'numeric',
             month: 'long',
@@ -210,159 +317,69 @@ document.addEventListener('DOMContentLoaded', function() {
         return `APT-${timestamp}${random}`;
     }
 
-    // Function to show appointment result card
-    function showAppointmentResult(formData) {
-        // Hide form
+    // Function to display appointment result
+    function displayAppointmentResult(formData) {
+        // Hide form and progress
         form.style.display = 'none';
+        document.querySelector('.steps-progress').style.display = 'none';
+        document.querySelector('.consult-hero').style.display = 'none';
         
-        // Create appointment result card
-        const appointmentCard = document.createElement('div');
-        appointmentCard.className = 'appointment-result';
-        appointmentCard.innerHTML = `
-            <div class="appointment-header">
-                <div class="appointment-success-icon">✓</div>
-                <h2>Janji Konseling Berhasil Dibuat!</h2>
-                <p>Terima kasih telah membuat janji konseling online. Berikut adalah detail janji Anda:</p>
-            </div>
-            
-            <div class="appointment-details">
-                <div class="detail-section">
-                    <h3>Informasi Janji</h3>
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <span class="detail-label">Nomor Janji:</span>
-                            <span class="detail-value">${formData.appointmentNumber}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Tanggal Dibuat:</span>
-                            <span class="detail-value">${formData.appointmentDate}, ${formData.appointmentTime}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Psikolog:</span>
-                            <span class="detail-value">${formData.doctor}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Tanggal Konsultasi:</span>
-                            <span class="detail-value">${formData.consultDate}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Waktu:</span>
-                            <span class="detail-value">${formData.consultTime}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Jenis Konsultasi:</span>
-                            <span class="detail-value">${formData.consultType}</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="detail-section">
-                    <h3>Data Pasien</h3>
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <span class="detail-label">Nama Lengkap:</span>
-                            <span class="detail-value">${formData.fullName}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">NIK:</span>
-                            <span class="detail-value">${formData.nik}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Tanggal Lahir:</span>
-                            <span class="detail-value">${formData.birthDate}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Jenis Kelamin:</span>
-                            <span class="detail-value">${formData.gender}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Email:</span>
-                            <span class="detail-value">${formData.email}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Telepon:</span>
-                            <span class="detail-value">${formData.phone}</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="detail-section">
-                    <h3>Informasi Tambahan</h3>
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <span class="detail-label">Kondisi Perasaan:</span>
-                            <span class="detail-value">${formData.feeling}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Frekuensi:</span>
-                            <span class="detail-value">${formData.frequency}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Tujuan Konsultasi:</span>
-                            <span class="detail-value">${formData.goal}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Konsultasi Sebelumnya:</span>
-                            <span class="detail-value">${formData.previousConsultation}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="appointment-instructions">
-                <div class="detail-section">
-                    <h3>Instruksi Penting</h3>
-                    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #007bff;">
-                        <p style="margin-bottom: 10px; color: #333;">
-                            <strong>Sebelum sesi konseling:</strong>
-                        </p>
-                        <ul style="color: #555; margin-bottom: 15px; padding-left: 20px;">
-                            <li>Pastikan koneksi internet stabil</li>
-                            <li>Siapkan ruangan yang nyaman dan privat</li>
-                            <li>Gunakan perangkat dengan kamera dan mikrofon (untuk video call)</li>
-                            <li>Login 5-10 menit sebelum sesi dimulai</li>
-                        </ul>
-                        <p style="color: #666; font-size: 0.9rem;">
-                            <strong>Catatan:</strong> Psikolog akan mengirimkan link sesi melalui email 1 jam sebelum konsultasi dimulai.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="appointment-actions">
-                <button class="btn-download" onclick="downloadAppointment()">
-                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-                    </svg>
-                    Download PDF
-                </button>
-                <button class="btn-print" onclick="printAppointment()">
-                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
-                        <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/>
-                    </svg>
-                    Print
-                </button>
-                <a href="konsultasi.html" class="btn-back">
-                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-                    </svg>
-                    Kembali ke Konsultasi
-                </a>
-            </div>
-        `;
+        // Update result elements with form data
+        document.getElementById('resultName').textContent = formData.fullName;
+        document.getElementById('resultEmail').textContent = formData.email;
+        document.getElementById('resultPhone').textContent = formData.phone;
+        document.getElementById('resultBirthDate').textContent = formatDate(formData.birthDate);
+        document.getElementById('resultDoctor').textContent = formData.doctor;
+        document.getElementById('resultDate').textContent = formatDate(formData.consultDate);
+        document.getElementById('resultTime').textContent = formData.consultTime;
+        document.getElementById('resultType').textContent = formData.consultType;
         
-        document.querySelector('.counseling-steps-section .main-container').appendChild(appointmentCard);
+        const telegramHandle = getTelegramHandle(formData.doctor);
+        const doctorShortName = formData.doctor.split(',')[0].trim();
+        const telegramNote = document.getElementById('telegramNote');
+
+        if (telegramNote) {
+            // Langsung isi kontainer 'telegramNote' dengan HTML yang sudah jadi.
+            telegramNote.innerHTML = `Untuk memulai konsultasi dengan ${doctorShortName}, silahkan klik link berikut: <a href="https://t.me/${telegramHandle}" id="resultTelegramLink" target="_blank" rel="noopener noreferrer">Hubungi via Telegram</a>. Pastikan Anda sudah menginstal aplikasi Telegram terlebih dahulu.`;
+        }
+        
+
+        // Show appointment result
+        appointmentResult.style.display = 'flex';
+        
+        // Update progress steps to completed
+        updateStepProgressToCompleted();
+        
+        // Add event listeners to buttons
+        document.querySelector('.btn-download').addEventListener('click', simulateDownload);
+        document.querySelector('.btn-print').addEventListener('click', printPage);
+        
+        document.querySelector('.btn-back').addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+    }
+    
+    function updateStepProgressToCompleted() {
+        progressSteps.forEach(step => {
+            step.classList.remove('active');
+            step.classList.add('completed');
+        });
+    }
+
+    function simulateDownload() {
+        const downloadBtn = document.querySelector('.btn-download');
+        const originalText = downloadBtn.textContent;
+        downloadBtn.textContent = 'Mengunduh...';
+        downloadBtn.disabled = true;
+        
+        setTimeout(() => {
+            downloadBtn.textContent = originalText;
+            downloadBtn.disabled = false;
+            alert('File PDF berhasil diunduh!');
+        }, 2000);
+    }
+
+    function printPage() {
+        window.print();
     }
 });
-
-// Function to download appointment as PDF (placeholder)
-function downloadAppointment() {
-    alert('Fitur download PDF akan segera tersedia. Untuk sementara, Anda dapat menggunakan fitur print.');
-}
-
-// Function to print appointment
-function printAppointment() {
-    window.print();
-}

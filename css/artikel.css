@@ -1,0 +1,216 @@
+/* ================================== ARTICLE PAGE STYLE ================================== */
+.article-page {
+    padding: 50px 20px;
+}
+
+.article-page h1 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    text-align: center;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.article-page h2 {
+    text-align: left;
+    margin: 40px auto 20px auto;
+    max-width: 900px;
+    font-size: 1.8rem;
+    color: #333;
+    font-weight: 600;
+    display: block;
+    width: 100%;
+}
+
+.article-text {
+    line-height: 1.6;
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+    text-align: justify;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.article-image-container {
+    max-width: 900px;
+    margin: 40px auto;
+    position: relative;
+}
+
+.article-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+}
+
+.image-overlay-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 1.2rem;
+}
+
+/* ================================== ARTICLE SOURCE STYLE (YANG DIUBAH) ================================== */
+.article-source {
+    max-width: 900px;
+    margin: 60px auto 20px auto;
+    padding: 35px;
+    border-top: 3px solid #e8f4ff;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    position: relative;
+    border-left: 4px solid #007bff;
+}
+
+.article-source:before {
+    content: '📚';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.8rem;
+    background: white;
+    padding: 8px;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.article-source h4 {
+    color: black;
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-align: center;
+    position: relative;
+    padding-bottom: 12px;
+}
+
+.article-source h4:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: #007bff;
+    border-radius: 2px;
+}
+
+.article-source p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+/* Style untuk link di article-source */
+.article-source a {
+    color: rgb(11, 134, 210);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    border-bottom: 2px solid transparent;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+.article-source a:hover {
+    color: rgb(11, 134, 210);
+    text-decoration: none;
+    border-bottom: 2px solid rgb(11, 134, 210);
+    background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+    padding: 2px 8px;
+}
+
+/* Style untuk list di article-source */
+.article-source ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 15px;
+}
+
+.article-source li {
+    margin-bottom: 12px;
+    padding: 15px 18px;
+    border-bottom: 1px solid #e5e7eb;
+    position: relative;
+    padding-left: 55px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+}
+
+.article-source li:last-child {
+    border-bottom: none;
+}
+
+.article-source li:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.1);
+    border-left: 3px solid #007bff;
+}
+
+/* Reset counter */
+.article-source ol {
+    counter-reset: list-item;
+}
+
+/* Responsive Article */
+@media (max-width: 768px) {
+    .article-page {
+        padding: 30px 15px;
+    }
+    
+    .article-page h1 {
+        font-size: 2rem;
+    }
+    
+    .article-page h2 {
+        font-size: 1.5rem;
+        margin: 30px auto 15px auto;
+    }
+    
+    .article-text {
+        font-size: 1rem;
+        text-align: left;
+    }
+    
+    .article-source {
+        padding: 25px 20px;
+        margin: 40px auto 20px auto;
+    }
+    
+    .article-source h4 {
+        font-size: 1.1rem;
+    }
+    
+    .article-source li {
+        padding-left: 45px;
+        padding: 12px 15px 12px 45px;
+    }
+    
+}
+
+@media (max-width: 480px) {
+    .article-source {
+        padding: 20px 15px;
+    }
+    
+    .article-source li {
+        padding: 10px 12px 10px 40px;
+    }
+}
