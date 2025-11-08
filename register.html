@@ -56,14 +56,19 @@
     
     <script>
     function handleRegister() {
-        // Langsung redirect ke login tanpa validasi
+        // ALUR BARU: Tampilkan notifikasi dan redirect ke login dengan notif sukses
+        // Fungsi ini DUA kali didefinisikan (di script.js dan di sini)
+        // Saya akan menggunakan yang di sini untuk memastikan alur berjalan di halaman register
         const urlParams = new URLSearchParams(window.location.search);
         const returnUrl = urlParams.get('return');
         
+        // Siapkan notifikasi sukses registrasi untuk halaman login
+        const successMessage = encodeURIComponent('Registrasi Berhasil! Silakan Masuk.');
+        
         if (returnUrl) {
-            window.location.href = `login.html?return=${encodeURIComponent(returnUrl)}`;
+            window.location.href = `login.html?return=${encodeURIComponent(returnUrl)}&notif=success&message=${successMessage}`;
         } else {
-            window.location.href = 'login.html';
+            window.location.href = `login.html?notif=success&message=${successMessage}`;
         }
     }
 
@@ -78,6 +83,5 @@
         }
     });
     </script>
-
-</body>
+    </body>
 </html>

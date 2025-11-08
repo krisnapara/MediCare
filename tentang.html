@@ -10,7 +10,7 @@
 <body>
     <header class="header">
         <div class="logo">
-            <img src="assets/images/logo.png" alt="Logo Medicare">
+            <img src="assets/icons/flower.svg" alt="Logo Medicare">
             <span class="logo-text">MediCare</span>
         </div>
         
@@ -135,68 +135,67 @@
         </section>
     </main>
 
-     <footer class="footer">
-    <div class="footer-container">
-        <div class="footer-section">
+    <footer class="footer">
+    <div class="footer-content">
+        <!-- Brand Section dengan Social Links -->
+        <div class="footer-brand">
             <div class="footer-logo">
-                <img src="assets/images/logo.png" alt="Logo Medicare">
+                <img src="assets/icons/flower.svg" alt="Logo Medicare">
                 <span class="logo-text">MediCare</span>
             </div>
-            <p class="footer-description">
-                MediCare menyediakan layanan konsultasi kesehatan mental gratis dengan tenaga profesional 
-                untuk membantu Anda melalui masa sulit dan mencapai kesejahteraan mental yang optimal.
-            </p>
-            <div class="social-links">
-                <a href="#" class="social-link">📘 Facebook</a>
-                <a href="#" class="social-link">📷 Instagram</a>
-                <a href="#" class="social-link">🐦 Twitter</a>
-                <a href="#" class="social-link">📺 YouTube</a>
-            </div>
-        </div>
-
-        <div class="footer-section">
-            <h4>Layanan Cepat</h4>
-            <ul class="footer-links">
-                <li><a href="konsultasi.html">🔗 Konsultasi Online</a></li>
-                <li><a href="chatbot.html">🤖 Chatbot 24/7</a></li>
-                <li><a href="artikel.html">📚 Artikel Kesehatan</a></li>
-                <li><a href="tes-kesehatan.html">🧪 Tes Kesehatan Mental</a></li>
-                <li><a href="komunitas.html">👥 Forum Komunitas</a></li>
-            </ul>
-        </div>
-
-        <div class="footer-section">
-            <h4>Link Terkait</h4>
-            <ul class="footer-links">
-                <li><a href="https://www.idionline.org/" target="_blank">🏥 Ikatan Dokter Indonesia (IDI)</a></li>
-                <li><a href="https://www.intothelightid.org/" target="_blank">💜 Into The Light Indonesia</a></li>
-                <li><a href="https://kemkes.go.id/" target="_blank">🇮🇩 Kementerian Kesehatan</a></li>
-                <li><a href="https://www.who.int/indonesia" target="_blank">🌍 WHO Indonesia</a></li>
-                <li><a href="https://pdskji.org/" target="_blank">🧠 Perhimpunan Dokter Spesialis Kedokteran Jiwa</a></li>
-            </ul>
-        </div>
-
-        <div class="footer-section">
-            <h4>Kontak & Darurat</h4>
-            <div class="contact-info">
-                <div class="contact-item">
-                    <span class="contact-icon">📍</span>
-                    <span>Jl. Muliadi Panjang No.110, Canggu, Kuta Utara, Badung, Bali</span>
-                </div>
-                <div class="contact-item">
-                    <span class="contact-icon">📧</span>
-                    <span>MediCare18@gmail.com</span>
-                </div>
-                <div class="contact-item">
-                    <span class="contact-icon">📞</span>
-                    <span>081336465210</span>
-                </div>
-                <div class="contact-item emergency">
-                    <span class="contact-icon">🆘</span>
-                    <span><strong>Darurat: 119 ext. 8</strong></span>
-                </div>
-            </div>
             
+            <!-- Social Links menggantikan deskripsi -->
+            <div class="social-links">
+                <a href="#" class="social-link">
+                    <img src="assets/icons/facebook.svg" alt="Facebook" class="social-icon">
+                    <span>Facebook</span>
+                </a>
+                <a href="#" class="social-link">
+                    <img src="assets/icons/instagram.svg" alt="Instagram" class="social-icon">
+                    <span>Instagram</span>
+                </a>
+                <a href="#" class="social-link">
+                    <img src="assets/icons/tiktok.svg" alt="TikTok" class="social-icon">
+                    <span>Tiktok</span>
+                </a>
+                <a href="#" class="social-link">
+                    <img src="assets/icons/youtube.svg" alt="YouTube" class="social-icon">
+                    <span>YouTube</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Layanan Section -->
+        <div class="footer-section">
+            <h4>Layanan</h4>
+            <ul class="footer-links">
+                <li><a href="javascript:void(0);" onclick="authRedirect('konsultasi.html')">Konsultasi Online</a></li>
+                <li><a href="chatbot.html">Chatbot 24/7</a></li>
+                <li><a href="artikel.html">Artikel Kesehatan</a></li>
+                <li><a href="tes-kesehatan.html">Tes Kesehatan Mental</a></li>
+                <li><a href="komunitas.html">Forum Komunitas</a></li>
+            </ul>
+        </div>
+
+        <!-- Support Section -->
+        <div class="footer-section">
+            <h4>Support</h4>
+            <ul class="footer-links">
+                <li><a href="https://www.idionline.org/" target="_blank">Ikatan Dokter Indonesia</a></li>
+                <li><a href="https://www.intothelightid.org/" target="_blank">Into The Light</a></li>
+                <li><a href="https://kemkes.go.id/" target="_blank">Kementerian Kesehatan</a></li>
+                <li><a href="https://www.who.int/indonesia" target="_blank">WHO Indonesia</a></li>
+                <li><a href="https://pdskji.org/" target="_blank">Dokter Spesialis Jiwa</a></li>
+            </ul>
+        </div>
+
+        <!-- Tentang Section -->
+        <div class="footer-section">
+            <h4>Tentang</h4>
+            <ul class="footer-links">
+                <li><a href="tentang.html">Tentang Kami</a></li>
+                <li><a href="page_dokter.html">Tim Dokter</a></li>
+            </ul>
             <div class="newsletter">
                 <h5>Newsletter</h5>
                 <p>Dapatkan tips kesehatan mental mingguan</p>
@@ -210,11 +209,12 @@
 
     <div class="footer-bottom">
         <div class="footer-bottom-content">
-            <p>&copy; 2018 MediCare. All rights reserved. | Dedicated to Mental Health Awareness</p>
+            <p>&copy; 2018 MediCare. All rights reserved.</p>
             <div class="footer-bottom-links">
                 <a href="privacy.html">Kebijakan Privasi</a>
                 <a href="terms.html">Syarat & Ketentuan</a>
-                <a href="sitemap.html">Sitemap</a>
+                <a href="refund.html">Kebijakan Refund</a>
+                <a href="accessibility.html">Aksesibilitas</a>
             </div>
         </div>
     </div>

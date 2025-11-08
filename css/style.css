@@ -20,7 +20,7 @@ main {
     min-height: calc(100vh - 200px);
 }
 
-/* ================================== HEADER ================================== */
+/* ================================== HEADER BRAND ENHANCEMENT ================================== */
 .header {
     display: flex;
     align-items: center;
@@ -32,47 +32,96 @@ main {
     z-index: 1000;
 }
 
-/* ================================== LOGO EFFECTS ================================== */
-/* Efek hover untuk logo di kiri atas */
 .logo {
     display: flex;
-    font-size: 1.5rem;
-    font-weight: bold;
     align-items: center;
     gap: 10px;
-    transition: all 0.3s ease; /* Tambahkan transisi */
-    cursor: pointer; /* Ubah kursor menjadi pointer */
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
 }
 
+/* Efek khusus untuk logo di header */
 .logo:hover {
-    transform: scale(1.05); /* Membesar sedikit saat hover */
-}
-
-.logo:hover .logo-text {
-    background: linear-gradient(135deg, #007bff 0%, #007bff 45%, #000000 45%, #000000 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    transform: translateY(-2px);
 }
 
 .logo img {
-    height: 40px;
-    width: auto; 
-    transition: all 0.3s ease; /* Transisi untuk gambar */
+    height: 45px;
+    width: auto;
+    transition: all 0.5s ease;
+    filter: drop-shadow(0 2px 4px rgba(0, 123, 255, 0.3));
 }
 
 .logo:hover img {
-    transform: rotate(5deg); /* Putar gambar sedikit saat hover */
+    transform: rotate(12deg) scale(1.1);
+    filter: drop-shadow(0 4px 8px rgba(0, 123, 255, 0.5));
 }
 
-/* PERBAIKAN: Logo text tidak dipisahkan tapi tetap dua warna */
-.logo-text {
+/* Efek khusus untuk teks MediCare di header */
+.logo .logo-text {
+    font-size: 1.6rem;
+    font-weight: 800;
     background: linear-gradient(135deg, #000000 0%, #000000 45%, #007bff 45%, #007bff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    font-weight: 800;
+    background-size: 200% 100%;
+    animation: headerShimmer 4s ease-in-out infinite;
+    text-shadow: 0 1px 5px rgba(0, 123, 255, 0.2);
+    position: relative;
     letter-spacing: -0.5px;
+    transition: all 0.3s ease;
+}
+
+/* Animation untuk header shimmer effect */
+@keyframes headerShimmer {
+    0%, 100% {
+        background-position: -200% 0;
+    }
+    50% {
+        background-position: 200% 0;
+    }
+}
+
+/* Glow effect pada hover di header */
+.logo:hover .logo-text {
+    animation: headerShimmer 2s ease-in-out infinite, headerGlow 1.5s ease-in-out infinite;
+    background: linear-gradient(135deg, #007bff 0%, #00b7ff 50%, #007bff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+@keyframes headerGlow {
+    0%, 100% {
+        text-shadow: 0 1px 5px rgba(0, 123, 255, 0.3),
+                     0 2px 10px rgba(0, 123, 255, 0.2);
+    }
+    50% {
+        text-shadow: 0 1px 8px rgba(0, 123, 255, 0.4),
+                     0 3px 15px rgba(0, 123, 255, 0.3),
+                     0 4px 20px rgba(0, 123, 255, 0.2);
+    }
+}
+
+/* Pulse effect subtle untuk header */
+.logo::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(circle, rgba(0, 123, 255, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.5s ease;
+    z-index: -1;
+}
+
+.logo:hover::after {
+    transform: translate(-50%, -50%) scale(1.8);
 }
 
 .nav {
@@ -94,6 +143,7 @@ main {
     transition: all 0.3s ease;
     border-radius: 6px;
     font-weight: 500;
+    cursor: pointer !important;
 }
 
 .nav a.active {
@@ -108,7 +158,7 @@ main {
     transform: translateY(-2px);
 }
 
-/* Style untuk Foto Profil (Lingkaran) */
+/* Style untuk Foto Profil */
 .profile-icon {
     width: 45px;
     height: 45px;
@@ -119,6 +169,7 @@ main {
     align-items: center;
     border: 2px solid transparent;
     transition: all 0.3s ease;
+    cursor: pointer !important;
 }
 
 .profile-icon:hover {
@@ -130,6 +181,7 @@ main {
     display: block;
     width: 100%;
     height: 100%;
+    cursor: pointer !important;
 }
 
 .profile-icon img {
@@ -139,107 +191,190 @@ main {
     display: block;
 }
 
-/* Styling untuk Ikon Profil Aktif */
-.active-profile-img {
-    border: 2px solid #007bff; 
-    padding: 2px; 
-    border-radius: 50%; 
-    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.2); 
-}
-
-/* ================================== FOOTER STYLES ================================== */
+/* ================================== MODERN FOOTER STYLES ================================== */
 .footer {
-    background: linear-gradient(135deg, #2c3e50, #34495e);
-    color: white;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: #ffffff;
     margin-top: 80px;
+    position: relative;
+    overflow: hidden;
 }
 
-.footer-container {
+/* Wave Effect */
+.footer::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' fill='%232c3e50'%3E%3C/path%3E%3C/svg%3E");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.footer-content {
     max-width: 1200px;
     margin: 0 auto;
     padding: 60px 20px 40px;
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
     gap: 40px;
+    position: relative;
+    z-index: 1;
+}
+
+/* ================================== FOOTER BRAND ENHANCEMENT ================================== */
+.footer-brand {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Efek khusus untuk logo di footer */
+.footer-logo:hover {
+    transform: translateY(-3px);
+}
+
+.footer-logo img {
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    transition: all 0.5s ease;
+    filter: drop-shadow(0 4px 8px rgba(0, 123, 255, 0.3));
+}
+
+.footer-logo:hover img {
+    transform: rotate(15deg) scale(1.1);
+    filter: drop-shadow(0 6px 12px rgba(0, 123, 255, 0.5));
+}
+
+/* Efek khusus untuk teks MediCare di footer - SAMA DENGAN HEADER */
+.footer-logo .logo-text {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #000000 0%, #000000 45%, #007bff 45%, #007bff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% 100%;
+    animation: headerShimmer 4s ease-in-out infinite;
+    text-shadow: 0 2px 10px rgba(0, 123, 255, 0.2);
+    position: relative;
+    letter-spacing: -0.5px;
+    transition: all 0.3s ease;
+}
+
+/* Glow effect pada hover di footer - SAMA DENGAN HEADER */
+.footer-logo:hover .logo-text {
+    animation: headerShimmer 2s ease-in-out infinite, headerGlow 1.5s ease-in-out infinite;
+    background: linear-gradient(135deg, #007bff 0%, #00b7ff 50%, #007bff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Pulse effect subtle untuk footer */
+.footer-logo::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, rgba(0, 123, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.5s ease;
+    z-index: -1;
+}
+
+.footer-logo:hover::after {
+    transform: translate(-50%, -50%) scale(1.5);
+}
+
+/* ================================== SOCIAL LINKS IN BRAND SECTION ================================== */
+.footer-brand .social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.footer-brand .social-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #bdc3c7;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    padding: 8px 0;
+    cursor: pointer !important;
+}
+
+.footer-brand .social-link:hover {
+    color: #007bff;
+    transform: translateX(5px);
+}
+
+.footer-brand .social-icon {
+    width: 20px;
+    height: 20px;
+    transition: all 0.3s ease;
+}
+
+.footer-brand .social-icon path {
+    fill: #bdc3c7;
+    transition: fill 0.3s ease;
+}
+
+.footer-brand .social-link:hover .social-icon path {
+    fill: #007bff;
+}
+
+/* Footer Sections */
+.footer-section {
+    margin-bottom: 0;
 }
 
 .footer-section h4 {
     color: #007bff;
     margin-bottom: 20px;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.footer-section h5 {
-    color: #ecf0f1;
-    margin-bottom: 10px;
-    font-size: 1rem;
-}
-
-/* Logo & Description */
-.footer-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.footer-logo img {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    mix-blend-mode: multiply;
-}
-
-.logo-text {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #007bff;
-}
-
-.footer-description {
-    color: #bdc3c7;
-    line-height: 1.6;
-    margin-bottom: 20px;
-    font-size: 0.95rem;
-}
-
-/* Social Links */
-.social-links {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.social-link {
-    color: #ecf0f1;
-    text-decoration: none;
-    transition: color 0.3s ease;
-    font-size: 0.9rem;
-}
-
-.social-link:hover {
-    color: #007bff;
-}
-
-/* Footer Links */
 .footer-links {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 .footer-links li {
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .footer-links a {
     color: #bdc3c7;
     text-decoration: none;
+    font-size: 0.95rem;
     transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
+    display: block;
+    padding: 4px 0;
+    line-height: 1.4;
+    cursor: pointer !important;
 }
 
 .footer-links a:hover {
@@ -247,87 +382,80 @@ main {
     transform: translateX(5px);
 }
 
-/* Contact Info */
-.contact-info {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+/* ================================== NEWSLETTER IN TENTANG SECTION ================================== */
+.footer-section .newsletter {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.contact-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
+.footer-section .newsletter h5 {
+    color: #007bff;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.footer-section .newsletter p {
     color: #bdc3c7;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    margin-bottom: 12px;
     line-height: 1.4;
 }
 
-.contact-item.emergency {
-    color: #e74c3c;
-    font-weight: 600;
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px solid #34495e;
-}
-
-.contact-icon {
-    font-size: 1rem;
-    min-width: 20px;
-}
-
-/* Newsletter */
-.newsletter {
-    margin-top: 25px;
-    padding-top: 20px;
-    border-top: 1px solid #34495e;
-}
-
-.newsletter p {
-    color: #bdc3c7;
-    font-size: 0.85rem;
-    margin-bottom: 15px;
-}
-
-.newsletter-form {
+.footer-section .newsletter-form {
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    gap: 8px;
 }
 
-.newsletter-form input {
-    flex: 1;
-    padding: 10px;
-    border: none;
+.footer-section .newsletter-form input {
+    padding: 8px 10px;
+    border: 1px solid #34495e;
     border-radius: 5px;
     background: #2c3e50;
     color: white;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    width: 100%;
+    transition: all 0.3s ease;
 }
 
-.newsletter-form input::placeholder {
+.footer-section .newsletter-form input:focus {
+    outline: none;
+    border-color: #007bff;
+    background: #34495e;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+.footer-section .newsletter-form input::placeholder {
     color: #95a5a6;
 }
 
-.btn-subscribe {
+.footer-section .btn-subscribe {
     background: #007bff;
     color: white;
     border: none;
-    padding: 10px 15px;
+    padding: 8px 12px;
     border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background 0.3s ease;
+    cursor: pointer !important;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    width: 100%;
 }
 
-.btn-subscribe:hover {
+.footer-section .btn-subscribe:hover {
     background: #0056b3;
+    transform: translateY(-1px);
 }
 
 /* Footer Bottom */
 .footer-bottom {
-    background: #1a252f;
-    padding: 20px 0;
-    border-top: 1px solid #34495e;
+    background: rgba(26, 35, 47, 0.9);
+    backdrop-filter: blur(10px);
+    padding: 25px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 20px;
 }
 
 .footer-bottom-content {
@@ -337,84 +465,43 @@ main {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.footer-bottom p {
     color: #95a5a6;
     font-size: 0.9rem;
+    margin: 0;
 }
 
 .footer-bottom-links {
     display: flex;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 .footer-bottom-links a {
     color: #95a5a6;
     text-decoration: none;
+    font-size: 0.85rem;
     transition: color 0.3s ease;
+    white-space: nowrap;
+    cursor: pointer !important;
 }
 
 .footer-bottom-links a:hover {
     color: #007bff;
 }
 
-/* Responsive Footer */
-@media (max-width: 1024px) {
-    .footer-container {
-        grid-template-columns: 1fr 1fr;
-        gap: 30px;
-    }
-}
-
-@media (max-width: 768px) {
-    .footer-container {
-        grid-template-columns: 1fr;
-        gap: 30px;
-        padding: 40px 20px 30px;
-    }
-    
-    .footer-bottom-content {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
-    
-    .newsletter-form {
-        flex-direction: column;
-    }
-    
-    .footer-logo {
-        justify-content: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .footer-container {
-        padding: 30px 15px 20px;
-    }
-    
-    .footer-section {
-        text-align: center;
-    }
-    
-    .contact-item {
-        justify-content: center;
-    }
-    
-    .social-links {
-        align-items: center;
-    }
-}
-
-/* ================================== CHATBOT BUTTON STYLES (Tambahkan/Pastikan ini ada) ================================== */
-
-/* Container untuk posisi fixed: Menentukan posisi di kanan bawah */
+/* ================================== CHATBOT BUTTON STYLES ================================== */
 .chatbot-container {
     position: fixed;
-    bottom: 25px; /* Jarak dari bawah */
-    right: 25px; /* Jarak dari kanan */
-    z-index: 1000; /* Pastikan tombol berada di atas konten lain */
+    bottom: 25px;
+    right: 25px;
+    z-index: 1000;
 }
 
-/* Tombol Chatbot: Menengahkan ikon dan mengatur tampilan */
 .chatbot-toggle-btn {
     width: 60px;
     height: 60px;
@@ -423,47 +510,18 @@ main {
     border: none;
     border-radius: 50%;
     font-size: 1.8rem;
-    cursor: pointer;
+    cursor: pointer !important;
     box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
     transition: background-color 0.3s, transform 0.2s;
-    
-    /* PROPERTI UTAMA UNTUK MENENGGAHKAN IKON */
     display: flex;
-    align-items: center; /* Menengahkan ikon secara vertikal */
-    justify-content: center; /* Menengahkan ikon secara horizontal */
-    line-height: 1; /* Memastikan ikon emoji berada di tengah sempurna */
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 
 .chatbot-toggle-btn:hover {
     background-color: #0056b3;
     transform: scale(1.05);
-}
-
-/* Penyesuaian Responsif (Jika ada di style.css, pastikan nilainya sama) */
-@media (max-width: 768px) {
-    .chatbot-toggle-btn {
-        width: 55px;
-        height: 55px;
-        font-size: 1.4rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .chatbot-container {
-        bottom: 15px; /* Pindah sedikit ke atas di HP */
-        right: 15px; /* Pindah sedikit ke kiri di HP */
-    }
-}
-
-/* Animations */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideIn {
-    from { transform: translateX(-20px); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
 }
 
 /* Utility Classes */
@@ -473,7 +531,7 @@ main {
     padding: 14px 32px;
     border: none;
     border-radius: 10px;
-    cursor: pointer;
+    cursor: pointer !important;
     font-weight: 600;
     text-decoration: none;
     display: inline-block;
@@ -528,7 +586,7 @@ main {
     color: #666;
 }
 
-/* Responsive Design Base */
+/* ================================== RESPONSIVE DESIGN ================================== */
 @media (max-width: 1024px) {
     .header {
         padding: 15px 30px;
@@ -536,6 +594,25 @@ main {
     
     .nav ul {
         gap: 25px;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 30px;
+    }
+    
+    .footer-brand {
+        grid-column: 1 / -1;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    
+    .footer-logo {
+        justify-content: center;
+    }
+    
+    .footer-brand .social-links {
+        align-items: center;
     }
 }
 
@@ -561,7 +638,6 @@ main {
         font-size: 0.9rem;
     }
     
-    
     main {
         padding: 20px 15px;
     }
@@ -571,15 +647,111 @@ main {
         height: 55px;
         font-size: 1.4rem;
     }
+    
+    /* Responsive untuk efek header */
+    .logo img {
+        height: 38px;
+    }
+    
+    .logo .logo-text {
+        font-size: 1.4rem;
+    }
+    
+    .logo:hover img {
+        transform: rotate(8deg) scale(1.05);
+    }
+    
+    .footer::before {
+        top: -12px;
+        height: 25px;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        padding: 50px 20px 30px;
+        text-align: center;
+    }
+    
+    .footer-brand {
+        grid-column: 1 / -1;
+    }
+    
+    .footer-section {
+        margin-bottom: 10px;
+    }
+    
+    .footer-section h4 {
+        margin-bottom: 15px;
+        font-size: 1rem;
+    }
+    
+    .footer-links a:hover,
+    .footer-brand .social-link:hover {
+        transform: none;
+    }
+    
+    .footer-bottom-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .footer-bottom-links {
+        justify-content: center;
+        gap: 15px;
+    }
+    
+    .footer-brand .social-links {
+        gap: 10px;
+    }
+    
+    .footer-brand .social-link {
+        justify-content: center;
+        padding: 6px 0;
+    }
+    
+    /* Responsive untuk efek footer brand */
+    .footer-logo {
+        justify-content: center;
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .footer-logo img {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .footer-logo .logo-text {
+        font-size: 1.8rem;
+    }
+    
+    .footer-logo:hover img {
+        transform: rotate(10deg) scale(1.05);
+    }
+    
+    /* Responsive Newsletter dalam Tentang Section */
+    .footer-section .newsletter {
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .footer-section .newsletter-form {
+        max-width: 200px;
+        margin: 0 auto;
+    }
+
 }
 
 @media (max-width: 480px) {
-    .logo {
-        font-size: 1.3rem;
-    }
-    
     .logo img {
         height: 35px;
+    }
+    
+    .logo .logo-text {
+        font-size: 1.3rem;
     }
     
     .nav ul {
@@ -596,18 +768,149 @@ main {
         height: 40px;
     }
     
-    /* Adjust gradient for smaller screens */
-    .logo-text {
-        background: linear-gradient(135deg, #000000 0%, #000000 42%, #007bff 42%, #007bff 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+    /* Kurangi intensitas animasi di mobile untuk performance */
+    .logo .logo-text {
+        animation: headerShimmer 8s ease-in-out infinite;
+    }
+    
+    .logo:hover .logo-text {
+        animation: headerShimmer 4s ease-in-out infinite;
+    }
+    
+    .footer::before {
+        top: -8px;
+        height: 20px;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 25px;
+        padding: 40px 15px 25px;
     }
     
     .footer-logo .logo-text {
-        background: linear-gradient(135deg, #ffffff 0%, #ffffff 42%, #a5d8ff 42%, #a5d8ff 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        font-size: 1.6rem;
     }
+    
+    .footer-links li {
+        margin-bottom: 8px;
+    }
+    
+    .footer-links a {
+        font-size: 0.9rem;
+    }
+    
+    .footer-bottom {
+        padding: 20px 0;
+    }
+    
+    .footer-bottom-links {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .footer-bottom-links a {
+        font-size: 0.8rem;
+    }
+    
+    .chatbot-container {
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .footer-brand .social-links {
+        gap: 8px;
+    }
+    
+    .footer-brand .social-link {
+        font-size: 0.9rem;
+    }
+    
+    .footer-brand .social-icon {
+        width: 18px;
+        height: 18px;
+    }
+    
+    /* Responsive untuk efek footer brand di mobile */
+    .footer-logo img {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .footer-logo .logo-text {
+        font-size: 1.6rem;
+    }
+    
+    /* Kurangi intensitas animasi di mobile untuk performance */
+    .footer-logo .logo-text {
+        animation: headerShimmer 8s ease-in-out infinite;
+    }
+    
+    .footer-logo:hover .logo-text {
+        animation: headerShimmer 4s ease-in-out infinite;
+    }
+    
+    /* Responsive Newsletter dalam Tentang Section */
+    .footer-section .newsletter-form {
+        max-width: 100%;
+    }
+    
+    .footer-section .newsletter-form input {
+        padding: 10px 12px;
+    }
+    
+    .footer-section .btn-subscribe {
+        padding: 10px;
+    }
+}
+
+/* Mobile Landscape Fix */
+@media (max-width: 768px) and (orientation: landscape) {
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    
+    .footer-brand {
+        grid-column: 1 / -1;
+    }
+}
+
+/* Additional Utility Classes */
+.text-center {
+    text-align: center;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+.flex {
+    display: flex;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.items-center {
+    align-items: center;
+}
+
+/* Clickability assurance classes */
+.clickable {
+    cursor: pointer !important;
+    pointer-events: auto !important;
+}
+
+.no-pointer-events {
+    pointer-events: none !important;
 }

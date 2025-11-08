@@ -46,16 +46,25 @@
         </div>
   </div>
 
+  <script src="js/script.js"></script>
   <script>
+    // Fungsi ini DUA kali didefinisikan (di script.js dan di sini)
+    // Saya akan menggunakan yang di sini untuk memastikan alur berjalan di halaman login
     function handleLogin() {
-        // Langsung redirect ke beranda atau halaman tujuan
+        // ALUR BARU: Tampilkan notifikasi dan redirect ke halaman tujuan
         const urlParams = new URLSearchParams(window.location.search);
         const returnUrl = urlParams.get('return');
         
+        // Tampilkan notifikasi sukses login
+        const successMessage = encodeURIComponent('Berhasil Masuk! Anda diarahkan ke halaman konsultasi.');
+        
+        // Redirect ke halaman tujuan (konsultasi.html) dengan notif sukses login
         if (returnUrl) {
-            window.location.href = returnUrl;
+            // Karena notifikasi harus ditampilkan setelah redirect, kita kirim notifikasi melalui URL
+            window.location.href = `${returnUrl}?notif=success&message=${successMessage}`;
         } else {
-            window.location.href = 'index.html';
+            // Default jika tidak ada returnUrl
+            window.location.href = `index.html?notif=success&message=${successMessage}`;
         }
     }
 
@@ -68,6 +77,10 @@
         if (returnUrl && registerLink) {
             registerLink.href = `register.html?return=${encodeURIComponent(returnUrl)}`;
         }
+        
+        // Memanggil fungsi checkAndShowNotification dari script.js
+        // Ini akan menampilkan notifikasi sukses register dari halaman sebelumnya jika ada.
+        checkAndShowNotification();
     });
   </script>
 

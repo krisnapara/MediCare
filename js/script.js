@@ -1,6 +1,3 @@
-// File: script.js
-// JavaScript untuk interaksi sederhana
-
 document.addEventListener('DOMContentLoaded', function() {
     // Set menu aktif berdasarkan halaman saat ini
     setActiveMenuByPage();
@@ -27,7 +24,69 @@ document.addEventListener('DOMContentLoaded', function() {
     setupKonsultasiRedirect();
     
     console.log('All systems initialized');
+    
+    // Cek dan tampilkan notifikasi jika ada di URL (misalnya dari login)
+    checkAndShowNotification();
 });
+
+// ================================== NOTIFICATION SYSTEM ==================================
+function showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    
+    const body = document.querySelector('body');
+    if (body) {
+        body.appendChild(notification);
+        
+        // Atur posisi agar tidak mengganggu (misalnya di atas)
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: ${type === 'success' ? '#4CAF50' : '#f44336'};
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 1100;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            transform: translateY(-50px);
+        `;
+        
+        // Tampilkan
+        setTimeout(() => {
+            notification.style.opacity = '1';
+            notification.style.transform = 'translateY(0)';
+        }, 50);
+
+        // Hilangkan setelah 3 detik
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateY(-50px)';
+            setTimeout(() => {
+                body.removeChild(notification);
+            }, 300);
+        }, 3000);
+    }
+}
+
+function checkAndShowNotification() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const notificationType = urlParams.get('notif');
+    const message = urlParams.get('message');
+    
+    if (notificationType && message) {
+        // Hapus notif dari URL agar tidak muncul lagi saat refresh
+        urlParams.delete('notif');
+        urlParams.delete('message');
+        const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+        window.history.replaceState({}, document.title, newUrl);
+        
+        showNotification(decodeURIComponent(message), notificationType);
+    }
+}
 
 // ================================== AUTHENTICATION REDIRECT SYSTEM ==================================
 function authRedirect(targetPage) {
@@ -37,26 +96,33 @@ function authRedirect(targetPage) {
 
 // ================================== SIMPLE AUTH HANDLERS ==================================
 function handleRegister() {
-    // Langsung redirect ke login tanpa validasi
+    // ALUR BARU: Tampilkan notifikasi dan redirect ke login dengan notif sukses
     const urlParams = new URLSearchParams(window.location.search);
     const returnUrl = urlParams.get('return');
     
+    // Siapkan notifikasi sukses registrasi untuk halaman login
+    const successMessage = encodeURIComponent('Registrasi Berhasil! Silakan Masuk.');
+    
     if (returnUrl) {
-        window.location.href = `login.html?return=${encodeURIComponent(returnUrl)}`;
+        window.location.href = `login.html?return=${encodeURIComponent(returnUrl)}&notif=success&message=${successMessage}`;
     } else {
-        window.location.href = 'login.html';
+        window.location.href = `login.html?notif=success&message=${successMessage}`;
     }
 }
 
 function handleLogin() {
-    // Langsung redirect ke beranda atau halaman tujuan
+    // ALUR BARU: Tampilkan notifikasi dan redirect ke halaman tujuan
     const urlParams = new URLSearchParams(window.location.search);
     const returnUrl = urlParams.get('return');
     
+    // Tampilkan notifikasi sukses login
+    const successMessage = encodeURIComponent('Berhasil Masuk! Anda diarahkan ke halaman konsultasi.');
+    
+    // Redirect ke halaman tujuan (konsultasi.html) dengan notif sukses login
     if (returnUrl) {
-        window.location.href = returnUrl;
+        window.location.href = `${returnUrl}?notif=success&message=${successMessage}`;
     } else {
-        window.location.href = 'index.html';
+        window.location.href = `index.html?notif=success&message=${successMessage}`;
     }
 }
 
@@ -424,11 +490,13 @@ function showCustomAuthDialog(targetPage) {
     // Event listeners untuk tombol
     document.getElementById('btn-sudah').addEventListener('click', function() {
         document.body.removeChild(overlay);
+        // Jika sudah punya akun, langsung ke Login dengan return ke targetPage (konsultasi.html)
         window.location.href = `login.html?return=${encodeURIComponent(targetPage)}`;
     });
     
     document.getElementById('btn-belum').addEventListener('click', function() {
         document.body.removeChild(overlay);
+        // Jika belum punya akun, langsung ke Register dengan return ke targetPage (konsultasi.html)
         window.location.href = `register.html?return=${encodeURIComponent(targetPage)}`;
     });
     
@@ -457,30 +525,56 @@ window.addEventListener('error', function(e) {
     }
 });
 
-// Event listeners
+// Event listeners untuk dokter popup
 document.addEventListener('DOMContentLoaded', function() {
-    // Event listener untuk item dokter
-    const doctorItems = document.querySelectorAll('.doctor-item');
-    doctorItems.forEach(item => {
-        item.addEventListener('click', function() {
-            const doctorId = this.getAttribute('data-doctor');
-            showDoctorPopup(doctorId);
-        });
-    });
     
-    // Event listener untuk tombol close
-    document.querySelector('.popup-close').addEventListener('click', closeDoctorPopup);
-    
-    // Event listener untuk menutup popup ketika klik di luar konten
-    document.getElementById('doctor-popup').addEventListener('click', function(e) {
-        if (e.target === this) {
+    const consultButton = document.querySelector('.btn-consult');
+    if (consultButton) {
+        consultButton.addEventListener('click', function() {
+            authRedirect('konsultasi.html');
             closeDoctorPopup();
-        }
-    });
-    
-    // Event listener untuk tombol konsultasi
-    document.querySelector('.btn-consult').addEventListener('click', function() {
-        authRedirect('konsultasi.html');
-        closeDoctorPopup();
-    });
+        });
+    }
 });
+
+// ================================== DOCTOR POPUP FUNCTIONALITY ==================================
+function showDoctorPopup(doctorId) {
+    const popup = document.getElementById('doctor-popup');
+    const popupContent = document.querySelector('.popup-content');
+    
+    if (!popup || !popupContent) return;
+    
+    const doctor = doctors[doctorId];
+    if (!doctor) return;
+    
+    // Update konten popup
+    popupContent.querySelector('img').src = doctor.image;
+    popupContent.querySelector('img').alt = doctor.name;
+    popupContent.querySelector('h3').textContent = doctor.name;
+    popupContent.querySelector('.specialty').textContent = doctor.specialty;
+    popupContent.querySelector('.experience').textContent = `Pengalaman: ${doctor.experience}`;
+    popupContent.querySelector('.education').textContent = doctor.education;
+    popupContent.querySelector('.description').textContent = doctor.description;
+    
+    // Tampilkan popup
+    popup.style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // Prevent scrolling
+}
+
+function debugFooterClick() {
+    console.log('Footer consultation link clicked');
+    console.log('Available functions:', {
+        authRedirect: typeof authRedirect,
+        redirectToKonsultasi: typeof redirectToKonsultasi,
+        checkLoginStatusForConsultation: typeof checkLoginStatusForConsultation
+    });
+}
+
+
+function closeDoctorPopup() {
+    const popup = document.getElementById('doctor-popup');
+    if (popup) {
+        popup.style.display = 'none';
+        document.body.style.overflow = 'auto'; // Enable scrolling again
+    }
+}
