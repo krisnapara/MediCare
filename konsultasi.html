@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/konsultasi.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+   
 </head>
 <body>
     <header class="header">
@@ -20,7 +21,7 @@
                 <li><a href="index.html">Beranda</a></li>
                 <li><a href="artikel.html">Artikel</a></li>
                 <li><a href="tentang.html">Tentang kami</a></li>
-                <li><a href="konsultasi.html" class="active">Konsultasi</a></li> 
+                <li><a href="javascript:void(0);" onclick="handleConsultationNavigation()" class="active">Konsultasi</a></li> 
             </ul>
         </nav>
     
@@ -35,7 +36,7 @@
         <section class="consult-hero">
             <div class="consult-hero-container">
                 <div class="consult-hero-content">
-                    <h1>Konseling Online</h1>
+                    <h1>MediCare - Konseling Online</h1>
                     <p>Isi formulir di bawah ini untuk membuat janji konseling online dengan psikolog kami.</p>
                 </div>
             </div>
@@ -73,9 +74,24 @@
                             <input type="text" id="nik" name="nik" required>
                         </div>
                         
+                        <!-- Tanggal Lahir dengan Dropdown Terpisah - DENGAN PLACEHOLDER -->
                         <div class="form-group">
                             <label for="birthDate">Tanggal Lahir</label>
-                            <input type="date" id="birthDate" name="birthDate" required>
+                            <div class="birth-date-container">
+                                <div class="date-select-group">
+                                    <select id="birthDay" name="birthDay" required>
+                                        <!-- Options akan diisi oleh JavaScript dengan placeholder -->
+                                    </select>
+                                    <select id="birthMonth" name="birthMonth" required>
+                                        <!-- Options akan diisi oleh JavaScript dengan placeholder -->
+                                    </select>
+                                    <select id="birthYear" name="birthYear" required>
+                                        <!-- Options akan diisi oleh JavaScript dengan placeholder -->
+                                    </select>
+                                </div>
+                                <!-- Input tersembunyi untuk menyimpan tanggal lengkap -->
+                                <input type="hidden" id="birthDate" name="birthDate" required>
+                            </div>
                         </div>
                         
                         <div class="form-group">
@@ -158,7 +174,7 @@
                                 <option value="dr. Sinta Maharani, M.Psi">dr. Sinta Maharani, M.Psi</option>
                                 <option value="dr. Andi Pratama, M.Psi">dr. Andi Pratama, M.Psi</option>
                                 <option value="dr. Ade Muliadi, Sp.KJ">dr. Ade Muliadi, Sp.KJ</option>
-                                <option value="dr. Gede Danendra Suputra, Sp.KJ">dr. Danendra Suputra, Sp.KJ</option>
+                                <option value="dr. Gede Danendra Suputra, Sp.KJ">dr. Gede Danendra Suputra, Sp.KJ</option>
                             </select>
                         </div>
                         
@@ -205,7 +221,7 @@
                 <div class="appointment-header">
                     <div class="appointment-success-icon">✓</div>
                     <h2>Konsultasi Berhasil Dijadwalkan!</h2>
-                    <p>Detail konsultasi Anda telah berhasil dicetak dan dikirim ke email Anda.</p>
+                    <p>Detail konsultasi Anda telah berhasil dicetak.</p>
                 </div>
 
                 <div class="appointment-details">
@@ -274,28 +290,20 @@
                     </div>
                 </div>
                 <div class="appointment-actions">
-                    <button class="btn-download">Download Hasil</button>
-                    <button class="btn-print">Print</button>
                     <button class="btn-back">Kembali ke Beranda</button>
+                    <button class="btn-print">Print</button>
+                    <button class="btn-download">Download Hasil</button>
                 </div>
             </div>
         </section>
         
-    </main> <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    </main> 
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/id.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="js/konseling-online.js"></script>
-
-
-    <script>
-    // Cek status login saat mengakses halaman konsultasi
-    document.addEventListener('DOMContentLoaded', function() {
-        const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
-        
-        if (!isLoggedIn) {
-            alert('Anda harus login terlebih dahulu untuk mengakses halaman konsultasi.');
-            window.location.href = 'login.html?return=konsultasi.html';
-        }
-    });
-</script>
+     <script src="js/script.js"></script>
+     
 </body>
 </html>

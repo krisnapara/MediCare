@@ -46,9 +46,10 @@ main {
     transform: translateY(-2px);
 }
 
+/* UKURAN LOGO KONSISTEN: 40px */
 .logo img {
-    height: 45px;
-    width: auto;
+    height: 40px;
+    width: 40px;
     transition: all 0.5s ease;
     filter: drop-shadow(0 2px 4px rgba(0, 123, 255, 0.3));
 }
@@ -58,35 +59,24 @@ main {
     filter: drop-shadow(0 4px 8px rgba(0, 123, 255, 0.5));
 }
 
-/* Efek khusus untuk teks MediCare di header */
+/* Efek khusus untuk teks MediCare di header - WARNA LEBIH CERAH */
 .logo .logo-text {
     font-size: 1.6rem;
     font-weight: 800;
-    background: linear-gradient(135deg, #000000 0%, #000000 45%, #007bff 45%, #007bff 100%);
+    background: linear-gradient(135deg, #00bfff 0%, #007bff 100%); 
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    background-size: 200% 100%;
-    animation: headerShimmer 4s ease-in-out infinite;
+    background-size: 100% 100%; 
     text-shadow: 0 1px 5px rgba(0, 123, 255, 0.2);
     position: relative;
     letter-spacing: -0.5px;
     transition: all 0.3s ease;
 }
 
-/* Animation untuk header shimmer effect */
-@keyframes headerShimmer {
-    0%, 100% {
-        background-position: -200% 0;
-    }
-    50% {
-        background-position: 200% 0;
-    }
-}
-
 /* Glow effect pada hover di header */
 .logo:hover .logo-text {
-    animation: headerShimmer 2s ease-in-out infinite, headerGlow 1.5s ease-in-out infinite;
+    animation: headerGlow 1.5s ease-in-out infinite;
     background: linear-gradient(135deg, #007bff 0%, #00b7ff 50%, #007bff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -158,10 +148,10 @@ main {
     transform: translateY(-2px);
 }
 
-/* Style untuk Foto Profil */
+/* Style untuk Foto Profil - UKURAN KONSISTEN: 40px */
 .profile-icon {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     overflow: hidden;
     display: flex;
@@ -245,9 +235,10 @@ main {
     transform: translateY(-3px);
 }
 
+/* UKURAN LOGO FOOTER KONSISTEN: 40px */
 .footer-logo img {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     background: transparent;
     transition: all 0.5s ease;
     filter: drop-shadow(0 4px 8px rgba(0, 123, 255, 0.3));
@@ -258,25 +249,24 @@ main {
     filter: drop-shadow(0 6px 12px rgba(0, 123, 255, 0.5));
 }
 
-/* Efek khusus untuk teks MediCare di footer - SAMA DENGAN HEADER */
+/* Efek khusus untuk teks MediCare di footer - WARNA LEBIH CERAH */
 .footer-logo .logo-text {
     font-size: 2rem;
     font-weight: 800;
-    background: linear-gradient(135deg, #000000 0%, #000000 45%, #007bff 45%, #007bff 100%);
+    background: linear-gradient(135deg, #00bfff 0%, #007bff 100%); 
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    background-size: 200% 100%;
-    animation: headerShimmer 4s ease-in-out infinite;
+    background-size: 100% 100%; 
     text-shadow: 0 2px 10px rgba(0, 123, 255, 0.2);
     position: relative;
     letter-spacing: -0.5px;
     transition: all 0.3s ease;
 }
 
-/* Glow effect pada hover di footer - SAMA DENGAN HEADER */
+/* Glow effect pada hover di footer */
 .footer-logo:hover .logo-text {
-    animation: headerShimmer 2s ease-in-out infinite, headerGlow 1.5s ease-in-out infinite;
+    animation: headerGlow 1.5s ease-in-out infinite;
     background: linear-gradient(135deg, #007bff 0%, #00b7ff 50%, #007bff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -494,7 +484,7 @@ main {
     color: #007bff;
 }
 
-/* ================================== CHATBOT BUTTON STYLES ================================== */
+/* ================================== ENHANCED CHATBOT BUTTON STYLES ================================== */
 .chatbot-container {
     position: fixed;
     bottom: 25px;
@@ -503,25 +493,283 @@ main {
 }
 
 .chatbot-toggle-btn {
-    width: 60px;
-    height: 60px;
-    background-color: #007bff;
+    width: 70px;
+    height: 70px;
+    background: none; 
     color: white;
     border: none;
     border-radius: 50%;
-    font-size: 1.8rem;
+    font-size: 2rem;
     cursor: pointer !important;
-    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
-    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: none; 
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     display: flex;
     align-items: center;
     justify-content: center;
     line-height: 1;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    animation: 
+        chatbotPulse 3s ease-in-out infinite,
+        floatChatbot 6s ease-in-out infinite;
+    
+    transform: scale(1);
 }
 
 .chatbot-toggle-btn:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
+    animation: chatbotPulse 3s ease-in-out infinite; 
+    transform: scale(1.1);
+    box-shadow: 
+        0 5px 20px rgba(0, 123, 255, 0.7),
+        0 2px 10px rgba(0, 123, 255, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.chatbot-toggle-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 150%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.4), 
+        rgba(255, 255, 255, 0.6), 
+        rgba(255, 255, 255, 0.4), 
+        transparent);
+    transition: left 1s ease;
+    border-radius: 50%;
+    transform: skewX(-15deg);
+}
+
+.chatbot-toggle-btn:hover::before {
+    left: -150%; 
+    opacity: 0; 
+    transition: all 0s; 
+}
+
+.chatbot-toggle-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle, 
+        rgba(0, 123, 255, 0.4) 0%, 
+        rgba(0, 123, 255, 0.3) 30%, 
+        rgba(0, 123, 255, 0.2) 50%, 
+        transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.6s ease;
+    z-index: -1;
+}
+
+.chatbot-toggle-btn:hover::after {
+    transform: translate(-50%, -50%) scale(2);
+}
+
+@keyframes chatbotPulse {
+    0%, 100% {
+        box-shadow: 
+            0 8px 25px rgba(0, 128, 128, 0.6),
+            0 4px 10px rgba(0, 128, 128, 0.4);
+        background: linear-gradient(135deg, #008080 0%, #006666 100%);
+    }
+    25% {
+        box-shadow: 
+            0 10px 30px rgba(80, 200, 120, 0.6),
+            0 5px 12px rgba(80, 200, 120, 0.5);
+        background: linear-gradient(135deg, #50c878 0%, #3d9e5f 100%);
+    }
+     50% {
+        box-shadow: 
+            0 10px 30px rgba(15, 82, 186, 0.6),
+            0 5px 12px rgba(15, 82, 186, 0.5);
+        background: linear-gradient(135deg, #0f52ba 0%, #0b4295 100%);
+    }
+    75% {
+        box-shadow: 
+            0 10px 30px rgba(76, 153, 153, 0.6),
+            0 5px 12px rgba(76, 153, 153, 0.5);
+        background: linear-gradient(135deg, #4c9999 0%, #3d7a7a 100%);
+    }
+}
+
+@keyframes floatChatbot {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-8px) rotate(2deg);
+    }
+    50% {
+        transform: translateY(-4px) rotate(-1deg);
+    }
+    75% {
+        transform: translateY(-6px) rotate(1deg);
+    }
+}
+
+.chatbot-toggle-btn span {
+    display: inline-block;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+}
+
+.chatbot-toggle-btn:hover span {
+    transform: scale(1.1);
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3));
+}
+
+.chatbot-toggle-btn .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, 
+        rgba(255, 255, 255, 0.8) 0%, 
+        rgba(255, 255, 255, 0.4) 40%, 
+        transparent 70%);
+    transform: scale(0);
+    animation: enhancedRipple 0.8s linear;
+}
+
+@keyframes enhancedRipple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+.chatbot-toggle-btn:active {
+    transform: scale(0.95);
+    box-shadow: 
+        0 4px 15px rgba(0, 123, 255, 0.6),
+        0 2px 5px rgba(0, 123, 255, 0.4),
+        inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive design untuk chatbot */
+@media (max-width: 768px) {
+    .chatbot-container {
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .chatbot-toggle-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 1.7rem;
+    }
+    
+    .chatbot-toggle-btn:hover {
+        transform: scale(1.1) rotate(12deg);
+    }
+    
+    .chatbot-toggle-btn::after {
+        width: 70px;
+        height: 70px;
+    }
+    
+    /* Responsive untuk efek header */
+    .logo img {
+        height: 35px;
+        width: 35px;
+    }
+    
+    .logo .logo-text {
+        font-size: 1.4rem;
+    }
+    
+    .logo:hover img {
+        transform: rotate(8deg) scale(1.05);
+    }
+    
+    /* Responsive untuk efek footer brand */
+    .footer-logo img {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .footer-logo .logo-text {
+        font-size: 1.8rem;
+    }
+    
+    .footer-logo:hover img {
+        transform: rotate(10deg) scale(1.05);
+    }
+    
+    /* Profile icon responsive */
+    .profile-icon {
+        width: 35px;
+        height: 35px;
+    }
+    
+    /* Hover tanpa pergerakan di mobile */
+    .footer-links a:hover,
+    .footer-brand .social-link:hover {
+        transform: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .chatbot-container {
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .chatbot-toggle-btn {
+        width: 55px;
+        height: 55px;
+        font-size: 1.5rem;
+    }
+    
+    .chatbot-toggle-btn {
+        animation: 
+            chatbotPulse 4s ease-in-out infinite,
+            floatChatbot 8s ease-in-out infinite;
+    }
+    
+    /* Mobile header & footer adjustments */
+    .logo img {
+        height: 32px;
+        width: 32px;
+    }
+    
+    .logo .logo-text {
+        font-size: 1.3rem;
+    }
+    
+    .footer-logo img {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .footer-logo .logo-text {
+        font-size: 1.6rem;
+    }
+    
+    .profile-icon {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .logo .logo-text,
+    .footer-logo .logo-text {
+        animation: none;
+        background-size: 100% 100%;
+    }
+    
+    .logo:hover .logo-text,
+    .footer-logo:hover .logo-text {
+        animation: headerGlow 4s ease-in-out infinite;
+    }
 }
 
 /* Utility Classes */
@@ -642,25 +890,6 @@ main {
         padding: 20px 15px;
     }
     
-    .chatbot-toggle-btn {
-        width: 55px;
-        height: 55px;
-        font-size: 1.4rem;
-    }
-    
-    /* Responsive untuk efek header */
-    .logo img {
-        height: 38px;
-    }
-    
-    .logo .logo-text {
-        font-size: 1.4rem;
-    }
-    
-    .logo:hover img {
-        transform: rotate(8deg) scale(1.05);
-    }
-    
     .footer::before {
         top: -12px;
         height: 25px;
@@ -686,11 +915,6 @@ main {
         font-size: 1rem;
     }
     
-    .footer-links a:hover,
-    .footer-brand .social-link:hover {
-        transform: none;
-    }
-    
     .footer-bottom-content {
         flex-direction: column;
         text-align: center;
@@ -711,7 +935,6 @@ main {
         padding: 6px 0;
     }
     
-    /* Responsive untuk efek footer brand */
     .footer-logo {
         justify-content: center;
         flex-direction: column;
@@ -719,20 +942,6 @@ main {
         text-align: center;
     }
     
-    .footer-logo img {
-        width: 45px;
-        height: 45px;
-    }
-    
-    .footer-logo .logo-text {
-        font-size: 1.8rem;
-    }
-    
-    .footer-logo:hover img {
-        transform: rotate(10deg) scale(1.05);
-    }
-    
-    /* Responsive Newsletter dalam Tentang Section */
     .footer-section .newsletter {
         text-align: center;
         margin-top: 20px;
@@ -742,18 +951,9 @@ main {
         max-width: 200px;
         margin: 0 auto;
     }
-
 }
 
 @media (max-width: 480px) {
-    .logo img {
-        height: 35px;
-    }
-    
-    .logo .logo-text {
-        font-size: 1.3rem;
-    }
-    
     .nav ul {
         gap: 10px;
     }
@@ -764,17 +964,8 @@ main {
     }
     
     .profile-icon {
-        width: 40px;
-        height: 40px;
-    }
-    
-    /* Kurangi intensitas animasi di mobile untuk performance */
-    .logo .logo-text {
-        animation: headerShimmer 8s ease-in-out infinite;
-    }
-    
-    .logo:hover .logo-text {
-        animation: headerShimmer 4s ease-in-out infinite;
+        width: 32px;
+        height: 32px;
     }
     
     .footer::before {
@@ -786,10 +977,6 @@ main {
         grid-template-columns: 1fr;
         gap: 25px;
         padding: 40px 15px 25px;
-    }
-    
-    .footer-logo .logo-text {
-        font-size: 1.6rem;
     }
     
     .footer-links li {
@@ -813,11 +1000,6 @@ main {
         font-size: 0.8rem;
     }
     
-    .chatbot-container {
-        bottom: 15px;
-        right: 15px;
-    }
-    
     .footer-brand .social-links {
         gap: 8px;
     }
@@ -831,26 +1013,6 @@ main {
         height: 18px;
     }
     
-    /* Responsive untuk efek footer brand di mobile */
-    .footer-logo img {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .footer-logo .logo-text {
-        font-size: 1.6rem;
-    }
-    
-    /* Kurangi intensitas animasi di mobile untuk performance */
-    .footer-logo .logo-text {
-        animation: headerShimmer 8s ease-in-out infinite;
-    }
-    
-    .footer-logo:hover .logo-text {
-        animation: headerShimmer 4s ease-in-out infinite;
-    }
-    
-    /* Responsive Newsletter dalam Tentang Section */
     .footer-section .newsletter-form {
         max-width: 100%;
     }
@@ -913,4 +1075,321 @@ main {
 
 .no-pointer-events {
     pointer-events: none !important;
+}
+
+/* Hero Section Styles */
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 60px 0;
+    gap: 40px;
+}
+
+.hero-content {
+    flex: 1;
+    max-width: 500px;
+}
+
+.hero-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    color: #666;
+    line-height: 1.6;
+}
+
+.hero-image {
+    flex: 1;
+    text-align: center;
+}
+
+.hero-image img {
+    max-width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* Content Section Styles */
+.content-section {
+    margin: 60px 0;
+}
+
+.content-section h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2rem;
+    color: #333;
+}
+
+/* Mental Health Section Styles */
+.mental-health-section {
+    margin: 60px 0;
+}
+
+.mental-health-section h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2rem;
+    color: #333;
+}
+
+.mental-health-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.health-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.health-card:hover {
+    transform: translateY(-5px);
+}
+
+.health-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.health-content {
+    padding: 20px;
+}
+
+.health-content h4 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.health-content p {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.explore-section {
+    text-align: center;
+    padding: 30px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.btn-explore {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #007bff;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-explore:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* Video Section Styles */
+.video-therapy {
+    margin: 60px 0;
+    text-align: center;
+}
+
+.video-therapy h2 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+    color: #333;
+}
+
+.video-therapy p {
+    margin-bottom: 30px;
+    color: #666;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.video-player-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.video-navigation-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.nav-btn:hover:not(:disabled) {
+    background: #0056b3;
+    transform: scale(1.1);
+}
+
+.nav-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.video-wrapper {
+    flex: 1;
+    position: relative;
+}
+
+#video-player {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.video-btn-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.7);
+    color: white;
+    border: none;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.video-btn-overlay:hover {
+    background: rgba(0,0,0,0.9);
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* Mood Tracker Styles */
+.mood-tracker {
+    margin: 60px 0;
+    text-align: center;
+}
+
+.mood-tracker h2 {
+    margin-bottom: 30px;
+    font-size: 2rem;
+    color: #333;
+}
+
+.mood-options {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.mood-btn {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-width: 80px;
+}
+
+.mood-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.mood-emoji {
+    font-size: 1.8rem;
+}
+
+.mood-text {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #555;
+}
+
+.mood-feedback {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    text-align: left;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+}
+
+.mood-feedback.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.mood-feedback h4 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.mood-feedback p {
+    margin-bottom: 10px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.mood-feedback small {
+    color: #888;
+    font-size: 0.85rem;
+}
+
+.btn-guest-reset {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.btn-guest-reset:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
 }

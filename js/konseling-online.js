@@ -1,5 +1,3 @@
-// JavaScript for Online Counseling Form
-
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('counselingForm');
     const steps = document.querySelectorAll('.form-step');
@@ -8,75 +6,225 @@ document.addEventListener('DOMContentLoaded', function() {
     const prevButtons = document.querySelectorAll('.btn-prev');
     const appointmentResult = document.getElementById('appointmentResult');
     
-    // VARIABEL INI TIDAK DIGUNAKAN, JADI SAYA HAPUS
-    // const mainContent = document.querySelector('.online-counseling-page');
-
     let currentStep = 1;
+    let currentFormData = null;
 
-    const today = new Date().toISOString().split('T')[0];
-
-    // Ambil elemen input tanggal
-    const birthDateInput = document.getElementById('birthDate');
-    const consultDateInput = document.getElementById('consultDate');
-
-    // Pastikan Flatpickr tersedia sebelum inisialisasi
-    if (typeof flatpickr !== 'undefined') {
+    // --- FUNGSI UNTUK DROPDOWN TANGGAL LAHIR ---
+    function initializeBirthDateDropdowns() {
+        const birthYearSelect = document.getElementById('birthYear');
+        const birthMonthSelect = document.getElementById('birthMonth');
+        const birthDaySelect = document.getElementById('birthDay');
+        const birthDateInput = document.getElementById('birthDate');
         
-        // 1. Inisialisasi Flatpickr untuk Tanggal Lahir (Birth Date)
-        flatpickr(birthDateInput, {
-            dateFormat: "Y-m-d", 
-            enableTime: false,
-            
-            // OPSI KUNCI 1: Dropdown Tahun & Batas Mundur Jauh (1900)
-            yearSelectorType: "dropdown", 
-            minDate: "1900-01-01", 
-            maxDate: today,       // Batas maksimal hari ini
-            
-            locale: "id", 
-            disableMobile: true 
+        const currentYear = new Date().getFullYear();
+        const startYear = 1900;
+        
+        // ===== DROPDOWN TANGGAL (dd) =====
+        const dayPlaceholder = document.createElement('option');
+        dayPlaceholder.value = "";
+        dayPlaceholder.textContent = "dd";
+        dayPlaceholder.hidden = true;
+        dayPlaceholder.disabled = true;
+        birthDaySelect.appendChild(dayPlaceholder);
+        
+        for (let day = 1; day <= 31; day++) {
+            const option = document.createElement('option');
+            option.value = day.toString().padStart(2, '0');
+            option.textContent = day;
+            birthDaySelect.appendChild(option);
+        }
+        
+        birthDaySelect.value = "";
+        
+        // ===== DROPDOWN BULAN (mm) =====
+        const monthPlaceholder = document.createElement('option');
+        monthPlaceholder.value = "";
+        monthPlaceholder.textContent = "mm";
+        monthPlaceholder.hidden = true;
+        monthPlaceholder.disabled = true;
+        birthMonthSelect.appendChild(monthPlaceholder);
+        
+        const months = [
+            { value: "01", text: "Januari" },
+            { value: "02", text: "Februari" },
+            { value: "03", text: "Maret" },
+            { value: "04", text: "April" },
+            { value: "05", text: "Mei" },
+            { value: "06", text: "Juni" },
+            { value: "07", text: "Juli" },
+            { value: "08", text: "Agustus" },
+            { value: "09", text: "September" },
+            { value: "10", text: "Oktober" },
+            { value: "11", text: "November" },
+            { value: "12", text: "Desember" }
+        ];
+        
+        months.forEach(month => {
+            const option = document.createElement('option');
+            option.value = month.value;
+            option.textContent = month.text;
+            birthMonthSelect.appendChild(option);
         });
         
-        // 2. Inisialisasi Flatpickr untuk Tanggal Konsultasi (Consult Date)
+        birthMonthSelect.value = "";
+        
+        // ===== DROPDOWN TAHUN (yyyy) =====
+        const yearPlaceholder = document.createElement('option');
+        yearPlaceholder.value = "";
+        yearPlaceholder.textContent = "yyyy";
+        yearPlaceholder.hidden = true;
+        yearPlaceholder.disabled = true;
+        birthYearSelect.appendChild(yearPlaceholder);
+        
+        for (let year = currentYear; year >= startYear; year--) {
+            const option = document.createElement('option');
+            option.value = year;
+            option.textContent = year;
+            birthYearSelect.appendChild(option);
+        }
+        
+        birthYearSelect.value = "";
+        
+        birthDaySelect.classList.add('placeholder-active');
+        birthMonthSelect.classList.add('placeholder-active');
+        birthYearSelect.classList.add('placeholder-active');
+        
+        updateBirthDateInput();
+        
+        birthDaySelect.addEventListener('change', function() {
+            if (this.value) {
+                this.classList.remove('placeholder-active');
+            } else {
+                this.classList.add('placeholder-active');
+            }
+            updateBirthDateInput();
+        });
+        
+        birthMonthSelect.addEventListener('change', function() {
+            if (this.value) {
+                this.classList.remove('placeholder-active');
+            } else {
+                this.classList.add('placeholder-active');
+            }
+            updateDaysDropdown(birthYearSelect.value, birthMonthSelect.value);
+            updateBirthDateInput();
+        });
+        
+        birthYearSelect.addEventListener('change', function() {
+            if (this.value) {
+                this.classList.remove('placeholder-active');
+            } else {
+                this.classList.add('placeholder-active');
+            }
+            updateDaysDropdown(birthYearSelect.value, birthMonthSelect.value);
+            updateBirthDateInput();
+        });
+    }
+    
+    function updateDaysDropdown(year, month) {
+        const birthDaySelect = document.getElementById('birthDay');
+        const selectedDay = birthDaySelect.value;
+        
+        if (!year || !month) {
+            if (!birthDaySelect.value) {
+                birthDaySelect.classList.add('placeholder-active');
+            }
+            updateBirthDateInput();
+            return;
+        }
+        
+        const daysInMonth = new Date(parseInt(year), parseInt(month), 0).getDate();
+        const currentSelectedDay = birthDaySelect.value;
+        
+        const existingOptions = Array.from(birthDaySelect.options);
+        const validDays = existingOptions.filter(option => {
+            if (!option.value) return true;
+            const dayNum = parseInt(option.value);
+            return dayNum <= daysInMonth;
+        });
+        
+        if (validDays.length === existingOptions.length) {
+            if (currentSelectedDay && parseInt(currentSelectedDay) > daysInMonth) {
+                birthDaySelect.value = "";
+                birthDaySelect.classList.add('placeholder-active');
+            }
+            updateBirthDateInput();
+            return;
+        }
+        
+        birthDaySelect.innerHTML = '';
+        
+        const placeholder = document.createElement('option');
+        placeholder.value = "";
+        placeholder.textContent = "dd";
+        placeholder.hidden = true;
+        placeholder.disabled = true;
+        birthDaySelect.appendChild(placeholder);
+        
+        for (let day = 1; day <= daysInMonth; day++) {
+            const option = document.createElement('option');
+            option.value = day.toString().padStart(2, '0');
+            option.textContent = day;
+            birthDaySelect.appendChild(option);
+        }
+        
+        if (currentSelectedDay && parseInt(currentSelectedDay) <= daysInMonth) {
+            birthDaySelect.value = currentSelectedDay;
+            birthDaySelect.classList.remove('placeholder-active');
+        } else {
+            birthDaySelect.value = "";
+            birthDaySelect.classList.add('placeholder-active');
+        }
+        
+        updateBirthDateInput();
+    }
+    
+    function updateBirthDateInput() {
+        const birthDay = document.getElementById('birthDay').value;
+        const birthMonth = document.getElementById('birthMonth').value;
+        const birthYear = document.getElementById('birthYear').value;
+        const birthDateInput = document.getElementById('birthDate');
+        
+        if (birthDay && birthMonth && birthYear) {
+            const fullDate = `${birthYear}-${birthMonth}-${birthDay}`;
+            birthDateInput.value = fullDate;
+        } else {
+            birthDateInput.value = '';
+        }
+    }
+
+    // Inisialisasi dropdown tanggal lahir
+    initializeBirthDateDropdowns();
+
+    const today = new Date().toISOString().split('T')[0];
+    const consultDateInput = document.getElementById('consultDate');
+
+    // Inisialisasi Flatpickr untuk tanggal konsultasi
+    if (typeof flatpickr !== 'undefined') {
         flatpickr(consultDateInput, {
             dateFormat: "Y-m-d",
             enableTime: false,
-            
-            // OPSI KUNCI 2: Dropdown Tahun untuk Konsultasi
-            yearSelectorType: "dropdown", 
-            
-            minDate: today, // Minimal hari ini
-            
-            // OPSI KRITIS: Menetapkan batas maksimal yang sangat jauh di masa depan
-            maxDate: "2100-01-01", 
-            
+            minDate: today,
+            maxDate: "2100-01-01",
             locale: "id",
             disableMobile: true
         });
-
     } else {
-        // Fallback jika Flatpickr gagal dimuat
-        if (birthDateInput) {
-             birthDateInput.setAttribute('max', today);
-             birthDateInput.setAttribute('min', '1900-01-01');
-        }
         if (consultDateInput) {
-             consultDateInput.setAttribute('max', '2100-01-01');
-             consultDateInput.setAttribute('min', today);
+            consultDateInput.setAttribute('type', 'date');
+            consultDateInput.setAttribute('max', '2100-01-01');
+            consultDateInput.setAttribute('min', today);
         }
     }
-    
-    // --- AKHIR PENGATURAN KALENDER ---
-    
+
     function getTelegramHandle(doctorName) {
-        const myTelegramUsername = "johnismyuncle"; // GANTI INI DENGAN USERNAME TELEGRAM ANDA
-        
+        const myTelegramUsername = "johnismyuncle";
         const doctorHandles = {
             "dr. Sinta Maharani, M.Psi": myTelegramUsername,
             "dr. Andi Pratama, M.Psi": myTelegramUsername,
             "dr. Ade Muliadi, Sp.KJ": myTelegramUsername,
             "dr. Gede Danendra Suputra, Sp.KJ": myTelegramUsername
         };
-        
         return doctorHandles[doctorName] || myTelegramUsername;
     }
 
@@ -113,12 +261,11 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         
         if (validateStep(currentStep)) {
-            const formData = collectFormData();
-            displayAppointmentResult(formData);
+            currentFormData = collectFormData();
+            displayAppointmentResult(currentFormData);
         }
     });
 
-    // Function to show the current step
     function showStep(stepNumber) {
         steps.forEach(step => {
             step.classList.remove('active');
@@ -130,7 +277,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Function to update the progress indicator
     function updateProgress() {
         progressSteps.forEach(step => {
             const stepNumber = parseInt(step.getAttribute('data-step'));
@@ -145,22 +291,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Function to validate the current step
     function validateStep(stepNumber) {
         const currentStepElement = document.getElementById(`step${stepNumber}`);
         if (!currentStepElement) return false;
         
-        const inputs = currentStepElement.querySelectorAll('input[required]:not([type="radio"]), select[required], textarea[required]');
+        const inputs = currentStepElement.querySelectorAll('input[required]:not([type="radio"]):not([type="hidden"]), select[required], textarea[required]');
         let isValid = true;
         
         inputs.forEach(input => {
-            let inputValid = true;
-
             if (!input.value.trim()) {
-                inputValid = false;
-            }
-
-            if (!inputValid) {
                 isValid = false;
                 highlightError(input);
             } else {
@@ -182,6 +321,23 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
+        // Validasi khusus untuk tanggal lahir
+        const birthDay = document.getElementById('birthDay').value;
+        const birthMonth = document.getElementById('birthMonth').value;
+        const birthYear = document.getElementById('birthYear').value;
+        const birthDateInput = document.getElementById('birthDate');
+        
+        if (!birthDay || !birthMonth || !birthYear) {
+            isValid = false;
+            const birthDateContainer = document.querySelector('.birth-date-container');
+            highlightError(birthDateContainer, 'Tanggal lahir wajib diisi');
+        } else {
+            const birthDateContainer = document.querySelector('.birth-date-container');
+            removeErrorHighlight(birthDateContainer);
+            
+            birthDateInput.value = `${birthYear}-${birthMonth}-${birthDay}`;
+        }
+        
         const radioGroups = currentStepElement.querySelectorAll('.radio-group');
         radioGroups.forEach(group => {
             const radios = group.querySelectorAll('input[type="radio"]');
@@ -202,19 +358,16 @@ document.addEventListener('DOMContentLoaded', function() {
         return isValid;
     }
 
-    // Helper function to validate email format
     function isValidEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
 
-    // Helper function to validate NIK format (16 digits)
     function isValidNIK(nik) {
         const nikRegex = /^\d{16}$/;
         return nikRegex.test(nik);
     }
 
-    // Function to highlight input errors
     function highlightError(input, message = 'Field ini wajib diisi') {
         let parentNode = input.parentNode;
         
@@ -225,6 +378,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (input.tagName === 'LABEL') {
              input.style.color = '#dc3545';
+        } else if (input.classList.contains('birth-date-container')) {
+            const selects = input.querySelectorAll('select');
+            selects.forEach(select => {
+                select.style.borderColor = '#dc3545';
+            });
         } else {
              input.style.borderColor = '#dc3545';
         }
@@ -239,12 +397,16 @@ document.addEventListener('DOMContentLoaded', function() {
         parentNode.appendChild(errorElement);
     }
 
-    // Function to remove error highlighting
     function removeErrorHighlight(input) {
         let parentNode = input.parentNode;
         
         if (input.tagName === 'LABEL') {
              input.style.color = '';
+        } else if (input.classList.contains('birth-date-container')) {
+            const selects = input.querySelectorAll('select');
+            selects.forEach(select => {
+                select.style.borderColor = '';
+            });
         } else {
              input.style.borderColor = '';
         }
@@ -255,76 +417,283 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Function to collect all form data
     function collectFormData() {
         const formData = {
-            // Step 1: Data Diri
             fullName: document.getElementById('fullName').value,
             nik: document.getElementById('nik').value,
+            birthDay: document.getElementById('birthDay').value,
+            birthMonth: document.getElementById('birthMonth').value,
+            birthYear: document.getElementById('birthYear').value,
             birthDate: document.getElementById('birthDate').value,
             gender: document.getElementById('gender').value,
             email: document.getElementById('email').value,
             phone: document.getElementById('phone').value,
-            
-            // Step 2: Kondisi & Tujuan
             feeling: document.getElementById('feeling').value,
             frequency: document.getElementById('frequency').value,
             goal: document.getElementById('goal').value,
             previousConsultation: document.querySelector('input[name="previousConsultation"]:checked')?.value || '',
-            
-            // Step 3: Jadwal & Konsultasi
             doctor: document.getElementById('doctor').value,
             consultDate: document.getElementById('consultDate').value,
             consultTime: document.getElementById('consultTime').value,
             consultType: document.getElementById('consultType').value,
-            
-            // Metadata
             appointmentNumber: generateAppointmentNumber(),
             appointmentDate: new Date().toLocaleDateString('id-ID', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
             }),
             appointmentTime: new Date().toLocaleTimeString('id-ID', {
-                hour: '2-digit',
-                minute: '2-digit'
+                hour: '2-digit', minute: '2-digit'
             })
         };
-        
         return formData;
     }
 
-    // Helper function to format date
     function formatDate(dateString) {
         if (!dateString) return '';
         const date = new Date(dateString);
-        const offset = date.getTimezoneOffset();
-        const correctedDate = new Date(date.getTime() + (offset * 60 * 1000));
-        
-        return correctedDate.toLocaleDateString('id-ID', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
+        return date.toLocaleDateString('id-ID', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
         });
     }
 
-    // Helper function to generate appointment number
+    function formatDateShort(dateString) {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('id-ID', {
+            day: '2-digit', month: '2-digit', year: 'numeric'
+        });
+    }
+
     function generateAppointmentNumber() {
         const timestamp = new Date().getTime().toString().slice(-6);
         const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
         return `APT-${timestamp}${random}`;
     }
 
-    // Function to display appointment result
+    // ==================== FUNGSI PDF BARU (DESAIN KARTU) ====================
+
+    function generatePDF(formData) {
+        const { jsPDF } = window.jspdf;
+        
+        // Setup Dokumen A4 Portrait
+        const doc = new jsPDF('p', 'mm', 'a4');
+        const pageWidth = 210;
+        const pageHeight = 297;
+        const margin = 15;
+        const contentWidth = pageWidth - (2 * margin);
+        
+        // === BINGKAI UTAMA ===
+        doc.setDrawColor(0, 123, 255); // Biru Medicare
+        doc.setLineWidth(1);
+        doc.rect(margin, margin, contentWidth, 260); 
+
+        // === HEADER ===
+        doc.setFillColor(0, 123, 255);
+        doc.rect(margin, margin, contentWidth, 35, 'F');
+        
+        // Judul
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(22);
+        doc.setFont('helvetica', 'bold');
+        doc.text('BUKTI PENDAFTARAN', margin + 10, margin + 15);
+        
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.text('KONSELING ONLINE MEDICARE', margin + 10, margin + 22);
+
+        // Appointment Number di Kanan Atas
+        doc.setFontSize(10);
+        doc.text('No. Appointment:', pageWidth - margin - 10, margin + 12, { align: 'right' });
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
+        doc.text(formData.appointmentNumber, pageWidth - margin - 10, margin + 18, { align: 'right' });
+
+        let yPosition = margin + 45;
+
+        // === JUDUL KONTEN ===
+        doc.setTextColor(0, 123, 255);
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.text('KONSULTASI BERHASIL DIJADWALKAN', pageWidth / 2, yPosition, { align: 'center' });
+        
+        yPosition += 10;
+
+        // === KOTAK 1: INFORMASI PASIEN ===
+        doc.setFillColor(248, 249, 250); // Abu-abu sangat muda
+        doc.setDrawColor(200, 200, 200);
+        doc.setLineWidth(0.3);
+        doc.rect(margin + 5, yPosition, contentWidth - 10, 55, 'FD');
+
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(11);
+        doc.setFont('helvetica', 'bold');
+        doc.text('INFORMASI PASIEN', margin + 10, yPosition + 8);
+        doc.setDrawColor(0, 123, 255);
+        doc.setLineWidth(0.5);
+        doc.line(margin + 10, yPosition + 10, margin + 50, yPosition + 10);
+
+        // Data Pasien Grid
+        const startDataY = yPosition + 20;
+        
+        // Kolom Kiri
+        doc.setFontSize(9);
+        doc.setTextColor(80, 80, 80);
+        doc.setFont('helvetica', 'normal');
+        doc.text('Nama Lengkap', margin + 10, startDataY);
+        doc.text('NIK', margin + 10, startDataY + 10);
+        doc.text('Jenis Kelamin', margin + 10, startDataY + 20);
+
+        doc.setFontSize(10);
+        doc.setTextColor(0, 0, 0);
+        doc.setFont('helvetica', 'bold');
+        doc.text(formData.fullName, margin + 10, startDataY + 5);
+        doc.text(formData.nik, margin + 10, startDataY + 15);
+        doc.text(formData.gender, margin + 10, startDataY + 25);
+
+        // Kolom Kanan
+        doc.setFontSize(9);
+        doc.setTextColor(80, 80, 80);
+        doc.setFont('helvetica', 'normal');
+        doc.text('Email', margin + 90, startDataY);
+        doc.text('No. Telepon', margin + 90, startDataY + 10);
+        doc.text('Tanggal Lahir', margin + 90, startDataY + 20);
+
+        doc.setFontSize(10);
+        doc.setTextColor(0, 0, 0);
+        doc.setFont('helvetica', 'bold');
+        doc.text(formData.email, margin + 90, startDataY + 5);
+        doc.text(formData.phone, margin + 90, startDataY + 15);
+        doc.text(formatDateShort(formData.birthDate), margin + 90, startDataY + 25);
+
+        yPosition += 65;
+
+        // === KOTAK 2: DETAIL JADWAL ===
+        doc.setFillColor(235, 245, 255); // Biru sangat muda
+        doc.setDrawColor(180, 210, 255);
+        doc.rect(margin + 5, yPosition, contentWidth - 10, 50, 'FD');
+
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(11);
+        doc.setFont('helvetica', 'bold');
+        doc.text('DETAIL JADWAL KONSULTASI', margin + 10, yPosition + 8);
+        doc.setDrawColor(0, 123, 255);
+        doc.line(margin + 10, yPosition + 10, margin + 70, yPosition + 10);
+
+        const scheduleY = yPosition + 20;
+
+        // Baris 1: Dokter
+        doc.setFontSize(9);
+        doc.setTextColor(80, 80, 80);
+        doc.setFont('helvetica', 'normal');
+        doc.text('Psikolog / Psikiater:', margin + 10, scheduleY);
+        doc.setFontSize(11);
+        doc.setTextColor(0, 0, 0);
+        doc.setFont('helvetica', 'bold');
+        doc.text(formData.doctor, margin + 50, scheduleY);
+
+        // Baris 2: Waktu
+        doc.setFontSize(9);
+        doc.setTextColor(80, 80, 80);
+        doc.setFont('helvetica', 'normal');
+        doc.text('Waktu:', margin + 10, scheduleY + 10);
+        doc.setFontSize(11);
+        doc.setTextColor(0, 0, 0);
+        doc.setFont('helvetica', 'bold');
+        doc.text(`${formatDateShort(formData.consultDate)} | Pukul ${formData.consultTime}`, margin + 50, scheduleY + 10);
+
+        // Baris 3: Metode
+        doc.setFontSize(9);
+        doc.setTextColor(80, 80, 80);
+        doc.setFont('helvetica', 'normal');
+        doc.text('Metode:', margin + 10, scheduleY + 20);
+        doc.setFontSize(11);
+        doc.setTextColor(0, 0, 0);
+        doc.setFont('helvetica', 'bold');
+        doc.text(formData.consultType, margin + 50, scheduleY + 20);
+
+        yPosition += 60;
+
+        // === KOTAK 3: TELEGRAM INFO ===
+        const telegramHandle = getTelegramHandle(formData.doctor);
+        
+        doc.setDrawColor(0, 123, 255);
+        doc.setLineWidth(0.5);
+        doc.setLineDash([3, 3], 0); // Garis putus-putus
+        doc.rect(margin + 5, yPosition, contentWidth - 10, 35);
+        doc.setLineDash([]); // Reset ke garis solid
+
+        doc.setFontSize(10);
+        doc.setTextColor(0, 123, 255);
+        doc.setFont('helvetica', 'bold');
+        doc.text('INSTRUKSI MENGHUBUNGI DOKTER:', margin + 10, yPosition + 8);
+
+        doc.setTextColor(50, 50, 50);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.text(`Silahkan hubungi dokter melalui Telegram pada waktu yang ditentukan:`, margin + 10, yPosition + 15);
+        
+        doc.setFontSize(11);
+        doc.setTextColor(0, 0, 0);
+        doc.setFont('helvetica', 'bold');
+        doc.text(`Username: @${telegramHandle}`, margin + 10, yPosition + 22);
+        
+        doc.setFontSize(9);
+        doc.setTextColor(0, 123, 255);
+        doc.text(`Link: https://t.me/${telegramHandle}`, margin + 10, yPosition + 28);
+
+        yPosition += 45;
+
+        // === FOOTER & CATATAN ===
+        doc.setFontSize(8);
+        doc.setTextColor(100, 100, 100);
+        doc.setFont('helvetica', 'italic');
+        
+        const notes = [
+            'Catatan:',
+            '1. Harap bersiap 10 menit sebelum jadwal dimulai.',
+            '2. Pastikan koneksi internet Anda stabil.',
+            '3. Dokumen ini adalah bukti pendaftaran yang sah.'
+        ];
+
+        notes.forEach((note, index) => {
+            doc.text(note, margin + 5, yPosition + (index * 4));
+        });
+
+        // Tanda Tangan Footer
+        const footerY = 260;
+        doc.setFont('helvetica', 'normal');
+        doc.text('Dicetak secara otomatis oleh sistem MediCare', pageWidth - margin - 5, footerY, { align: 'right' });
+        doc.text(`Tanggal Cetak: ${formData.appointmentDate}`, pageWidth - margin - 5, footerY + 4, { align: 'right' });
+
+        return doc;
+    }
+
+    function downloadPDF(formData) {
+        try {
+            const doc = generatePDF(formData);
+            const fileName = `Tiket_Konsultasi_${formData.appointmentNumber}.pdf`;
+            doc.save(fileName);
+            return true;
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+            alert('Terjadi kesalahan saat mengunduh PDF.');
+            return false;
+        }
+    }
+
+    function printAppointmentResult() {
+        // Menggunakan window.print() standar, CSS @media print akan menangani tampilannya
+        window.print();
+    }
+
+    // =========================================================================
+
     function displayAppointmentResult(formData) {
         // Hide form and progress
         form.style.display = 'none';
         document.querySelector('.steps-progress').style.display = 'none';
         document.querySelector('.consult-hero').style.display = 'none';
         
-        // Update result elements with form data
+        // Update result elements
         document.getElementById('resultName').textContent = formData.fullName;
         document.getElementById('resultEmail').textContent = formData.email;
         document.getElementById('resultPhone').textContent = formData.phone;
@@ -339,24 +708,40 @@ document.addEventListener('DOMContentLoaded', function() {
         const telegramNote = document.getElementById('telegramNote');
 
         if (telegramNote) {
-            // Langsung isi kontainer 'telegramNote' dengan HTML yang sudah jadi.
-            telegramNote.innerHTML = `Untuk memulai konsultasi dengan ${doctorShortName}, silahkan klik link berikut: <a href="https://t.me/${telegramHandle}" id="resultTelegramLink" target="_blank" rel="noopener noreferrer">Hubungi via Telegram</a>. Pastikan Anda sudah menginstal aplikasi Telegram terlebih dahulu.`;
+            telegramNote.innerHTML = `Untuk memulai konsultasi dengan ${doctorShortName}, silahkan klik link berikut: <a href="https://t.me/${telegramHandle}" id="resultTelegramLink" target="_blank" rel="noopener noreferrer">Hubungi via Telegram</a>.`;
         }
-        
 
-        // Show appointment result
+        // Show result
         appointmentResult.style.display = 'flex';
         
-        // Update progress steps to completed
         updateStepProgressToCompleted();
         
-        // Add event listeners to buttons
-        document.querySelector('.btn-download').addEventListener('click', simulateDownload);
-        document.querySelector('.btn-print').addEventListener('click', printPage);
+        // Event Listeners (Pastikan tombol ID/Class sesuai HTML)
+        const downloadBtn = document.querySelector('.btn-download');
+        if(downloadBtn) {
+            downloadBtn.addEventListener('click', function() {
+                const originalText = this.textContent;
+                this.textContent = 'Mengunduh...';
+                this.disabled = true;
+                setTimeout(() => {
+                    downloadPDF(currentFormData);
+                    this.textContent = originalText;
+                    this.disabled = false;
+                }, 500);
+            });
+        }
         
-        document.querySelector('.btn-back').addEventListener('click', () => {
-            window.location.href = 'index.html';
-        });
+        const printBtn = document.querySelector('.btn-print');
+        if(printBtn) {
+            printBtn.addEventListener('click', printAppointmentResult);
+        }
+        
+        const backBtn = document.querySelector('.btn-back');
+        if(backBtn) {
+            backBtn.addEventListener('click', () => {
+                window.location.href = 'index.html';
+            });
+        }
     }
     
     function updateStepProgressToCompleted() {
@@ -364,22 +749,5 @@ document.addEventListener('DOMContentLoaded', function() {
             step.classList.remove('active');
             step.classList.add('completed');
         });
-    }
-
-    function simulateDownload() {
-        const downloadBtn = document.querySelector('.btn-download');
-        const originalText = downloadBtn.textContent;
-        downloadBtn.textContent = 'Mengunduh...';
-        downloadBtn.disabled = true;
-        
-        setTimeout(() => {
-            downloadBtn.textContent = originalText;
-            downloadBtn.disabled = false;
-            alert('File PDF berhasil diunduh!');
-        }, 2000);
-    }
-
-    function printPage() {
-        window.print();
     }
 });

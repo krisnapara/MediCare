@@ -29,7 +29,6 @@
     font-size: 2.8rem;
     margin-bottom: 15px;
     font-weight: 700;
-    /* Menghilangkan shadow biru */
     text-shadow: none !important;
 }
 
@@ -37,70 +36,6 @@
     font-size: 1.1rem;
     opacity: 0.9;
 }
-
-/* ================================== KODE DI BAWAH INI DIHAPUS ================================== */
-/*
-
-.service-selection-section {
-    padding: 20px 0 80px;
-}
-
-.section-title {
-    text-align: center;
-    font-size: 2rem;
-    margin-bottom: 40px;
-    color: #007bff;
-    text-shadow: none !important;
-}
-
-.card-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 30px;
-}
-
-.service-card {
-    display: block;
-    text-align: center;
-    background-color: #fff;
-    padding: 30px 20px;
-    border-radius: 12px;
-    text-decoration: none;
-    color: #333;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s, box-shadow 0.3s;
-    border: 1px solid #eee;
-}
-
-.service-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    border-color: #007bff;
-}
-
-.card-icon {
-    font-size: 3rem;
-    margin-bottom: 15px;
-    color: #007bff;
-}
-
-.card-icon .emoji {
-    display: block;
-    font-size: 3rem;
-}
-
-.service-card h3 {
-    font-size: 1.4rem;
-    margin-bottom: 10px;
-    font-weight: 600;
-}
-
-.service-card p {
-    font-size: 0.95rem;
-    color: #666;
-}
-*/
-/* ================================== AKHIR KODE YANG DIHAPUS ================================== */
 
 
 /* ================================== ONLINE COUNSELING PAGE STYLE ================================== */
@@ -248,6 +183,71 @@
     min-height: 100px;
 }
 
+/* ================================== INPUT TANGGAL LAHIR TANPA PLACEHOLDER ================================== */
+.birth-date-container {
+    margin-top: 10px;
+}
+
+.date-select-group {
+    display: flex;
+    gap: 15px;
+    align-items: flex-end;
+}
+
+.date-select-group select {
+    flex: 1;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    font-family: inherit;
+    background-color: white;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    color: #333; /* Pastikan teks berwarna gelap */
+}
+
+.date-select-group select.placeholder-active {
+    color: #999 !important;
+}
+
+.date-select-group select:not(.placeholder-active) {
+    color: #333 !important;
+}
+
+.date-select-group select option[hidden] {
+    display: none;
+}
+
+/* Styling untuk container form-group yang berisi tanggal lahir */
+.form-group.date-container {
+    margin-bottom: 25px;
+}
+
+.form-group.date-container label {
+    display: block;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Responsif untuk mobile */
+@media (max-width: 768px) {
+    .date-select-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .date-select-group select {
+        width: 100%;
+    }
+}
+
 /* Radio Button Styles */
 .radio-group {
     display: flex !important;
@@ -313,13 +313,13 @@
 }
 
 .btn-prev {
-    background-color: #f8f9fa;
-    color: #333;
-    border: 1px solid #ddd;
+    background: #8B0000;
+    color: white;
+    box-shadow: 0 4px 15px rgba(139, 0, 0, 0.25);
 }
 
 .btn-prev:hover {
-    background-color: #e9ecef;
+    background: #6B0000;
 }
 
 .btn-next,
@@ -336,261 +336,482 @@
 }
 
 .btn-submit {
-    background-color: #28a745;
+    background-color: #007bff;
 }
 
 .btn-submit:hover {
-    background-color: #218838;
+    background-color:  #0056b3;
 }
 
-/* ================================== APPOINTMENT RESULT CARD ================================== */
-/* Class ini (appointment-result-container) sekarang digunakan di HTML */
+/* ================================== APPOINTMENT RESULT STYLES ================================== */
+
 .appointment-result-container {
+    padding: 50px 20px;
+    background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+    min-height: 100vh;
     display: flex;
+    align-items: center;
     justify-content: center;
-    align-items: flex-start;
-    padding: 20px 20px 40px;
-    animation: fadeIn 0.6s ease;
 }
 
 .appointment-result {
-    background: linear-gradient(135deg, #ffffff, #f8fafc);
+    background: white;
     border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-    max-width: 700px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
     width: 100%;
-    border: 2px solid #e8f4ff;
-    margin: 0 auto;
+    overflow: hidden;
 }
 
 .appointment-header {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    padding: 40px 30px;
     text-align: center;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #f0f0f0;
+    position: relative;
 }
 
 .appointment-success-icon {
-    width: 70px;
-    height: 70px;
-    background: linear-gradient(135deg, #28a745, #20c997);
+    width: 80px;
+    height: 80px;
+    background: white;
+    color: #28a745;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 15px;
-    color: white;
-    font-size: 2rem;
+    font-size: 3rem;
     font-weight: bold;
-    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+    margin: 0 auto 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    animation: successPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes successPop {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .appointment-header h2 {
-    color: #28a745;
-    margin-bottom: 10px;
+    margin: 0 0 10px 0;
     font-size: 1.8rem;
     font-weight: 700;
 }
 
 .appointment-header p {
-    color: #666;
+    margin: 0;
+    opacity: 0.9;
     font-size: 1rem;
-    line-height: 1.5;
 }
 
+/* ================================== SIMPLE CARD DESIGN ================================== */
 .appointment-details {
-    margin-bottom: 20px;
+    padding: 30px;
 }
 
 .detail-section {
-    margin-bottom: 20px;
-    background: #f8f9fa;
-    padding: 20px;
+    margin-bottom: 30px;
+    background: white;
     border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e9ecef;
     border-left: 4px solid #007bff;
 }
 
+.detail-section:last-child {
+    margin-bottom: 0;
+}
+
 .detail-section h3 {
-    color: #007bff;
-    margin-bottom: 12px;
-    font-size: 1.2rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e9ecef;
 }
 
 .detail-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px 20px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
 }
 
 .detail-item {
     display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-    border-bottom: 1px dashed #e0e0e0;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .detail-label {
+    font-size: 0.85rem;
+    color: #6c757d;
     font-weight: 600;
-    color: #555;
-    flex: 1;
-    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .detail-value {
-    color: #333;
-    flex: 1.5;
-    text-align: right;
-    font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 1rem;
+    color: #2c3e50;
+    font-weight: 600;
 }
 
 .appointment-instructions {
-    margin: 20px 0;
-    background: linear-gradient(135deg, #f8f9fa, #e8f4ff);
-    padding: 20px;
+    background: #f8f9fa;
+    margin: 0 30px 30px;
     border-radius: 12px;
-    border: 1px solid #e0e0e0;
+    overflow: hidden;
+    border: 1px solid #e9ecef;
 }
 
 .instructions-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 12px;
-    color: #007bff;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    padding: 15px 20px;
+    font-weight: 700;
     font-size: 1.1rem;
+    text-align: center;
+}
+
+.instructions-content {
+    padding: 20px;
+}
+
+.instructions-content p {
+    margin: 0 0 15px 0;
+    color: #2c3e50;
     font-weight: 600;
 }
 
+.instructions-content ul {
+    margin: 0 0 20px 0;
+    padding-left: 20px;
+}
+
+.instructions-content li {
+    margin-bottom: 10px;
+    color: #555;
+    line-height: 1.6;
+}
+
+.note-box {
+    background: linear-gradient(135deg, #e8f4ff, #d4e7ff); 
+    border-left: 4px solid #007bff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.note-box strong {
+    color: #1e3a8a;
+    display: block;
+    margin-bottom: 8px;
+}
+
+#telegramNote {
+    color: #4b5563;
+    line-height: 1.6;
+}
+
+#telegramNote a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+#telegramNote a:hover {
+    color: #0056b3;
+    border-bottom-color: #0056b3;
+}
+
+/* APPOINTMENT ACTIONS - TOMBOL DI TENGAH */
 .appointment-actions {
     display: flex;
-    gap: 12px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 25px;
-    padding-top: 20px;
-    border-top: 2px solid #f0f0f0;
+    gap: 15px;
+    padding: 0 30px 30px;
+    align-items: center;
+    justify-content: center; /* Posisi tengah */
+    flex-wrap: wrap; /* Responsif untuk mobile */
 }
 
-.btn-download,
+/* STYLE UMUM UNTUK SEMUA TOMBOL */
+.btn-back,
 .btn-print,
-.btn-telegram,
-.btn-back {
-    padding: 12px 24px;
+.btn-download {
+    padding: 14px 28px;
     border: none;
     border-radius: 10px;
-    font-weight: 600;
     cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
     transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.9rem;
-    min-width: 140px;
-    justify-content: center;
+    position: relative;
+    overflow: hidden;
 }
 
-.btn-telegram {
-    background: linear-gradient(135deg, #0088cc, #0077b5);
+/* TOMBOL BACK - WARNA MERAH BURGUNDY */
+.btn-back {
+    background: #8B0000;
     color: white;
+    box-shadow: 0 4px 15px rgba(139, 0, 0, 0.25);
 }
 
-.btn-telegram:hover {
+.btn-back::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+}
+
+.btn-back:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-back:hover {
+    background: #6B0000;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 136, 204, 0.3);
+    box-shadow: 0 8px 25px rgba(139, 0, 0, 0.35);
 }
 
-.btn-download {
-    background: linear-gradient(135deg, #28a745, #20c997);
+.btn-back:active {
+    transform: translateY(0);
+}
+
+/* TOMBOL PRINT - WARNA ABU-ABU */
+.btn-print {
+    background: #6c757d;
     color: white;
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+.btn-print::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+}
+
+.btn-print:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-print:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+}
+
+.btn-print:active {
+    transform: translateY(0);
+}
+
+/* TOMBOL DOWNLOAD - WARNA BIRU */
+.btn-download {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.btn-download::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+}
+
+.btn-download:hover::before {
+    width: 300px;
+    height: 300px;
 }
 
 .btn-download:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
 }
 
-.btn-print {
-    background: linear-gradient(135deg, #6c757d, #5a6268);
-    color: white;
+.btn-download:active {
+    transform: translateY(0);
 }
 
-.btn-print:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.3);
+.btn-download:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
-.btn-back {
-    background: linear-gradient(135deg, #007bff, #0056b3);
-    color: white;
-}
-
-.btn-back:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
-}
-
-/* Responsive adjustments untuk hasil konsultasi */
+/* Responsive Design */
 @media (max-width: 768px) {
-    /* Class ini (appointment-result-container) sekarang digunakan di HTML */
     .appointment-result-container {
-        padding: 15px 15px 30px;
+        padding: 30px 15px;
     }
-    
-    .appointment-result {
-        padding: 25px 20px;
-    }
-    
+
     .appointment-header {
-        margin-bottom: 15px;
-        padding-bottom: 12px;
+        padding: 30px 20px;
     }
-    
+
+    .appointment-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .appointment-details {
+        padding: 20px;
+    }
+
+    .detail-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .appointment-instructions {
+        margin: 0 20px 20px;
+    }
+
+    .appointment-actions {
+        flex-direction: column;
+        padding: 0 20px 20px;
+        gap: 12px;
+    }
+
+    .btn-back,
+    .btn-print,
+    .btn-download {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
     .appointment-success-icon {
         width: 60px;
         height: 60px;
-        font-size: 1.7rem;
-        margin-bottom: 12px;
+        font-size: 2.5rem;
     }
-    
+
     .appointment-header h2 {
-        font-size: 1.5rem;
-        margin-bottom: 8px;
+        font-size: 1.3rem;
     }
-    
-    .detail-section {
-        padding: 18px 15px;
-        margin-bottom: 15px;
+
+    .appointment-header p {
+        font-size: 0.9rem;
     }
-    
-    .detail-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
+
+    .detail-section h3 {
+        font-size: 1.1rem;
     }
-    
-    .appointment-instructions {
-        margin: 18px 0;
-        padding: 18px 15px;
-    }
-    
-    .appointment-actions {
-        margin-top: 20px;
-        padding-top: 18px;
-        gap: 10px;
-    }
-    
-    .btn-download,
+
+    .btn-back,
     .btn-print,
-    .btn-telegram,
-    .btn-back {
-        padding: 10px 20px;
-        min-width: 130px;
-        font-size: 0.85rem;
+    .btn-download {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Animasi fadeIn */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================================== PRINT STYLES FIXED ================================== */
+@media print {
+    /* Sembunyikan semua elemen di body */
+    body > * {
+        display: none !important;
+    }
+
+    /* Pastikan container hasil konsultasi tampil */
+    #appointmentResult {
+        display: block !important;
+        visibility: visible !important;
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: white !important;
+        min-height: auto !important;
+        box-shadow: none !important;
+        z-index: 9999;
+    }
+    
+    /* Pastikan semua anak elemen dari result terlihat */
+    #appointmentResult * {
+        visibility: visible !important;
+    }
+
+    .appointment-result {
+        max-width: 100% !important;
+        border: 2px solid #007bff; /* Tambah border agar terlihat rapi saat print */
+        box-shadow: none !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+    }
+
+    /* Sembunyikan tombol aksi saat print */
+    .appointment-actions, 
+    .btn-back, 
+    .btn-print, 
+    .btn-download {
+        display: none !important;
+    }
+
+    /* Penyesuaian warna untuk hemat tinta tapi tetap terbaca */
+    .appointment-header {
+        background-color: #007bff !important;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .detail-section {
+        border: 1px solid #ddd !important;
+        break-inside: avoid; /* Mencegah tabel terpotong di tengah halaman */
+        page-break-inside: avoid;
+    }
+    
+    /* Pastikan layout grid tetap rapi */
+    .detail-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important; /* Paksa 2 kolom */
+        gap: 15px !important;
     }
 }

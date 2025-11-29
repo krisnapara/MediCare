@@ -38,7 +38,7 @@
                 <div class="profile-header-info">
                     <img src="assets/images/profil.jpg" alt="Foto Profil Besar" class="profile-large-img">
                     <h2>Ida Bagus Mas Muliadi</h2>
-                    <p class="join-date">Wafat sejak: 15-01-2025</p>
+                    <p class="join-date">Bergabung sejak: 15-01-2024</p>
                     <button class="btn-edit">Ubah Profil</button>
                 </div>
                 
@@ -46,22 +46,22 @@
                     <h3>Informasi Akun</h3>
                     <div class="detail-row">
                         <span class="label">Email:</span>
-                        <span class="value">muliapanjang@gmail.com</span>
+                        <span class="value" data-field="email">muliapanjang@gmail.com</span>
                     </div>
                     <div class="detail-row">
                         <span class="label">Telepon:</span>
-                        <span class="value">0812-4343-0987</span>
+                        <span class="value" data-field="phone">0812-4343-0987</span>
                     </div>
                     <div class="detail-row">
                         <span class="label">Alamat:</span>
-                        <span class="value">Jl. Kesakitan No. 12, Denpasar</span>
+                        <span class="value" data-field="address">Jl. Kesakitan No. 12, Denpasar</span>
                     </div>
                 </div>
 
                 <div class="profile-details">
                     <h3>Riwayat Konsultasi</h3>
-                    <p class="history-item">Konsultasi dengan Dr. Budi (20-05-2025) - Selesai</p>
-                    <p class="history-item">Konsultasi dengan Psikolog Ayu (10-06-2025) - Aktif</p>
+                    <p class="history-item">Konsultasi dengan Dr. Budi (20-05-2024) - Selesai</p>
+                    <p class="history-item">Konsultasi dengan Psikolog Ayu (10-06-2024) - Aktif</p>
                     <a href="#" class="view-history-link">Lihat Semua Riwayat</a>
                 </div>
                 
@@ -70,11 +70,74 @@
         </div>
     </main>
 
-    <footer class="footer">
-        </footer>
-    
-    
+    <!-- Modal Edit Profil -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Profil</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="editProfileForm">
+                    <div class="form-group">
+                        <label for="editName">Nama Lengkap</label>
+                        <input type="text" id="editName" placeholder="Masukkan nama lengkap" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editEmail">Email</label>
+                        <input type="email" id="editEmail" placeholder="contoh@email.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editPhone">Nomor Telepon</label>
+                        <input type="tel" id="editPhone" placeholder="0812-xxxx-xxxx" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editAddress">Alamat</label>
+                        <textarea id="editAddress" placeholder="Masukkan alamat lengkap" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editPhoto">Foto Profil</label>
+                        <input type="file" id="editPhoto" accept="image/*">
+                        <small style="color: #666; font-size: 0.85rem; display: block; margin-top: 5px;">
+                            Format: JPG, PNG (Maksimal 2MB)
+                        </small>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel">Batal</button>
+                        <button type="button" class="btn-save">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
+    <!-- Modal Zoom Foto Profil (Diperbaiki) -->
+    <div id="imageModal" class="modal image-modal">
+        <span class="close-image">&times;</span>
+        
+        <div class="zoom-controls">
+            <button class="zoom-btn" onclick="zoomIn()">+</button>
+            <button class="zoom-btn" onclick="zoomOut()">-</button>
+        </div>
+        
+        <div class="modal-image-content">
+            <div class="image-container">
+                <div class="circular-image-wrapper">
+                    <img id="zoomedImage" src="" alt="Foto Profil Diperbesar" class="circular-profile-image">
+                </div>
+            </div>
+        </div>
+        
+        <button class="reset-zoom" onclick="resetZoom()">Reset Zoom</button>
+        <p class="zoom-hint">Gunakan scroll mouse atau tombol +/- untuk zoom • Klik dan drag untuk menggeser</p>
+    </div>
+
+    <script src="js/profil.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-// chatbot.js - Simplified Version with Left-Aligned Input
+// chatbot.js - Enhanced Version with Reset Button below Messages
 document.addEventListener('DOMContentLoaded', function() {
     const chatMessages = document.getElementById('chatMessages');
     const userInput = document.getElementById('userInput');
@@ -6,8 +6,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const welcomeSection = document.getElementById('welcomeSection');
     const messagesContainer = document.getElementById('messagesContainer');
     const suggestionCards = document.querySelectorAll('.suggestion-card');
+    const resetButton = document.getElementById('resetButton');
+    const resetChatContainer = document.getElementById('resetChatContainer');
+    const chatSuggestions = document.getElementById('chatSuggestions');
+    const suggestionChips = document.querySelectorAll('.suggestion-chip');
 
     let isFirstMessage = true;
+    let consultationButtonHandlerAdded = false;
 
     // Auto-resize textarea
     userInput.addEventListener('input', function() {
@@ -21,22 +26,42 @@ document.addEventListener('DOMContentLoaded', function() {
     // Focus pada input saat halaman dimuat
     userInput.focus();
 
-    // Fungsi untuk memulai chat baru
+    // Fungsi untuk memulai chat baru / reset chat
     function startNewChat() {
+        // Clear semua pesan
         chatMessages.innerHTML = '';
+        
+        // Tampilkan welcome section, sembunyikan messages
         welcomeSection.style.display = 'flex';
         messagesContainer.style.display = 'none';
+        resetChatContainer.style.display = 'none';
+        
+        // Reset state
         isFirstMessage = true;
+        consultationButtonHandlerAdded = false;
         userInput.value = '';
         userInput.style.height = 'auto';
         sendButton.disabled = true;
+        
+        // Focus kembali ke input
+        userInput.focus();
     }
 
     // Fungsi untuk menambahkan pesan ke chat
     function addMessage(message, isUser = false) {
         if (isFirstMessage) {
+            // Sembunyikan welcome section, tampilkan messages
             welcomeSection.style.display = 'none';
             messagesContainer.style.display = 'block';
+            
+            // Tampilkan tombol reset setelah beberapa detik
+            setTimeout(() => {
+                resetChatContainer.style.display = 'flex';
+            }, 1000);
+            
+            // Tampilkan chat suggestions
+            chatSuggestions.style.display = 'block';
+            
             isFirstMessage = false;
         }
 
@@ -110,6 +135,40 @@ document.addEventListener('DOMContentLoaded', function() {
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
+    // Fungsi untuk menampilkan notifikasi pilihan akun
+    function showAccountNotification() {
+        const notificationHtml = `
+            <div class="account-notification">
+                <div class="notification-header">
+                    <h4>📋 Akses Layanan Konsultasi</h4>
+                </div>
+                <div class="notification-content">
+                    <p>Untuk mengakses layanan konsultasi, Anda perlu memiliki akun MediCare.</p>
+                    <div class="notification-options">
+                        <div class="option-item">
+                            <strong>🔐 Sudah Punya Akun?</strong>
+                            <p>Login untuk langsung mengakses layanan konsultasi</p>
+                            <a href="login.html?return=konsultasi.html" class="notification-button login-btn">
+                                Login Sekarang
+                            </a>
+                        </div>
+                        <div class="option-item">
+                            <strong>📝 Belum Punya Akun?</strong>
+                            <p>Daftar terlebih dahulu untuk membuat akun MediCare</p>
+                            <a href="register.html?return=konsultasi.html" class="notification-button register-btn">
+                                Daftar Sekarang
+                            </a>
+                        </div>
+                    </div>
+                    <div class="notification-footer">
+                        <small>Akun MediCare memberikan akses penuh ke semua layanan konsultasi dengan profesional kesehatan mental.</small>
+                    </div>
+                </div>
+            </div>
+        `;
+        return notificationHtml;
+    }
+
     // Fungsi untuk mendapatkan respon bot
     function getBotResponse(userMessage) {
         const message = userMessage.toLowerCase().trim();
@@ -117,57 +176,68 @@ document.addEventListener('DOMContentLoaded', function() {
         // HTML untuk tombol konsultasi
         const consultationButtonHtml = `
             <div style="margin-top: 15px; text-align: left;">
-                <a href="konsultasi.html" target="_blank" class="chat-button">
+                <button class="chat-button consultation-btn">
                     Lihat Pilihan Konsultasi
-                </a>
+                </button>
             </div>
         `;
         
-        // Response logic berdasarkan kata kunci (Prioritas 1: Paling Spesifik/Darurat)
-        
-        // 1. Bantuan Darurat
+        // Response logic berdasarkan kata kunci
         if (message.includes('darurat') || message.includes('urgent') || message.includes('emergency') || message.includes('krisis') || message.includes('bantuan darurat')) {
             return '🚨 **BANTUAN DARURAT** 🚨\n\nJika Anda mengalami krisis kesehatan mental:\n\n📞 **Hotline Darurat:**\n• 119 (Ext. 8) - Kemenkes RI\n• 112 - Emergency Services\n• 0811-222-333 - MediCare Crisis\n\n🏥 **Tindakan Segera:**\n1. Hubungi hotline di atas\n2. Pergi ke IGD rumah sakit terdekat\n3. Hubungi orang terdekat yang dipercaya\n\n💝 **Ingat:**\n• Anda tidak sendirian\n• Bantuan profesional tersedia\n• Semua perasaan adalah valid\n\n**JANGAN MENUNGGU - CARI BANTUAN SEKARANG**';
         } 
-
-        // 2. Informasi Biaya (Harusnya mengatasi masalah Anda)
         else if (message.includes('biaya') || message.includes('harga') || message.includes('tarif') || message.includes('berapa biaya')) {
-            return '💰 **Informasi Biaya:**\n\n👥 **Konsultasi Psikolog dan Psikiater**\n• Tidak ada sepeserpun biaya terpungut\n• Jika ada indikasi atau percakapan mengenai biaya apapun itu, silahkan hubungi customer service agar oknum bisa langsung dimutilasi.';
+            return '💰 **Informasi Biaya:**\n\n👥 **Konsultasi Psikolog dan Psikiater**\n• Tidak ada sepeserpun biaya terpungut\n• Jika ada indikasi atau percakapan mengenai biaya apapun itu, silahkan hubungi customer service agar oknum bisa langsung dieksekusi mati tanpa syarat!';
         } 
-        
-        // 3. Tes Kesehatan Mental
         else if (message.includes('tes kesehatan mental') || message.includes('assessment') || message.includes('cek mental')) {
             return '🧠 **Tes Kesehatan Mental MediCare:**\n\nKami menyediakan berbagai tes assessment yang divalidasi:\n\n• **Stress Test** - Tingkat stres harian\n• **Anxiety Test** - Deteksi kecemasan\n• **Depression Test** - Skrining depresi\n• **Burnout Test** - Assess kelelahan kerja\n• **General Mental Health** - Kesehatan mental umum\n\n📊 **Fitur Tes Kami:**\n• Hasil instan dengan analisis\n• Rekomendasi tindakan\n• Bisa konsultasi lanjutan\n• Kerahasiaan terjamin\n\nMau saya arahkan ke halaman tes?';
         } 
-        
-        // 4. Konsultasi/Psikolog (Respons yang memiliki tombol)
         else if (message.includes('konsultasi') || message.includes('psikolog') || message.includes('psikiater') || message.includes('cara konsultasi')) {
-            return `Untuk konsultasi dengan profesional MediCare:\n\n📋 **Cara Mendaftar:**\n1. Kunjungi halaman "Konsultasi" di website\n2. Isi formulir data diri\n
-            3. Pilih tanggal & waktu yang tersedia\n4. Pilih jenis layanan (Video Call/Chat/Telepon)\n\n👥 **Jenis Profesional:**\n• Psikolog Klinis\n• Psikiater\n• Konselor\n\n💡 **Tips:** Pilih waktu yang tenang dan siapkan pertanyaan sebelumnya.\n\nMau saya bantu informasi lebih detail?${consultationButtonHtml}`;
+            return `Untuk konsultasi dengan profesional MediCare:\n\n📋 **Persyaratan:**\n• Memiliki akun MediCare (gratis)\n• Sudah melakukan login\n• Memilih jenis layanan yang diinginkan\n\n👥 **Jenis Profesional:**\n• Psikolog Klinis\n• Psikiater\n• Konselor\n\n💡 **Tips:** Pilih waktu yang tenang dan siapkan pertanyaan sebelumnya.\n\nSilakan pilih opsi di bawah untuk mengakses layanan konsultasi:${consultationButtonHtml}`;
         } 
-        
-        // 5. Layanan Umum
         else if (message.includes('layanan') || message.includes('service') || message.includes('fasilitas') || message.includes('apa saja layanan')) {
-            return '🏥 **Layanan MediCare:**\n\n🎯 **Konsultasi Profesional**\n• Psikolog & Psikiater\n• Berbagai metode: Video, Chat, Telepon\n• Konsultasi darurat 24/7\n\n📚 **Edukasi & Support**\n• Artikel kesehatan mental\n• Tes assessment online\n• Grup dukungan\n• Webinar & workshop\n\n🛡️ **Layanan Tambahan**\n• Second opinion\n• Terapi berkelanjutan\n• Monitoring progress\n\nSemua layanan kami menjaga kerahasiaan dan profesionalitas.';
+            return '🏥 **Layanan MediCare:**\n\n🎯 **Konsultasi Profesional**\n• Psikolog & Psikiater\n• Berbagai metode: Video, Chat, Telepon\n• Konsultasi darurat 24/7\n\n📚 **Edukasi & Support**\n• Artikel kesehatan mental\n• Tes assessment online\n• Grup dukungan\n• Webinar & workshop\n\n🛡️ **Layanan Tambahan**\n• Second opinion\n• Terapi berkelanjutan\n• Monitoring progress\n\n*Semua layanan memerlukan akun MediCare.*';
         } 
-        
-        // 6. Sapaan
         else if (message.includes('halo') || message.includes('hai') || message.includes('hi') || message.includes('hello')) {
             return 'Halo! Saya MediCare Assistant, asisten virtual untuk membantu Anda dengan informasi kesehatan mental dan layanan MediCare. Ada yang bisa saya bantu hari ini?';
         } 
-        
-        // 7. Ucapan Terima Kasih
         else if (message.includes('terima kasih') || message.includes('thanks')) {
             return 'Sama-sama! 😊 \n\nSenang bisa membantu Anda. Jaga selalu kesehatan mental Anda dan ingat, mencari bantuan adalah tanda kekuatan, bukan kelemahan.\n\nJika ada yang else yang perlu ditanyakan, saya siap membantu!';
         }
-        
-        // 8. Default/Fallback
+        else if (message.includes('reset') || message.includes('clear') || message.includes('hapus') || message.includes('baru')) {
+            startNewChat();
+            return '';
+        }
         else {
             return 'Maaf, saya belum sepenuhnya memahami pertanyaan Anda. Saya adalah asisten virtual MediCare yang khusus membantu dengan:\n\n• Informasi layanan konsultasi\n• Jadwal dan biaya\n• Bantuan darurat\n• Tes kesehatan mental\n• Artikel dan edukasi\n\nBisa coba tanyakan dengan kata kunci di atas atau pilih salah satu opsi yang disarankan?';
         }
     }
 
-// ... kode setelah ini tetap sama
+    // Fungsi untuk menangani klik tombol konsultasi
+    function handleConsultationButtonClick() {
+        const notificationMessage = showAccountNotification();
+        addMessage(notificationMessage, false);
+    }
+
+    // Fungsi untuk menambahkan event listener ke tombol konsultasi
+    function addConsultationButtonListener() {
+        if (!consultationButtonHandlerAdded) {
+            const consultationBtn = document.querySelector('.consultation-btn');
+            if (consultationBtn) {
+                // Hapus event listener lama jika ada, lalu tambah yang baru
+                consultationBtn.replaceWith(consultationBtn.cloneNode(true));
+                
+                // Dapatkan tombol yang baru
+                const newConsultationBtn = document.querySelector('.consultation-btn');
+                newConsultationBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    handleConsultationButtonClick();
+                });
+                
+                consultationButtonHandlerAdded = true;
+            }
+        }
+    }
 
     // Fungsi untuk mengirim pesan
     function sendMessage() {
@@ -185,9 +255,38 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 hideTypingIndicator();
                 const botResponse = getBotResponse(message);
-                addMessage(botResponse, false);
+                if (botResponse) {
+                    addMessage(botResponse, false);
+                    
+                    // Tambahkan event listener untuk tombol konsultasi
+                    setTimeout(() => {
+                        addConsultationButtonListener();
+                    }, 100);
+                }
             }, 1500);
         }
+    }
+
+    // Fungsi untuk mengirim pesan dari suggestion
+    function sendSuggestionMessage(message) {
+        addMessage(message, true);
+        
+        // Tampilkan typing indicator
+        showTypingIndicator();
+        
+        // Simulasi delay respon bot
+        setTimeout(() => {
+            hideTypingIndicator();
+            const botResponse = getBotResponse(message);
+            if (botResponse) {
+                addMessage(botResponse, false);
+                
+                // Tambahkan event listener untuk tombol konsultasi
+                setTimeout(() => {
+                    addConsultationButtonListener();
+                }, 100);
+            }
+        }, 1200);
     }
 
     // Event listener untuk tombol kirim
@@ -201,21 +300,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Event listener untuk suggestion cards
+    // Event listener untuk tombol reset
+    resetButton.addEventListener('click', startNewChat);
+
+    // Event listener untuk suggestion cards di welcome section
     suggestionCards.forEach(card => {
         card.addEventListener('click', function() {
             const message = this.getAttribute('data-message');
-            addMessage(message, true);
-            
-            // Tampilkan typing indicator
-            showTypingIndicator();
-            
-            // Respon untuk suggestion
-            setTimeout(() => {
-                hideTypingIndicator();
-                const botResponse = getBotResponse(message);
-                addMessage(botResponse, false);
-            }, 1200);
+            sendSuggestionMessage(message);
+        });
+    });
+
+    // Event listener untuk suggestion chips di chat aktif
+    suggestionChips.forEach(chip => {
+        chip.addEventListener('click', function() {
+            const message = this.getAttribute('data-message');
+            sendSuggestionMessage(message);
         });
     });
 

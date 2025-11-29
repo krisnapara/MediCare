@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tim Dokter | Medicare</title>
-    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/page_dokter.css">
+    <link rel="stylesheet" href="css/style.css">
+     <link rel="stylesheet" href="css/auth.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
@@ -39,7 +40,7 @@
                 <p>Ditemani oleh tenaga medis berpengalaman yang siap memberikan pelayanan terbaik untuk kesehatan mental Anda</p>
                 <div class="hero-stats">
                     <div class="stat">
-                        <span class="stat-number">5+</span>
+                        <span class="stat-number">6+</span>
                         <span class="stat-label">Dokter Professional</span>
                     </div>
                     <div class="stat">
@@ -59,13 +60,13 @@
                 <h3>Cari Berdasarkan Spesialisasi</h3>
                 <div class="filter-buttons">
                     <button class="filter-btn active" data-filter="all">
-                        Semua
+                        <span>Semua</span>
                     </button>
                     <button class="filter-btn" data-filter="psikolog">
-                        Psikolog
+                        <span>Psikolog</span>
                     </button>
                     <button class="filter-btn" data-filter="psikiater">
-                        Psikiater
+                        <span>Psikiater</span>
                     </button>
                 </div>
             </div>
@@ -73,13 +74,14 @@
 
         <section class="doctors-section">
             <div class="doctors-container">
+                <!-- Doctor Card 1 - Dr. Sarah Wijaya -->
                 <div class="doctor-card" data-category="psikolog">
                     <div class="doctor-image">
                         <img src="assets/images/dokter1.jpg" alt="Dr. Sarah Wijaya, M.Psi.">
-                        <div class="doctor-rating">
-                            <span class="stars">★★★★★</span>
-                            <span class="rating-text">4.9/5</span>
-                        </div>
+                    </div>
+                    <div class="doctor-rating">
+                        <span class="stars">★★★★★</span>
+                        <span class="rating-text">4.9/5</span>
                     </div>
                     <div class="doctor-info">
                         <h3>Dr. Sarah Wijaya, M.Psi.</h3>
@@ -92,21 +94,23 @@
                             <span class="skill-tag">Trauma</span>
                         </div>
                         <div class="doctor-actions">
-                            <button class="btn-profile">
-                                <i class="fas fa-user"></i>
-                                Lihat Profil
+                            <button class="btn-review" data-doctor="sarah-wijaya">
+                                <i class="fas fa-star"></i>
+                                Baca Review
+                                <span class="review-count">(24)</span>
                             </button>
                         </div>
-                        </div>
+                    </div>
                 </div>
 
+                <!-- Doctor Card 2 - Dr. Ahmad Rahman -->
                 <div class="doctor-card" data-category="psikiater">
                     <div class="doctor-image">
-                        <img src="assets/images/dokter2.jpg" alt="Dr. Ahmad Rahman, Sp.KJ">
-                        <div class="doctor-rating">
-                            <span class="stars">★★★★★</span>
-                            <span class="rating-text">4.8/5</span>
-                        </div>
+                        <img src="assets/images/dokter1.jpg" alt="Dr. Ahmad Rahman, Sp.KJ">
+                    </div>
+                    <div class="doctor-rating">
+                        <span class="stars">★★★★★</span>
+                        <span class="rating-text">4.8/5</span>
                     </div>
                     <div class="doctor-info">
                         <h3>Dr. Ahmad Rahman, Sp.KJ</h3>
@@ -119,21 +123,23 @@
                             <span class="skill-tag">OCD</span>
                         </div>
                         <div class="doctor-actions">
-                            <button class="btn-profile">
-                                <i class="fas fa-user"></i>
-                                Lihat Profil
+                            <button class="btn-review" data-doctor="ahmad-rahman">
+                                <i class="fas fa-star"></i>
+                                Baca Review
+                                <span class="review-count">(18)</span>
                             </button>
                         </div>
-                        </div>
+                    </div>
                 </div>
 
+                <!-- Doctor Card 3 - Maya Sari -->
                 <div class="doctor-card" data-category="psikolog">
                     <div class="doctor-image">
                         <img src="assets/images/dokter1.jpg" alt="Maya Sari, S.Psi.">
-                        <div class="doctor-rating">
-                            <span class="stars">★★★★☆</span>
-                            <span class="rating-text">4.7/5</span>
-                        </div>
+                    </div>
+                    <div class="doctor-rating">
+                        <span class="stars">★★★★☆</span>
+                        <span class="rating-text">4.7/5</span>
                     </div>
                     <div class="doctor-info">
                         <h3>Maya Sari, S.Psi.</h3>
@@ -146,21 +152,23 @@
                             <span class="skill-tag">Relationship</span>
                         </div>
                         <div class="doctor-actions">
-                            <button class="btn-profile">
-                                <i class="fas fa-user"></i>
-                                Lihat Profil
+                            <button class="btn-review" data-doctor="maya-sari">
+                                <i class="fas fa-star"></i>
+                                Baca Review
+                                <span class="review-count">(15)</span>
                             </button>
                         </div>
-                        </div>
+                    </div>
                 </div>
 
+                <!-- Doctor Card 4 - Dr. Rina Dewi -->
                 <div class="doctor-card" data-category="psikiater">
                     <div class="doctor-image">
                         <img src="assets/images/dokter1.jpg" alt="Dr. Rina Dewi, Sp.KJ">
-                        <div class="doctor-rating">
-                            <span class="stars">★★★★★</span>
-                            <span class="rating-text">4.9/5</span>
-                        </div>
+                    </div>
+                    <div class="doctor-rating">
+                        <span class="stars">★★★★★</span>
+                        <span class="rating-text">4.9/5</span>
                     </div>
                     <div class="doctor-info">
                         <h3>Dr. Rina Dewi, Sp.KJ</h3>
@@ -173,21 +181,23 @@
                             <span class="skill-tag">Geriatri</span>
                         </div>
                         <div class="doctor-actions">
-                            <button class="btn-profile">
-                                <i class="fas fa-user"></i>
-                                Lihat Profil
+                            <button class="btn-review" data-doctor="rina-dewi">
+                                <i class="fas fa-star"></i>
+                                Baca Review
+                                <span class="review-count">(22)</span>
                             </button>
                         </div>
-                        </div>
+                    </div>
                 </div>
 
+                <!-- Doctor Card 5 - Dr. Lisa Chen -->
                 <div class="doctor-card" data-category="psikolog">
                     <div class="doctor-image">
-                        <img src="assets/images/dokter5.jpg" alt="Dr. Lisa Chen, M.Psi.">
-                        <div class="doctor-rating">
-                            <span class="stars">★★★★★</span>
-                            <span class="rating-text">4.8/5</span>
-                        </div>
+                        <img src="assets/images/dokter1.jpg" alt="Dr. Lisa Chen, M.Psi.">
+                    </div>
+                    <div class="doctor-rating">
+                        <span class="stars">★★★★★</span>
+                        <span class="rating-text">4.8/5</span>
                     </div>
                     <div class="doctor-info">
                         <h3>Dr. Lisa Chen, M.Psi.</h3>
@@ -200,21 +210,23 @@
                             <span class="skill-tag">Perkembangan</span>
                         </div>
                         <div class="doctor-actions">
-                            <button class="btn-profile">
-                                <i class="fas fa-user"></i>
-                                Lihat Profil
+                            <button class="btn-review" data-doctor="lisa-chen">
+                                <i class="fas fa-star"></i>
+                                Baca Review
+                                <span class="review-count">(19)</span>
                             </button>
                         </div>
-                        </div>
+                    </div>
                 </div>
 
+                <!-- Doctor Card 6 - Dr. Budi Santoso -->
                 <div class="doctor-card" data-category="psikiater">
                     <div class="doctor-image">
                         <img src="assets/images/dokter1.jpg" alt="Dr. Budi Santoso, Sp.KJ">
-                        <div class="doctor-rating">
-                            <span class="stars">★★★★☆</span>
-                            <span class="rating-text">4.6/5</span>
-                        </div>
+                    </div>
+                    <div class="doctor-rating">
+                        <span class="stars">★★★★☆</span>
+                        <span class="rating-text">4.6/5</span>
                     </div>
                     <div class="doctor-info">
                         <h3>Dr. Budi Santoso, Sp.KJ</h3>
@@ -227,9 +239,10 @@
                             <span class="skill-tag">Konsultasi</span>
                         </div>
                         <div class="doctor-actions">
-                            <button class="btn-profile">
-                                <i class="fas fa-user"></i>
-                                Lihat Profil
+                            <button class="btn-review" data-doctor="budi-santoso">
+                                <i class="fas fa-star"></i>
+                                Baca Review
+                                <span class="review-count">(16)</span>
                             </button>
                         </div>
                     </div>
@@ -270,84 +283,84 @@
     </main>
 
     <footer class="footer">
-    <div class="footer-content">
-        <div class="footer-brand">
-            <div class="footer-logo">
-                <img src="assets/icons/flower.svg" alt="Logo Medicare">
-                <span class="logo-text">MediCare</span>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <img src="assets/icons/flower.svg" alt="Logo Medicare">
+                    <span class="logo-text">MediCare</span>
+                </div>
+                
+                <div class="social-links">
+                    <a href="#" class="social-link">
+                        <img src="assets/icons/facebook.svg" alt="Facebook" class="social-icon">
+                        <span>Facebook</span>
+                    </a>
+                    <a href="#" class="social-link">
+                        <img src="assets/icons/instagram.svg" alt="Instagram" class="social-icon">
+                        <span>Instagram</span>
+                    </a>
+                    <a href="#" class="social-link">
+                        <img src="assets/icons/tiktok.svg" alt="TikTok" class="social-icon">
+                        <span>Tiktok</span>
+                    </a>
+                    <a href="#" class="social-link">
+                        <img src="assets/icons/youtube.svg" alt="YouTube" class="social-icon">
+                        <span>YouTube</span>
+                    </a>
+                </div>
             </div>
-            
-            <div class="social-links">
-                <a href="#" class="social-link">
-                    <img src="assets/icons/facebook.svg" alt="Facebook" class="social-icon">
-                    <span>Facebook</span>
-                </a>
-                <a href="#" class="social-link">
-                    <img src="assets/icons/instagram.svg" alt="Instagram" class="social-icon">
-                    <span>Instagram</span>
-                </a>
-                <a href="#" class="social-link">
-                    <img src="assets/icons/tiktok.svg" alt="TikTok" class="social-icon">
-                    <span>Tiktok</span>
-                </a>
-                <a href="#" class="social-link">
-                    <img src="assets/icons/youtube.svg" alt="YouTube" class="social-icon">
-                    <span>YouTube</span>
-                </a>
+
+            <div class="footer-section">
+                <h4>Layanan</h4>
+                <ul class="footer-links">
+                    <li><a href="javascript:void(0);" onclick="authRedirect('konsultasi.html')">Konsultasi Online</a></li>
+                    <li><a href="chatbot.html">Chatbot 24/7</a></li>
+                    <li><a href="artikel.html">Artikel Kesehatan</a></li>
+                    <li><a href="tes-kesehatan.html">Tes Kesehatan Mental</a></li>
+                    <li><a href="komunitas.html">Forum Komunitas</a></li>
+                </ul>
             </div>
-        </div>
 
-        <div class="footer-section">
-            <h4>Layanan</h4>
-            <ul class="footer-links">
-                <li><a href="javascript:void(0);" onclick="authRedirect('konsultasi.html')">Konsultasi Online</a></li>
-                <li><a href="chatbot.html">Chatbot 24/7</a></li>
-                <li><a href="artikel.html">Artikel Kesehatan</a></li>
-                <li><a href="tes-kesehatan.html">Tes Kesehatan Mental</a></li>
-                <li><a href="komunitas.html">Forum Komunitas</a></li>
-            </ul>
-        </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul class="footer-links">
+                    <li><a href="https://www.idionline.org/" target="_blank">Ikatan Dokter Indonesia</a></li>
+                    <li><a href="https://www.intothelightid.org/" target="_blank">Into The Light</a></li>
+                    <li><a href="https://kemkes.go.id/" target="_blank">Kementerian Kesehatan</a></li>
+                    <li><a href="https://www.who.int/indonesia" target="_blank">WHO Indonesia</a></li>
+                    <li><a href="https://pdskji.org/" target="_blank">Dokter Spesialis Jiwa</a></li>
+                </ul>
+            </div>
 
-        <div class="footer-section">
-            <h4>Support</h4>
-            <ul class="footer-links">
-                <li><a href="https://www.idionline.org/" target="_blank">Ikatan Dokter Indonesia</a></li>
-                <li><a href="https://www.intothelightid.org/" target="_blank">Into The Light</a></li>
-                <li><a href="https://kemkes.go.id/" target="_blank">Kementerian Kesehatan</a></li>
-                <li><a href="https://www.who.int/indonesia" target="_blank">WHO Indonesia</a></li>
-                <li><a href="https://pdskji.org/" target="_blank">Dokter Spesialis Jiwa</a></li>
-            </ul>
-        </div>
-
-        <div class="footer-section">
-            <h4>Tentang</h4>
-            <ul class="footer-links">
-                <li><a href="tentang.html">Tentang Kami</a></li>
-                <li><a href="page_dokter.html">Tim Dokter</a></li>
-            </ul>
-            <div class="newsletter">
-                <h5>Newsletter</h5>
-                <p>Dapatkan tips kesehatan mental mingguan</p>
-                <div class="newsletter-form">
-                    <input type="email" placeholder="Email Anda">
-                    <button class="btn-subscribe">Subscribe</button>
+            <div class="footer-section">
+                <h4>Tentang</h4>
+                <ul class="footer-links">
+                    <li><a href="tentang.html">Tentang Kami</a></li>
+                    <li><a href="page_dokter.html">Tim Dokter</a></li>
+                </ul>
+                <div class="newsletter">
+                    <h5>Newsletter</h5>
+                    <p>Dapatkan tips kesehatan mental mingguan</p>
+                    <div class="newsletter-form">
+                        <input type="email" placeholder="Email Anda">
+                        <button class="btn-subscribe">Subscribe</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="footer-bottom">
-        <div class="footer-bottom-content">
-            <p>&copy; 2018 MediCare. All rights reserved.</p>
-            <div class="footer-bottom-links">
-                <a href="privacy.html">Kebijakan Privasi</a>
-                <a href="terms.html">Syarat & Ketentuan</a>
-                <a href="refund.html">Kebijakan Refund</a>
-                <a href="accessibility.html">Aksesibilitas</a>
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <p>&copy; 2018 MediCare. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="privacy.html">Kebijakan Privasi</a>
+                    <a href="terms.html">Syarat & Ketentuan</a>
+                    <a href="refund.html">Kebijakan Refund</a>
+                    <a href="accessibility.html">Aksesibilitas</a>
+                </div>
             </div>
         </div>
-    </div>
-</footer>
+    </footer>
 
     <div class="chatbot-container">
         <button class="chatbot-toggle-btn" onclick="goToChatbotPage()">𒆙</button>

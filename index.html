@@ -11,7 +11,7 @@
 <body>
 
     <header class="header">
-        <div class="logo">
+        <div class="logo" onclick="redirectToHomepage()">
             <img src="assets/icons/flower.svg" alt="Logo Medicare"> 
             <span class="logo-text">MediCare</span>
         </div>
@@ -115,10 +115,9 @@
             <h2>Ayo Tonton Dulu!!</h2>
             <p>Tonton video membantu menambah pengetahuan dan mengurangi kecemasan serta meningkatkan mood Anda</p>
             
-            <div class="video-player-container">
-                <div class="video-navigation-wrapper">
-                    <button class="nav-btn prev-btn" onclick="previousVideo()" title="Video Sebelumnya">&#10094;</button>
-
+            <div class="laptop-container">
+                <!-- Laptop Screen -->
+                <div class="laptop-screen">
                     <div class="video-wrapper">
                         <video id="video-player" controls controlslist="nodownload" poster="assets/images/background4.jpg">
                             <source src="assets/videos/mental1.mp4" type="video/mp4">
@@ -127,9 +126,40 @@
                         
                         <button onclick="playPauseVideo()" class="video-btn-overlay" id="play-pause-video-btn">▶</button>
                     </div>
-                    
-                    <button class="nav-btn next-btn" onclick="nextVideo()" title="Video Selanjutnya">&#10095;</button>
                 </div>
+                
+                <!-- Laptop Base -->
+                <div class="laptop-base"></div>
+                
+                <!-- Keyboard Area -->
+                <div class="keyboard-area">
+                    <div class="keyboard-keys">
+                        <div class="key-row">
+                            <div class="key"></div>
+                            <div class="key"></div>
+                            <div class="key"></div>
+                            <div class="key"></div>
+                            <div class="key"></div>
+                            <div class="key"></div>
+                            <div class="key"></div>
+                            <div class="key"></div>
+                            <div class="key"></div>
+                            <div class="key"></div>
+                        </div>
+                        <div class="key-row">
+                            <div class="key spacebar"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Trackpad -->
+                    <div class="trackpad"></div>
+                </div>
+            </div>
+            
+            <!-- Video Navigation -->
+            <div class="video-navigation-wrapper">
+                <button class="nav-btn prev-btn" onclick="previousVideo()" title="Video Sebelumnya">&#10094;</button>
+                <button class="nav-btn next-btn" onclick="nextVideo()" title="Video Selanjutnya">&#10095;</button>
             </div>
         </section>
 
@@ -167,7 +197,7 @@
     <div class="footer-content">
         <!-- Brand Section dengan Social Links -->
         <div class="footer-brand">
-            <div class="footer-logo">
+            <div class="footer-logo" onclick="redirectToHomepage()">
                 <img src="assets/icons/flower.svg" alt="Logo Medicare">
                 <span class="logo-text">MediCare</span>
             </div>

@@ -10,21 +10,33 @@
 <body class="chatbot-body">
     <!-- Header -->
     <header class="chat-header">
+        
         <button class="back-button" onclick="window.location.href='index.html'">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
         </button>
+
+        <div class="logo">
+            <img src="assets/icons/flower.svg" alt="Logo Medicare"> 
+            <span class="logo-text">MediCare</span>
+        </div>
+    
+        <div class="profile-icon">
+            <a href="register.html">
+                <img src="assets/images/profil.jpg" alt="Foto profil pengguna">
+            </a>
+        </div>
     </header>
 
     <main class="chatbot-main-layout">
         <div class="chat-container">
-            <!-- Welcome Message -->
+            <!-- Welcome Section -->
             <div class="welcome-section" id="welcomeSection">
                 <div class="welcome-icon">
                     <img src="assets/images/muliadi.jpg" alt="MediCare Bot">
                 </div>
-                <h1>Halo, saya MediCareBot </h1>
+                <h1>Halo, saya MediCareBot</h1>
                 <p>Ada yang bisa saya bantu terkait kesehatan mental atau layanan MediCare?</p>
                 
                 <div class="suggestion-grid">
@@ -59,10 +71,45 @@
                 </div>
             </div>
 
-            <!-- Chat Messages -->
+            <!-- Chat Messages Section (Awalnya tersembunyi) -->
             <div class="messages-container" id="messagesContainer" style="display: none;">
                 <div class="chat-messages" id="chatMessages">
-                    <!-- Messages will be inserted here by JavaScript -->
+                    <!-- Messages akan dimasukkan di sini oleh JavaScript -->
+                </div>
+
+                <!-- Tombol Reset di bawah chat messages -->
+                <div class="reset-chat-container" id="resetChatContainer" style="display: none;">
+                    <button class="reset-chat-button" id="resetButton">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 4V9H4.58152M19.9381 11C19.446 7.05369 16.0796 4 12 4C8.64262 4 5.76829 6.06817 4.58152 9M4.58152 9H9M20 20V15H19.4185M19.4185 15C18.2317 17.9318 15.3574 20 12 20C7.92038 20 4.55399 16.9463 4.06189 13M19.4185 15H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Mulai Chat Baru
+                    </button>
+                </div>
+
+                <!-- Suggestion Grid untuk Chat Aktif -->
+                <div class="chat-suggestions" id="chatSuggestions">
+                    <div class="suggestions-header">
+                        <h3>Pertanyaan Lainnya</h3>
+                    </div>
+                    <div class="suggestion-grid-mini">
+                        <button class="suggestion-chip" data-message="Saya butuh konsultasi dengan psikolog atau psikiater">
+                            <span class="suggestion-chip-icon">👥</span>
+                            Konsultasi
+                        </button>
+                        <button class="suggestion-chip" data-message="Apa saja layanan MediCare?">
+                            <span class="suggestion-chip-icon">🏥</span>
+                            Layanan
+                        </button>
+                        <button class="suggestion-chip" data-message="Berapa biaya konsultasi?">
+                            <span class="suggestion-chip-icon">💰</span>
+                            Biaya
+                        </button>
+                        <button class="suggestion-chip" data-message="Bantuan darurat kesehatan mental">
+                            <span class="suggestion-chip-icon">🆘</span>
+                            Darurat
+                        </button>
+                    </div>
                 </div>
             </div>
 
