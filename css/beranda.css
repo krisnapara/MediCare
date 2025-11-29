@@ -843,15 +843,15 @@
     max-width: 500px;
     margin: 0 auto;
     opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.5s ease;
+    transform: translate(-50%, -50%) translateY(20px);
+    transition: all 0.3s ease;
     text-align: center;
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) translateY(20px);
     z-index: 1000;
     border: 2px solid #e8f4ff;
+    pointer-events: auto;
 }
 
 .mood-feedback.show {
@@ -909,6 +909,7 @@
     min-width: 160px;
     font-family: inherit;
     font-size: 0.95rem;
+    pointer-events: auto;
 }
 
 .feedback-btn.primary {
@@ -955,58 +956,11 @@
     z-index: 999;
     opacity: 0;
     transition: opacity 0.3s ease;
+    pointer-events: auto;
 }
 
 .mood-feedback-overlay.show {
     opacity: 1;
-}
-
-/* Responsive design untuk feedback */
-@media (max-width: 768px) {
-    .mood-feedback {
-        width: 90%;
-        max-width: 400px;
-        padding: 25px 20px;
-        margin: 20px;
-    }
-    
-    .mood-feedback h3 {
-        font-size: 1.3rem;
-    }
-    
-    .mood-feedback p {
-        font-size: 0.95rem;
-    }
-    
-    .feedback-actions {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .feedback-btn {
-        min-width: 100%;
-        padding: 14px 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .mood-feedback {
-        width: 95%;
-        padding: 20px 15px;
-    }
-    
-    .mood-feedback h3 {
-        font-size: 1.2rem;
-    }
-    
-    .mood-feedback p {
-        font-size: 0.9rem;
-    }
-    
-    .feedback-btn {
-        padding: 12px 20px;
-        font-size: 0.9rem;
-    }
 }
 
 /* ================================== RESPONSIVE DESIGN ================================== */
@@ -1151,6 +1105,32 @@
         padding: 10px 20px;
         font-size: 0.9rem;
     }
+    
+    /* Responsive untuk mood feedback */
+    .mood-feedback {
+        width: 90%;
+        max-width: 400px;
+        padding: 25px 20px;
+        margin: 20px;
+    }
+    
+    .mood-feedback h3 {
+        font-size: 1.3rem;
+    }
+    
+    .mood-feedback p {
+        font-size: 0.95rem;
+    }
+    
+    .feedback-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .feedback-btn {
+        min-width: 100%;
+        padding: 14px 20px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1238,6 +1218,25 @@
     }
     
     .explore-section p {
+        font-size: 0.9rem;
+    }
+    
+    /* Responsive untuk feedback mood */
+    .mood-feedback {
+        width: 95%;
+        padding: 20px 15px;
+    }
+    
+    .mood-feedback h3 {
+        font-size: 1.2rem;
+    }
+    
+    .mood-feedback p {
+        font-size: 0.9rem;
+    }
+    
+    .feedback-btn {
+        padding: 12px 20px;
         font-size: 0.9rem;
     }
 }

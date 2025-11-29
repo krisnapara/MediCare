@@ -532,144 +532,160 @@ if (video.paused) {
 
 // ================================== MOOD TRACKER FUNCTIONALITY ==================================
 function initializeMoodTracker() {
-const moodButtons = document.querySelectorAll('.mood-btn');
+    const moodButtons = document.querySelectorAll('.mood-btn');
 
-moodButtons.forEach(button => {
-    button.addEventListener('click', function() {
-        const mood = this.getAttribute('data-mood');
-        showMoodFeedback(mood);
+    moodButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const mood = this.getAttribute('data-mood');
+            showMoodFeedback(mood);
+        });
     });
-});
 }
 
-// ===== FUNGSI MOOD FEEDBACK YANG SUDAH DIKOREKSI DAN DIJAMIN BERFUNGSI =====
 function showMoodFeedback(mood) {
-const feedbackMessages = {
-    happy: {
-        title: "Senang Mendengarnya! 🎉",
-        message: "Luar biasa! Terus pertahankan energi positif Anda. Jika ingin berbagi kebahagiaan lebih lanjut, kami siap mendengarkan.",
-        emoji: "😊"
-    },
-    neutral: {
-        title: "Terima kasih sudah berbagi perasaan!",
-        message: "Terkadang merasa biasa saja itu wajar. 😊 Jika butuh teman bicara, kami di sini untuk Anda.",
-        emoji: "😐"
-    },
-    sad: {
-        title: "Kami di Sini untuk Anda 💙",
-        message: "Perasaan sedih adalah bagian dari kehidupan. Anda tidak sendirian. Mari bicarakan apa yang Anda rasakan.",
-        emoji: "😔"
-    },
-    anxious: {
-        title: "Tenang, Kami Bersama Anda 🕊️",
-        message: "Kecemasan bisa terasa berat, tetapi Anda lebih kuat dari yang Anda kira. Mari kita atasi bersama.",
-        emoji: "😰"
-    },
-    angry: {
-        title: "Kami Memahami Perasaan Anda 🔥",
-        message: "Marah adalah emosi yang valid. Mari kita cari cara sehat untuk mengekspresikannya.",
-        emoji: "😠"
+    const feedbackMessages = {
+        happy: {
+            title: "Senang Mendengarnya! 🎉",
+            message: "Luar biasa! Terus pertahankan energi positif Anda. Jika ingin berbagi kebahagiaan lebih lanjut, kami siap mendengarkan.",
+            emoji: "😊"
+        },
+        neutral: {
+            title: "Terima kasih sudah berbagi perasaan!",
+            message: "Terkadang merasa biasa saja itu wajar. 😊 Jika butuh teman bicara, kami di sini untuk Anda.",
+            emoji: "😐"
+        },
+        sad: {
+            title: "Kami di Sini untuk Anda 💙",
+            message: "Perasaan sedih adalah bagian dari kehidupan. Anda tidak sendirian. Mari bicarakan apa yang Anda rasakan.",
+            emoji: "😔"
+        },
+        anxious: {
+            title: "Tenang, Kami Bersama Anda 🕊️",
+            message: "Kecemasan bisa terasa berat, tetapi Anda lebih kuat dari yang Anda kira. Mari kita atasi bersama.",
+            emoji: "😰"
+        },
+        angry: {
+            title: "Kami Memahami Perasaan Anda 🔥",
+            message: "Marah adalah emosi yang valid. Mari kita cari cara sehat untuk mengekspresikannya.",
+            emoji: "😠"
+        }
+    };
+
+    const feedback = feedbackMessages[mood];
+
+    // Hapus dulu elemen yang mungkin masih ada
+    closeMoodFeedback();
+
+    // Buat overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'mood-feedback-overlay';
+    overlay.id = 'mood-feedback-overlay';
+
+    // Buat elemen feedback
+    const feedbackElement = document.createElement('div');
+    feedbackElement.className = 'mood-feedback';
+    feedbackElement.id = 'mood-feedback-element';
+    feedbackElement.setAttribute('data-mood', mood);
+
+    feedbackElement.innerHTML = `
+        <h3>${feedback.title}</h3>
+        <div class="feedback-message">
+            ${feedback.message}
+        </div>
+        <hr>
+        <p>Ingin berbicara dengan profesional tentang perasaan Anda?</p>
+        <div class="feedback-actions">
+            <button id="btn-mood-konsultasi" class="feedback-btn primary">Konsultasi Sekarang</button>
+            <button id="btn-mood-tamu" class="feedback-btn secondary">Ingin Menjadi Tamu Saja</button>
+        </div>
+    `;
+
+    // Tambahkan ke body
+    document.body.appendChild(overlay);
+    document.body.appendChild(feedbackElement);
+
+    // Event listener untuk tombol konsultasi
+    const consultButton = feedbackElement.querySelector('#btn-mood-konsultasi');
+    if (consultButton) {
+        consultButton.addEventListener('click', function() {
+            redirectToKonsultasiFromMood();
+        });
     }
-};
 
-const feedback = feedbackMessages[mood];
+    // Event listener untuk tombol tamu - PERBAIKAN: langsung panggil close
+    const guestButton = feedbackElement.querySelector('#btn-mood-tamu');
+    if (guestButton) {
+        guestButton.addEventListener('click', function() {
+            closeMoodFeedback(); // Langsung tutup tanpa delay
+        });
+    }
 
-// Buat overlay
-const overlay = document.createElement('div');
-overlay.className = 'mood-feedback-overlay';
+    // Event listener untuk overlay - tutup saat klik di luar
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) {
+            closeMoodFeedback();
+        }
+    });
 
-// Buat elemen feedback
-const feedbackElement = document.createElement('div');
-feedbackElement.className = 'mood-feedback';
+    // Event listener untuk ESC key
+    const closeOnEsc = function(e) {
+        if (e.key === 'Escape') {
+            closeMoodFeedback();
+            document.removeEventListener('keydown', closeOnEsc);
+        }
+    };
+    document.addEventListener('keydown', closeOnEsc);
 
-// Pastikan ID tombol sudah benar di HTML-nya
-feedbackElement.innerHTML = `
-    <h3>${feedback.title}</h3>
-    <div class="feedback-message">
-        ${feedback.message}
-    </div>
-    <hr>
-    <p>Ingin berbicara dengan profesional tentang perasaan Anda?</p>
-    <div class="feedback-actions">
-        <button id="btn-mood-konsultasi" class="feedback-btn primary">Konsultasi Sekarang</button>
-        <button id="btn-mood-tamu" class="feedback-btn secondary">Ingin Menjadi Tamu Saja</button>
-    </div>
-`;
-
-// Tambahkan ke body
-document.body.appendChild(overlay);
-document.body.appendChild(feedbackElement);
-
-// Menambahkan event listener secara manual (cara yang lebih aman)
-const consultButton = feedbackElement.querySelector('#btn-mood-konsultasi');
-const guestButton = feedbackElement.querySelector('#btn-mood-tamu');
-
-if (consultButton) {
-    // Konsultasi akan memicu pop-up otentikasi
-    consultButton.addEventListener('click', redirectToKonsultasiFromMood);
-}
-
-if (guestButton) {
-    // MODIFIKASI FINAL: Tombol ini akan menutup pop-up dan redirect ke beranda tanpa notifikasi
-    guestButton.addEventListener('click', goToBerandaAsGuest);
-}
-
-// Trigger animation
-setTimeout(() => {
-    overlay.classList.add('show');
-    feedbackElement.classList.add('show');
-}, 10);
-
-// Tambahkan event listener untuk overlay
-overlay.addEventListener('click', closeMoodFeedback);
-}
-// ===== AKHIR DARI showMoodFeedback YANG SUDAH DIKOREKSI =====
-
-
-// Fungsi untuk redirect ke konsultasi dari mood tracker
-function redirectToKonsultasiFromMood() {
-closeMoodFeedback();
-// Tampilkan dialog auth untuk konsultasi
-setTimeout(() => {
-    authRedirect('konsultasi.html');
-}, 300);
-}
-
-// FUNGSI BARU/KOREKSI UNTUK TOMBOL TAMU (Menutup Pop-up dan Kembali ke Beranda Tanpa Notifikasi)
-function goToBerandaAsGuest() {
-closeMoodFeedback(); // Tutup pop-up Mood Feedback
-// Langsung arahkan ke halaman beranda (index.html) tanpa parameter notifikasi
-window.location.href = 'index.html';
-}
-
-// Fungsi untuk menutup feedback
-function closeMoodFeedback() {
-const overlay = document.querySelector('.mood-feedback-overlay');
-const feedback = document.querySelector('.mood-feedback');
-
-if (overlay && feedback) {
-    overlay.classList.remove('show');
-    feedback.classList.remove('show');
-
+    // Trigger animation
     setTimeout(() => {
-        if (overlay.parentNode) {
+        overlay.classList.add('show');
+        feedbackElement.classList.add('show');
+    }, 10);
+}
+
+// PERBAIKAN FUNGSI CLOSE - lebih agresif dalam menghapus
+function closeMoodFeedback() {
+    const overlay = document.getElementById('mood-feedback-overlay');
+    const feedback = document.getElementById('mood-feedback-element');
+    
+    // Hapus event listener ESC key
+    document.removeEventListener('keydown', closeMoodFeedback);
+
+    if (overlay) {
+        overlay.classList.remove('show');
+    }
+    if (feedback) {
+        feedback.classList.remove('show');
+    }
+
+    // Hapus elemen dari DOM setelah animasi
+    setTimeout(() => {
+        if (overlay && overlay.parentNode) {
             overlay.parentNode.removeChild(overlay);
         }
-        if (feedback.parentNode) {
+        if (feedback && feedback.parentNode) {
             feedback.parentNode.removeChild(feedback);
         }
     }, 300);
 }
+
+// Fungsi untuk redirect ke konsultasi dari mood tracker
+function redirectToKonsultasiFromMood() {
+    closeMoodFeedback();
+    // Tampilkan dialog auth untuk konsultasi
+    setTimeout(() => {
+        authRedirect('konsultasi.html');
+    }, 300);
 }
 
 // Fungsi lama untuk kompatibilitas
 function trackMood(mood) {
-showMoodFeedback(mood);
+    showMoodFeedback(mood);
 }
 
 // Fungsi untuk reset mood tracker (guest mode)
 function resetMoodTracker() {
-closeMoodFeedback();
+    closeMoodFeedback();
 }
 
 // ================================== CONSULTATION AUTH DIALOG (UNTUK SEMUA TOMBOL KONSULTASI) ==================================
