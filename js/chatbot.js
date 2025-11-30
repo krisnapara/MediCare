@@ -135,49 +135,15 @@ document.addEventListener('DOMContentLoaded', function() {
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
-    // Fungsi untuk menampilkan notifikasi pilihan akun
-    function showAccountNotification() {
-        const notificationHtml = `
-            <div class="account-notification">
-                <div class="notification-header">
-                    <h4>📋 Akses Layanan Konsultasi</h4>
-                </div>
-                <div class="notification-content">
-                    <p>Untuk mengakses layanan konsultasi, Anda perlu memiliki akun MediCare.</p>
-                    <div class="notification-options">
-                        <div class="option-item">
-                            <strong>🔐 Sudah Punya Akun?</strong>
-                            <p>Login untuk langsung mengakses layanan konsultasi</p>
-                            <a href="login.html?return=konsultasi.html" class="notification-button login-btn">
-                                Login Sekarang
-                            </a>
-                        </div>
-                        <div class="option-item">
-                            <strong>📝 Belum Punya Akun?</strong>
-                            <p>Daftar terlebih dahulu untuk membuat akun MediCare</p>
-                            <a href="register.html?return=konsultasi.html" class="notification-button register-btn">
-                                Daftar Sekarang
-                            </a>
-                        </div>
-                    </div>
-                    <div class="notification-footer">
-                        <small>Akun MediCare memberikan akses penuh ke semua layanan konsultasi dengan profesional kesehatan mental.</small>
-                    </div>
-                </div>
-            </div>
-        `;
-        return notificationHtml;
-    }
-
     // Fungsi untuk mendapatkan respon bot
     function getBotResponse(userMessage) {
         const message = userMessage.toLowerCase().trim();
 
-        // HTML untuk tombol konsultasi
+        // HTML untuk tombol konsultasi - DIUBAH MENGGUNAKAN CLASS DARI AUTH.CSS
         const consultationButtonHtml = `
-            <div style="margin-top: 15px; text-align: left;">
-                <button class="chat-button consultation-btn">
-                    Lihat Pilihan Konsultasi
+            <div style="margin-top: 20px; text-align: center;">
+                <button class="auth-btn-primary chat-consultation-btn" style="min-width: 200px;">
+                    Konsultasi Sekarang
                 </button>
             </div>
         `;
@@ -213,22 +179,92 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Fungsi untuk menangani klik tombol konsultasi
+    // Fungsi untuk menangani klik tombol konsultasi - MENGGUNAKAN SISTEM YANG SAMA DENGAN BERANDA
     function handleConsultationButtonClick() {
-        const notificationMessage = showAccountNotification();
-        addMessage(notificationMessage, false);
+        // Gunakan fungsi authRedirect yang sama seperti di halaman beranda
+        if (typeof window.MediCare !== 'undefined' && typeof window.MediCare.authRedirect === 'function') {
+            window.MediCare.authRedirect('konsultasi.html');
+        } else {
+            // Fallback jika objek MediCare tidak tersedia
+            showConsultationAuthDialog('konsultasi.html');
+        }
+    }
+
+    // Fungsi untuk menampilkan dialog auth konsultasi (fallback) - MENGGUNAKAN STYLING DARI AUTH.CSS
+    function showConsultationAuthDialog(targetPage = 'konsultasi.html') {
+        // Buat overlay - menggunakan class dari auth.css
+        const overlay = document.createElement('div');
+        overlay.className = 'auth-dialog-overlay';
+
+        // Buat dialog box - menggunakan class dari auth.css
+        const dialog = document.createElement('div');
+        dialog.className = 'consultation-auth-dialog';
+
+        // Icon Kunci - menggunakan class dari auth.css
+        const lockIcon = document.createElement('div');
+        lockIcon.className = 'auth-lock-icon';
+        lockIcon.innerHTML = '🔒';
+
+        // Tambahkan Icon Kunci ke Dialog
+        dialog.appendChild(lockIcon);
+
+        // Isi Konten Dialog - menggunakan class dari auth.css
+        dialog.innerHTML += `
+            <h3 class="auth-dialog-title">Akses Konsultasi</h3>
+            <p class="auth-dialog-message">
+                Untuk mengakses layanan konsultasi, Anda perlu memiliki akun terlebih dahulu.<br>
+                Apakah Anda sudah memiliki akun?
+            </p>
+            <div class="auth-dialog-actions">
+                <button id="btn-sudah-punya" class="auth-btn-primary">Sudah Punya Akun</button>
+                <button id="btn-belum-punya" class="auth-btn-primary">Belum Punya Akun</button>
+            </div>
+        `;
+
+        overlay.appendChild(dialog);
+        document.body.appendChild(overlay);
+
+        // Event listeners untuk tombol
+        document.getElementById('btn-sudah-punya').addEventListener('click', function() {
+            document.body.removeChild(overlay);
+            // Redirect ke Login dengan return ke targetPage
+            window.location.href = `login.html?return=${encodeURIComponent(targetPage)}`;
+        });
+
+        document.getElementById('btn-belum-punya').addEventListener('click', function() {
+            document.body.removeChild(overlay);
+            // Redirect ke Register dengan return ke targetPage
+            window.location.href = `register.html?return=${encodeURIComponent(targetPage)}`;
+        });
+
+        // Close ketika klik overlay
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) {
+                document.body.removeChild(overlay);
+            }
+        });
+
+        // Close dengan ESC key
+        document.addEventListener('keydown', function closeOnEsc(e) {
+            if (e.key === 'Escape') {
+                if (document.body.contains(overlay)) {
+                    document.body.removeChild(overlay);
+                }
+                document.removeEventListener('keydown', closeOnEsc);
+            }
+        });
     }
 
     // Fungsi untuk menambahkan event listener ke tombol konsultasi
     function addConsultationButtonListener() {
         if (!consultationButtonHandlerAdded) {
-            const consultationBtn = document.querySelector('.consultation-btn');
+            const consultationBtn = document.querySelector('.chat-consultation-btn');
             if (consultationBtn) {
                 // Hapus event listener lama jika ada, lalu tambah yang baru
                 consultationBtn.replaceWith(consultationBtn.cloneNode(true));
                 
                 // Dapatkan tombol yang baru
-                const newConsultationBtn = document.querySelector('.consultation-btn');
+                const newConsultationBtn = document.querySelector('.chat-consultation-btn');
                 newConsultationBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     handleConsultationButtonClick();

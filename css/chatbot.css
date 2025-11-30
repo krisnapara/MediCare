@@ -515,146 +515,6 @@
     text-decoration: none;
 }
 
-/* Account Notification Styles */
-.account-notification {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 0;
-    margin: 10px 0;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-
-.notification-header {
-    background: linear-gradient(135deg, #1a56db 0%, #164bc1 100%);
-    color: white;
-    padding: 16px 20px;
-    border-radius: 10px 10px 0 0;
-}
-
-.notification-header h4 {
-    margin: 0;
-    font-size: 1.1rem;
-    font-weight: 600;
-}
-
-.notification-content {
-    padding: 20px;
-}
-
-.notification-content p {
-    margin: 0 0 20px 0;
-    color: #475569;
-    line-height: 1.5;
-    text-align: center;
-}
-
-.notification-options {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 20px;
-}
-
-.option-item {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
-    text-align: center;
-    transition: all 0.3s ease;
-}
-
-.option-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-color: #1a56db;
-}
-
-.option-item strong {
-    display: block;
-    margin-bottom: 8px;
-    color: #1e293b;
-    font-size: 1rem;
-}
-
-.option-item p {
-    margin: 0 0 15px 0;
-    color: #64748b;
-    font-size: 0.9rem;
-    line-height: 1.4;
-}
-
-.notification-button {
-    display: inline-block;
-    padding: 10px 20px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    width: 100%;
-    text-align: center;
-    box-sizing: border-box;
-}
-
-.login-btn {
-    background: #10b981;
-    color: white !important;
-}
-
-.login-btn:hover {
-    background: #0d9c6d;
-    color: white !important;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-}
-
-.register-btn {
-    background: #1a56db;
-    color: white !important;
-}
-
-.register-btn:hover {
-    background: #164bc1;
-    color: white !important;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(26, 86, 219, 0.3);
-}
-
-.notification-footer {
-    text-align: center;
-    padding-top: 16px;
-    border-top: 1px solid #e2e8f0;
-}
-
-.notification-footer small {
-    color: #64748b;
-    font-size: 0.8rem;
-    line-height: 1.4;
-}
-
-/* Pastikan link dalam chat tidak memiliki target _blank */
-.message-content a {
-    text-decoration: none;
-}
-
-.message-content a:not(.chat-button):not(.notification-button) {
-    color: #1a56db;
-    text-decoration: underline;
-}
-
-.bot-message .message-content a {
-    color: #1a56db;
-    text-decoration: underline;
-}
-
-.bot-message .message-content .chat-button {
-    color: white !important;
-    text-decoration: none;
-    text-align: left;
-}
-
 /* =============== INPUT SECTION & FOOTER =============== */
 .input-section {
     padding: 16px 20px 20px 20px;
@@ -715,9 +575,9 @@
 .send-button {
     background: #1a56db;
     border: none;
-    border-radius: 6px;
-    width: 36px;
-    height: 36px;
+    border-radius: 50%; /* Membuat Bentuk Lingkaran */
+    width: 48px; /* Ukuran lebih besar agar lebih dominan */
+    height: 48px; /* Ukuran lebih besar agar lebih dominan */
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -727,7 +587,6 @@
     margin-left: 12px;
     transition: all 0.2s ease;
 }
-
 .send-button:hover:not(:disabled) {
     background: #164bc1;
 }
@@ -735,7 +594,7 @@
 .send-button:disabled {
     background: #d1d5db;
     cursor: not-allowed;
-    opacity: 0.5;
+    opacity: 0.8;
 }
 
 .input-footer {
