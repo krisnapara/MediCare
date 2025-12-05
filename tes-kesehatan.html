@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tes Kesehatan Mental | Medicare</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/style.css"> 
+    <link rel="stylesheet" href="css/tes-kesehatan.css">
+    <link rel="stylesheet" href="css/auth.css">  
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo" onclick="redirectToHomepage()">
+            <img src="assets/icons/flower.svg" alt="Logo Medicare"> 
+            <span class="logo-text">MediCare</span>
+        </div>
+    
+        <nav class="nav">
+            <ul>
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="artikel.html">Artikel</a></li>
+                <li><a href="tentang.html">Tentang kami</a></li>
+                <li><a href="konsultasi.html">Konsultasi</a></li> 
+            </ul>
+        </nav>
+
+        <div class="profile-icon">
+            <a href="profil.html">
+                <img src="assets/images/profil.jpg" alt="Foto profil pengguna">
+            </a>
+        </div>
+    </header>
+    
+    <main class="full-page-test"> 
+        <section id="intro-layer" class="tes-hero">
+            <div class="hero-content-tes">
+                <i class="fas fa-brain hero-icon"></i>
+                <h1>Cek Kesejahteraan Mental Anda</h1>
+                <p>Tes sederhana ini membantu Anda melakukan **skrining awal** terhadap gejala umum kecemasan dan depresi. Jawaban Anda bersifat rahasia dan akan dianalisis secara anonim. **Durasi: ± 2 menit.**</p>
+                
+                <button id="start-test-btn" class="btn-primary">
+                    Mulai Tes Sekarang <span>&rarr;</span>
+                </button>
+
+                <div class="disclaimer-alert start-alert">
+                </div>
+            </div>
+            
+            <p class="final-disclaimer">
+                **Disclaimer:** Tes ini berfungsi sebagai alat skrining awal dan tidak dapat menggantikan diagnosis, saran, atau perawatan dari profesional kesehatan mental yang berkualifikasi.
+            </p>
+        </section>
+
+        <section id="test-layer" class="test-wrapper hidden">
+            
+            <h2>Area Tes</h2>
+            <form id="mental-health-test-form">
+                <h2>Pertanyaan Skrining (2 Minggu Terakhir)</h2>
+                
+                <div id="questions-container">
+                    <p class="loading-text">Memuat pertanyaan...</p>
+                </div>
+                
+                <div class="form-action">
+                    <button type="submit" id="submit-test-btn" class="btn-primary" disabled>
+                        Selesaikan Tes & Lihat Hasil
+                    </button>
+                </div>
+            </form>
+
+            <div id="result-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn" onclick="closeModal()">&times;</span>
+                    <i id="result-icon" class="fas"></i>
+                    <h2><span id="result-title"></span></h2>
+                    <p class="result-score">Skor Anda: <strong id="final-score">0</strong> / 9</p>
+                    <p id="result-feedback"></p>
+                    
+                    <div class="result-actions">
+                        <a href="konsultasi.html" class="btn-secondary"><i class="fas fa-calendar-check"></i> Konsultasi Sekarang</a>
+                        <a href="index.html" class="btn-tertiary"><i class="fas fa-book-open"></i> Kembali ke Beranda</a>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="final-disclaimer bottom-disclaimer">
+                **Disclaimer:** Tes ini berfungsi sebagai alat skrining awal dan tidak dapat menggantikan diagnosis, saran, atau perawatan dari profesional kesehatan mental yang berkualifikasi.
+            </p>
+        </section>
+        
+    </main>
+
+    <script src="js/script.js"></script>
+    <script src="js/tes-kesehatan.js"></script>
+</body>
+</html>

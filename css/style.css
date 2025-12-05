@@ -25,8 +25,9 @@ main {
     display: flex;
     align-items: center;
     padding: 15px 50px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    /* MODIFIKASI: Latar belakang biru */
+    background-color: #007bff; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -41,61 +42,46 @@ main {
     position: relative;
 }
 
-/* Efek khusus untuk logo di header */
 .logo:hover {
     transform: translateY(-2px);
 }
 
-/* UKURAN LOGO KONSISTEN: 40px */
 .logo img {
     height: 40px;
     width: 40px;
     transition: all 0.5s ease;
-    filter: drop-shadow(0 2px 4px rgba(0, 123, 255, 0.3));
+    /* Filter agar ikon terlihat bagus di background biru */
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
 }
 
 .logo:hover img {
     transform: rotate(12deg) scale(1.1);
-    filter: drop-shadow(0 4px 8px rgba(0, 123, 255, 0.5));
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7));
 }
 
-/* Efek khusus untuk teks MediCare di header - WARNA LEBIH CERAH */
 .logo .logo-text {
     font-size: 1.6rem;
     font-weight: 800;
-    background: linear-gradient(135deg, #00bfff 0%, #007bff 100%); 
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    background-size: 100% 100%; 
-    text-shadow: 0 1px 5px rgba(0, 123, 255, 0.2);
+    /* MODIFIKASI: Teks menjadi putih solid */
+    background: none; 
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: #fff; 
+    background-clip: unset;
+    /* Shadow untuk kontras */
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
     position: relative;
     letter-spacing: -0.5px;
     transition: all 0.3s ease;
 }
 
-/* Glow effect pada hover di header */
+/* Hapus animasi glow pada hover untuk kesederhanaan di background biru */
 .logo:hover .logo-text {
-    animation: headerGlow 1.5s ease-in-out infinite;
-    background: linear-gradient(135deg, #007bff 0%, #00b7ff 50%, #007bff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    animation: none;
+    background: none;
+    -webkit-text-fill-color: #fff;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
 
-@keyframes headerGlow {
-    0%, 100% {
-        text-shadow: 0 1px 5px rgba(0, 123, 255, 0.3),
-                     0 2px 10px rgba(0, 123, 255, 0.2);
-    }
-    50% {
-        text-shadow: 0 1px 8px rgba(0, 123, 255, 0.4),
-                     0 3px 15px rgba(0, 123, 255, 0.3),
-                     0 4px 20px rgba(0, 123, 255, 0.2);
-    }
-}
-
-/* Pulse effect subtle untuk header */
 .logo::after {
     content: '';
     position: absolute;
@@ -103,7 +89,8 @@ main {
     left: 50%;
     width: 50px;
     height: 50px;
-    background: radial-gradient(circle, rgba(0, 123, 255, 0.08) 0%, transparent 70%);
+    /* MODIFIKASI: Radial glow putih */
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
     border-radius: 50%;
     transform: translate(-50%, -50%) scale(0);
     transition: transform 0.5s ease;
@@ -128,7 +115,8 @@ main {
 
 .nav a {
     text-decoration: none;
-    color: #555;
+    /* MODIFIKASI: Teks menjadi putih */
+    color: #fff; 
     padding: 8px 16px;
     transition: all 0.3s ease;
     border-radius: 6px;
@@ -137,18 +125,20 @@ main {
 }
 
 .nav a.active {
+    /* Background tetap biru, tambahkan border putih halus */
     background-color: #007bff;
     color: white;
-    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5) inset; 
 }
 
 .nav a:hover:not(.active) {
-    background-color: #f8f9fa;
-    color: #007bff;
+    /* MODIFIKASI: Background hover biru gelap */
+    background-color: #0056b3; 
+    color: white;
     transform: translateY(-2px);
 }
 
-/* Style untuk Foto Profil - UKURAN KONSISTEN: 40px */
+/* Style untuk Foto Profil */
 .profile-icon {
     width: 40px;
     height: 40px;
@@ -157,13 +147,15 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid transparent;
+    /* MODIFIKASI: Border transparan putih */
+    border: 2px solid rgba(255, 255, 255, 0.5); 
     transition: all 0.3s ease;
     cursor: pointer !important;
 }
 
 .profile-icon:hover {
-    border-color: #007bff;
+    /* MODIFIKASI: Border hover menjadi putih solid */
+    border-color: #fff;
     transform: scale(1.05);
 }
 
@@ -183,14 +175,15 @@ main {
 
 /* ================================== MODERN FOOTER STYLES ================================== */
 .footer {
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-    color: #ffffff;
+    /* MODIFIKASI: Latar belakang biru yang sama dengan header */
+    background: #007bff;
+    color: #fff;
     margin-top: 80px;
     position: relative;
     overflow: hidden;
 }
 
-/* Wave Effect */
+/* Wave Effect disesuaikan untuk background body (#f8f8f8) */
 .footer::before {
     content: '';
     position: absolute;
@@ -198,7 +191,7 @@ main {
     left: 0;
     width: 100%;
     height: 30px;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' fill='%232c3e50'%3E%3C/path%3E%3C/svg%3E");
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' fill='%23f8f8f8'%3E%3C/path%3E%3C/svg%3E");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -230,50 +223,47 @@ main {
     transition: all 0.3s ease;
 }
 
-/* Efek khusus untuk logo di footer */
 .footer-logo:hover {
     transform: translateY(-3px);
 }
 
-/* UKURAN LOGO FOOTER KONSISTEN: 40px */
 .footer-logo img {
     width: 40px;
     height: 40px;
     background: transparent;
     transition: all 0.5s ease;
-    filter: drop-shadow(0 4px 8px rgba(0, 123, 255, 0.3));
+    /* Filter agar ikon terlihat bagus di background biru */
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
 }
 
 .footer-logo:hover img {
     transform: rotate(15deg) scale(1.1);
-    filter: drop-shadow(0 6px 12px rgba(0, 123, 255, 0.5));
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
 }
 
-/* Efek khusus untuk teks MediCare di footer - WARNA LEBIH CERAH */
 .footer-logo .logo-text {
     font-size: 2rem;
     font-weight: 800;
-    background: linear-gradient(135deg, #00bfff 0%, #007bff 100%); 
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    background-size: 100% 100%; 
-    text-shadow: 0 2px 10px rgba(0, 123, 255, 0.2);
+    /* MODIFIKASI: Teks menjadi putih solid */
+    background: none; 
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: #fff; 
+    background-clip: unset;
+    /* Shadow untuk kontras */
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     position: relative;
     letter-spacing: -0.5px;
     transition: all 0.3s ease;
 }
 
-/* Glow effect pada hover di footer */
+/* Hapus animasi glow pada hover untuk kesederhanaan di background biru */
 .footer-logo:hover .logo-text {
-    animation: headerGlow 1.5s ease-in-out infinite;
-    background: linear-gradient(135deg, #007bff 0%, #00b7ff 50%, #007bff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    animation: none;
+    background: none;
+    -webkit-text-fill-color: #fff;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
-/* Pulse effect subtle untuk footer */
 .footer-logo::after {
     content: '';
     position: absolute;
@@ -281,7 +271,8 @@ main {
     left: 50%;
     width: 60px;
     height: 60px;
-    background: radial-gradient(circle, rgba(0, 123, 255, 0.1) 0%, transparent 70%);
+    /* MODIFIKASI: Radial glow putih */
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
     border-radius: 50%;
     transform: translate(-50%, -50%) scale(0);
     transition: transform 0.5s ease;
@@ -304,7 +295,8 @@ main {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #bdc3c7;
+    /* MODIFIKASI: Warna teks menjadi putih */
+    color: #fff; 
     text-decoration: none;
     font-size: 0.95rem;
     transition: all 0.3s ease;
@@ -313,7 +305,8 @@ main {
 }
 
 .footer-brand .social-link:hover {
-    color: #007bff;
+    /* MODIFIKASI: Warna hover menjadi biru gelap */
+    color: #0056b3;
     transform: translateX(5px);
 }
 
@@ -324,12 +317,14 @@ main {
 }
 
 .footer-brand .social-icon path {
-    fill: #bdc3c7;
+    /* MODIFIKASI: Warna ikon menjadi putih */
+    fill: #fff;
     transition: fill 0.3s ease;
 }
 
 .footer-brand .social-link:hover .social-icon path {
-    fill: #007bff;
+    /* MODIFIKASI: Warna hover ikon menjadi biru gelap */
+    fill: #0056b3;
 }
 
 /* Footer Sections */
@@ -338,7 +333,8 @@ main {
 }
 
 .footer-section h4 {
-    color: #007bff;
+    /* MODIFIKASI: Warna judul section menjadi putih */
+    color: #fff;
     margin-bottom: 20px;
     font-size: 1.1rem;
     font-weight: 600;
@@ -357,7 +353,8 @@ main {
 }
 
 .footer-links a {
-    color: #bdc3c7;
+    /* MODIFIKASI: Warna tautan menjadi putih */
+    color: #fff;
     text-decoration: none;
     font-size: 0.95rem;
     transition: all 0.3s ease;
@@ -368,7 +365,8 @@ main {
 }
 
 .footer-links a:hover {
-    color: #007bff;
+    /* MODIFIKASI: Warna hover menjadi biru gelap */
+    color: #0056b3;
     transform: translateX(5px);
 }
 
@@ -376,18 +374,21 @@ main {
 .footer-section .newsletter {
     margin-top: 25px;
     padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    /* Border putih transparan */
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .footer-section .newsletter h5 {
-    color: #007bff;
+    /* MODIFIKASI: Warna judul newsletter menjadi putih */
+    color: #fff;
     margin-bottom: 8px;
     font-size: 1rem;
     font-weight: 600;
 }
 
 .footer-section .newsletter p {
-    color: #bdc3c7;
+    /* MODIFIKASI: Warna teks newsletter menjadi putih */
+    color: #fff;
     font-size: 0.8rem;
     margin-bottom: 12px;
     line-height: 1.4;
@@ -401,9 +402,10 @@ main {
 
 .footer-section .newsletter-form input {
     padding: 8px 10px;
-    border: 1px solid #34495e;
+    /* MODIFIKASI: Border dan background menjadi biru gelap */
+    border: 1px solid #0056b3;
     border-radius: 5px;
-    background: #2c3e50;
+    background: #0056b3;
     color: white;
     font-size: 0.85rem;
     width: 100%;
@@ -412,17 +414,19 @@ main {
 
 .footer-section .newsletter-form input:focus {
     outline: none;
-    border-color: #007bff;
-    background: #34495e;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+    /* MODIFIKASI: Border dan shadow fokus putih */
+    border-color: #fff;
+    background: #0056b3;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
 }
 
 .footer-section .newsletter-form input::placeholder {
-    color: #95a5a6;
+    color: #ccc;
 }
 
 .footer-section .btn-subscribe {
-    background: #007bff;
+    /* MODIFIKASI: Background tombol menjadi biru gelap */
+    background: #0056b3;
     color: white;
     border: none;
     padding: 8px 12px;
@@ -435,16 +439,20 @@ main {
 }
 
 .footer-section .btn-subscribe:hover {
-    background: #0056b3;
+    /* MODIFIKASI: Background hover menjadi putih, teks biru */
+    background: #fff;
+    color: #007bff;
     transform: translateY(-1px);
 }
 
 /* Footer Bottom */
 .footer-bottom {
-    background: rgba(26, 35, 47, 0.9);
-    backdrop-filter: blur(10px);
+    /* MODIFIKASI: Background menjadi biru gelap */
+    background: #0056b3;
+    backdrop-filter: none;
     padding: 25px 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    /* Border top putih transparan */
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
     margin-top: 20px;
 }
 
@@ -460,7 +468,8 @@ main {
 }
 
 .footer-bottom p {
-    color: #95a5a6;
+    /* MODIFIKASI: Teks menjadi putih */
+    color: #fff;
     font-size: 0.9rem;
     margin: 0;
 }
@@ -472,7 +481,8 @@ main {
 }
 
 .footer-bottom-links a {
-    color: #95a5a6;
+    /* MODIFIKASI: Teks menjadi putih */
+    color: #fff;
     text-decoration: none;
     font-size: 0.85rem;
     transition: color 0.3s ease;
@@ -481,10 +491,11 @@ main {
 }
 
 .footer-bottom-links a:hover {
-    color: #007bff;
+    /* MODIFIKASI: Teks hover menjadi abu-abu terang */
+    color: #ccc;
 }
 
-/* ================================== ENHANCED CHATBOT BUTTON STYLES ================================== */
+/* ================================== ENHANCED CHATBOT BUTTON STYLES (Dipertahankan) ================================== */
 .chatbot-container {
     position: fixed;
     bottom: 25px;
@@ -715,241 +726,6 @@ main {
     .footer-links a:hover,
     .footer-brand .social-link:hover {
         transform: none;
-    }
-}
-
-@media (max-width: 480px) {
-    .chatbot-container {
-        bottom: 15px;
-        right: 15px;
-    }
-    
-    .chatbot-toggle-btn {
-        width: 55px;
-        height: 55px;
-        font-size: 1.5rem;
-    }
-    
-    .chatbot-toggle-btn {
-        animation: 
-            chatbotPulse 4s ease-in-out infinite,
-            floatChatbot 8s ease-in-out infinite;
-    }
-    
-    /* Mobile header & footer adjustments */
-    .logo img {
-        height: 32px;
-        width: 32px;
-    }
-    
-    .logo .logo-text {
-        font-size: 1.3rem;
-    }
-    
-    .footer-logo img {
-        width: 32px;
-        height: 32px;
-    }
-    
-    .footer-logo .logo-text {
-        font-size: 1.6rem;
-    }
-    
-    .profile-icon {
-        width: 32px;
-        height: 32px;
-    }
-    
-    .logo .logo-text,
-    .footer-logo .logo-text {
-        animation: none;
-        background-size: 100% 100%;
-    }
-    
-    .logo:hover .logo-text,
-    .footer-logo:hover .logo-text {
-        animation: headerGlow 4s ease-in-out infinite;
-    }
-}
-
-/* Utility Classes */
-.btn-primary {
-    background: linear-gradient(135deg, #007bff, #0056b3);
-    color: white;
-    padding: 14px 32px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer !important;
-    font-weight: 600;
-    text-decoration: none;
-    display: inline-block;
-    transition: all 0.3s ease;
-    font-size: 1.05rem;
-    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-.btn-primary:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s ease;
-}
-
-.btn-primary:hover:before {
-    left: 100%;
-}
-
-.btn-primary:hover {
-    background: linear-gradient(135deg, #0056b3, #004494);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.4);
-    color: white;
-    text-decoration: none;
-}
-
-.card {
-    background-color: #fff;
-    padding: 35px;
-    border-radius: 15px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-    margin-bottom: 30px;
-    transition: all 0.3s ease;
-    border: 1px solid #f0f0f0;
-}
-
-.card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 40px rgba(0, 123, 255, 0.15);
-}
-
-.small-text {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: #666;
-}
-
-/* ================================== RESPONSIVE DESIGN ================================== */
-@media (max-width: 1024px) {
-    .header {
-        padding: 15px 30px;
-    }
-    
-    .nav ul {
-        gap: 25px;
-    }
-    
-    .footer-content {
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 30px;
-    }
-    
-    .footer-brand {
-        grid-column: 1 / -1;
-        text-align: center;
-        margin-bottom: 10px;
-    }
-    
-    .footer-logo {
-        justify-content: center;
-    }
-    
-    .footer-brand .social-links {
-        align-items: center;
-    }
-}
-
-@media (max-width: 768px) {
-    .header {
-        padding: 12px 20px;
-        flex-wrap: wrap;
-    }
-    
-    .nav {
-        order: 3;
-        margin: 15px auto 0;
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .nav ul {
-        gap: 15px;
-    }
-    
-    .nav a {
-        padding: 6px 12px;
-        font-size: 0.9rem;
-    }
-    
-    main {
-        padding: 20px 15px;
-    }
-    
-    .footer::before {
-        top: -12px;
-        height: 25px;
-    }
-    
-    .footer-content {
-        grid-template-columns: 1fr 1fr;
-        gap: 30px;
-        padding: 50px 20px 30px;
-        text-align: center;
-    }
-    
-    .footer-brand {
-        grid-column: 1 / -1;
-    }
-    
-    .footer-section {
-        margin-bottom: 10px;
-    }
-    
-    .footer-section h4 {
-        margin-bottom: 15px;
-        font-size: 1rem;
-    }
-    
-    .footer-bottom-content {
-        flex-direction: column;
-        text-align: center;
-        gap: 15px;
-    }
-    
-    .footer-bottom-links {
-        justify-content: center;
-        gap: 15px;
-    }
-    
-    .footer-brand .social-links {
-        gap: 10px;
-    }
-    
-    .footer-brand .social-link {
-        justify-content: center;
-        padding: 6px 0;
-    }
-    
-    .footer-logo {
-        justify-content: center;
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
-    
-    .footer-section .newsletter {
-        text-align: center;
-        margin-top: 20px;
-    }
-    
-    .footer-section .newsletter-form {
-        max-width: 200px;
-        margin: 0 auto;
     }
 }
 

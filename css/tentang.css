@@ -414,7 +414,7 @@
 }
 
 .cta-secondary-link a {
-    color: #ffd700;
+    color: white;
     font-weight: bold;
     text-decoration: none;
     transition: all 0.3s ease;
@@ -425,7 +425,7 @@
 .cta-secondary-link a:hover {
     color: white;
     text-decoration: none;
-    border-bottom: 2px solid #ffd700;
+    border-bottom: 2px solid white;
 }
 
 /* ================================== RESPONSIVE DESIGN ================================== */

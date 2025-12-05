@@ -1,0 +1,367 @@
+/* ================================== TEMA KESEHATAN MENTAL (Mengikuti Tema Biru) ================================== */
+
+/* --- Hero Section (Gaya Pembuka Tes) --- */
+.tes-hero {
+    /* Menggunakan gradien biru */
+    background: linear-gradient(135deg, #e8f4ff, #d4e7ff);
+    padding: 80px 5%;
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto; 
+    border-radius: 0; 
+    
+    /* Menyesuaikan tinggi agar mengisi sisa layar setelah header (Asumsi tinggi header 80px) */
+    min-height: calc(100vh - 80px); 
+    
+    display: flex;
+    flex-direction: column; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+.hero-content-tes {
+    width: 100%;
+    flex-grow: 1; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px; 
+}
+
+.hero-content-tes h1 {
+    font-size: 2.5rem;
+    color: #007bff;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.hero-content-tes p {
+    font-size: 1.1rem;
+    color: #555;
+    max-width: 700px;
+    margin: 0 auto 30px;
+    line-height: 1.6;
+}
+
+.hero-icon {
+    font-size: 3em;
+    color: #0056b3; 
+    margin-bottom: 15px;
+}
+
+/* --- DISCLAIMER ALERT LAMA (DIBAWAH TOMBOL, MINIMALIS) --- */
+.disclaimer-alert {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 0; 
+    margin: 25px auto 0;
+    max-width: 550px;
+    
+    /* MENGHILANGKAN BORDER DAN BACKGROUND */
+    background-color: transparent; 
+    border-left: none; 
+    color: #dc3545; /* Warna teks peringatan */
+    border-radius: 0;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.disclaimer-alert i {
+    font-size: 1.1em;
+}
+
+
+/* --- GAYA DISCLAIMER BARU (FINAL-DISCLAIMER) --- */
+.final-disclaimer {
+    width: 100%;
+    max-width: 1200px;
+    padding: 15px 5%;
+    margin: 0 auto;
+    font-size: 0.85rem;
+    color: #6c757d; /* Warna abu-abu netral */
+    text-align: center;
+    background-color: #f8f9fa; /* Latar belakang sangat terang */
+    border-top: 1px solid #e9ecef;
+}
+
+/* --- Area Tes dan Kontainer (Layer 2) --- */
+.test-wrapper {
+    max-width: 900px;
+    margin: 0 auto; 
+    padding: 40px 20px;
+    min-height: calc(100vh - 80px); 
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Tambahan: Untuk meratakan tengah teks "Area Tes" */
+.test-wrapper h2:first-child { 
+    text-align: center;
+}
+
+.test-wrapper form {
+    flex-grow: 1; 
+}
+
+.bottom-disclaimer {
+    margin-top: 30px; 
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* --- Gaya Tambahan untuk Tampilan Penuh --- */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.full-page-test {
+    width: 100%;
+}
+
+
+/* --- Formulir dan Pertanyaan --- */
+#mental-health-test-form h2 {
+    color: #007bff;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-align: center; /* <<< MODIFIKASI: Meratakan tengah teks "Pertanyaan Skrining..." */
+}
+
+.question-card {
+    background-color: #fff;
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+    transition: transform 0.3s ease;
+}
+
+.question-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.15);
+}
+
+.question-card.answered {
+    border: 2px solid #007bff; 
+}
+
+.question-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.options-group label {
+    display: block;
+    background-color: #f8f8f8;
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.options-group label:hover {
+    background-color: #e8f4ff; 
+    border-color: #007bff;
+}
+
+.options-group input[type="radio"]:checked + span {
+    font-weight: bold;
+    color: #0056b3;
+}
+
+.options-group input[type="radio"] {
+    margin-right: 10px;
+    accent-color: #007bff; 
+}
+
+.form-action {
+    text-align: center;
+    margin-top: 40px;
+}
+
+/* Tombol Primary (Mulai Tes/Belum Siap Submit) */
+.btn-primary {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+    background: linear-gradient(135deg, #0056b3, #004085);
+}
+
+/* Tombol Submit Saat Sudah Siap (Secondary/Final) */
+.btn-secondary {
+    background: linear-gradient(135deg, #0056b3, #004085);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.5);
+    border: none;
+    cursor: pointer;
+}
+
+.btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.6);
+}
+
+#submit-test-btn:disabled {
+    background: #ccc;
+    color: #888;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* --- Modal Hasil --- */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6); 
+    padding-top: 50px;
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.3s;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #333;
+    text-decoration: none;
+}
+
+#result-icon {
+    font-size: 3em;
+    margin-bottom: 15px;
+}
+
+.modal-content.high #result-icon { color: #dc3545; } 
+.modal-content.medium #result-icon { color: #ffc107; } 
+.modal-content.low #result-icon { color: #28a745; } 
+
+.result-score {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 15px 0;
+    border-top: 1px dashed #e9ecef;
+    padding-top: 15px;
+    color: #333;
+}
+
+.result-actions {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.result-actions .btn-secondary {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+.result-actions .btn-secondary:hover {
+    background: linear-gradient(135deg, #0056b3, #004085);
+    transform: translateY(-1px);
+}
+
+.btn-tertiary {
+    background: #f8f9fa;
+    color: #333;
+    padding: 10px 15px;
+    border-radius: 25px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid #e0e0e0;
+    font-size: 0.95rem;
+}
+
+.btn-tertiary:hover {
+    background: #e9ecef;
+    border-color: #007bff;
+    color: #007bff;
+    transform: translateY(-1px);
+}
+
+/* Animasi */
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(-20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    .tes-hero {
+        padding: 50px 20px;
+        min-height: calc(100vh - 60px); 
+    }
+
+    .hero-content-tes h1 {
+        font-size: 2rem;
+    }
+
+    .test-wrapper {
+        padding: 30px 20px;
+        min-height: calc(100vh - 60px);
+    }
+    
+    .disclaimer-alert {
+        font-size: 0.9rem;
+    }
+}
