@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import db from "./db.js";
+import "./db.js"; 
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import doctorRoutes from "./routes/doctors.js";
@@ -16,7 +16,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// API PREFIX
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/doctors", doctorRoutes);
@@ -24,7 +23,16 @@ app.use("/api/reservations", reservationRoutes);
 app.use("/api/questions", questionRoutes);
 app.use("/api/answers", answerRoutes);
 
-// PORT CONFIG
+
+app.get("/", (req, res) => {
+  res.json({ message: "MediCare API is running" });
+});
+
+app.use((err, req, res, next) => {
+  console.error("Unhandled error:", err);
+  res.status(500).json({ message: "Internal server error" });
+});
+
 const PORT = process.env.PORT || 5055;
 
 app.listen(PORT, () => {
