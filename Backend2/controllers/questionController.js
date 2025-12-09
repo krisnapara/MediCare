@@ -1,8 +1,12 @@
 import db from "../db.js";
 
 export const getQuestions = (req, res) => {
-  db.query("SELECT * FROM questions", (err, result) => {
-    if (err) return res.status(500).json(err);
+  const sql = "SELECT * FROM questions";
+  db.query(sql, (err, result) => {
+    if (err) {
+      console.error("Error getQuestions:", err);
+      return res.status(500).json({ message: "Gagal mengambil pertanyaan" });
+    }
     res.json(result);
   });
 };

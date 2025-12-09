@@ -5,11 +5,16 @@ import bcrypt from "bcryptjs";
 export const getUserById = (req, res) => {
   const userId = req.params.id;
 
-  const sql = "SELECT user_id, name, email, created_at FROM users WHERE user_id = ?";
+  const sql =
+    "SELECT user_id, name, email, created_at FROM users WHERE user_id = ?";
   db.query(sql, [userId], (err, results) => {
-    if (err) return res.status(500).json(err);
-    if (results.length === 0)
+    if (err) {
+      console.error("Error getUserById:", err);
+      return res.status(500).json({ message: "Gagal mengambil data user" });
+    }
+    if (results.length === 0) {
       return res.status(404).json({ message: "User not found" });
+    }
 
     res.json(results[0]);
   });
@@ -47,7 +52,10 @@ export const updateUser = (req, res) => {
   values.push(userId);
 
   db.query(sql, values, (err) => {
-    if (err) return res.status(500).json(err);
+    if (err) {
+      console.error("Error updateUser:", err);
+      return res.status(500).json({ message: "Gagal mengupdate user" });
+    }
     res.json({ message: "User updated" });
   });
 };
@@ -58,7 +66,10 @@ export const deleteUser = (req, res) => {
 
   const sql = "DELETE FROM users WHERE user_id = ?";
   db.query(sql, [userId], (err) => {
-    if (err) return res.status(500).json(err);
+    if (err) {
+      console.error("Error deleteUser:", err);
+      return res.status(500).json({ message: "Gagal menghapus user" });
+    }
     res.json({ message: "User deleted" });
   });
 };

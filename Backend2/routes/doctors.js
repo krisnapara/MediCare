@@ -4,7 +4,7 @@ import {
   getDoctorById,
   createDoctor,
   updateDoctor,
-  deleteDoctor
+  deleteDoctor,
 } from "../controllers/doctorController.js";
 
 import auth from "../middleware/authMiddleware.js";
@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.get("/", getAllDoctors);
 router.get("/:id", getDoctorById);
-router.post("/", auth, createDoctor);  
+router.post("/", auth, createDoctor);
 router.put("/:id", auth, updateDoctor);
 router.delete("/:id", auth, deleteDoctor);
 
