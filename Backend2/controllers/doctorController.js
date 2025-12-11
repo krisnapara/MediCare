@@ -26,19 +26,10 @@ export const getDoctorById = (req, res) => {
 };
 
 export const createDoctor = (req, res) => {
-  const {
-    name,
-    profession,
-    quota,
-    available_start,
-    available_end,
-    consultation_link,
-  } = req.body;
+  const { name, profession, quota, available_start, available_end, consultation_link } = req.body;
 
   if (!name || !profession || !quota) {
-    return res
-      .status(400)
-      .json({ message: "Name, profession, dan quota wajib diisi" });
+    return res.status(400).json({ message: "Name, profession, dan quota wajib diisi" });
   }
 
   const sql = `
@@ -47,28 +38,17 @@ export const createDoctor = (req, res) => {
     VALUES (?, ?, ?, ?, ?, ?)
   `;
 
-  db.query(
-    sql,
-    [name, profession, quota, available_start, available_end, consultation_link],
-    (err) => {
-      if (err) {
-        console.error("Error createDoctor:", err);
-        return res.status(500).json({ message: "Gagal menambah dokter" });
-      }
-      res.json({ message: "Doctor added" });
+  db.query(sql, [name, profession, quota, available_start, available_end, consultation_link], (err) => {
+    if (err) {
+      console.error("Error createDoctor:", err);
+      return res.status(500).json({ message: "Gagal menambah dokter" });
     }
-  );
+    res.json({ message: "Doctor added" });
+  });
 };
 
 export const updateDoctor = (req, res) => {
-  const {
-    name,
-    profession,
-    quota,
-    available_start,
-    available_end,
-    consultation_link,
-  } = req.body;
+  const { name, profession, quota, available_start, available_end, consultation_link } = req.body;
 
   const sqlCheck = "SELECT doctor_id FROM doctor WHERE doctor_id = ?";
   db.query(sqlCheck, [req.params.id], (err, rows) => {
@@ -86,25 +66,13 @@ export const updateDoctor = (req, res) => {
       WHERE doctor_id = ?
     `;
 
-    db.query(
-      sql,
-      [
-        name,
-        profession,
-        quota,
-        available_start,
-        available_end,
-        consultation_link,
-        req.params.id,
-      ],
-      (err2) => {
-        if (err2) {
-          console.error("Error updateDoctor:", err2);
-          return res.status(500).json({ message: "Gagal update data dokter" });
-        }
-        res.json({ message: "Doctor updated" });
+    db.query(sql, [name, profession, quota, available_start, available_end, consultation_link, req.params.id], (err2) => {
+      if (err2) {
+        console.error("Error updateDoctor:", err2);
+        return res.status(500).json({ message: "Gagal update data dokter" });
       }
-    );
+      res.json({ message: "Doctor updated" });
+    });
   });
 };
 
