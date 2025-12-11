@@ -16,7 +16,7 @@ export const saveAnswers = (req, res) => {
   }
 
   const sql =
-    "INSERT INTO answers (reservation_id, question_id, answer_text) VALUES ?";
+    "INSERT INTO answer (reservation_id, question_id, answer_text) VALUES ?";
 
   db.query(sql, [values], (err) => {
     if (err) {
