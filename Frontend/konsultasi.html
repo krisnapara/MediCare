@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Konseling Online | Medicare</title>
+    <title>Konseling Online | Medicare</title> 
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/konsultasi.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -74,22 +74,14 @@
                             <input type="text" id="nik" name="nik" required>
                         </div>
                         
-                        <!-- Tanggal Lahir dengan Dropdown Terpisah - DENGAN PLACEHOLDER -->
-                        <div class="form-group">
+                        <div class="form-group date-container">
                             <label for="birthDate">Tanggal Lahir</label>
                             <div class="birth-date-container">
                                 <div class="date-select-group">
-                                    <select id="birthDay" name="birthDay" required>
-                                        <!-- Options akan diisi oleh JavaScript dengan placeholder -->
-                                    </select>
-                                    <select id="birthMonth" name="birthMonth" required>
-                                        <!-- Options akan diisi oleh JavaScript dengan placeholder -->
-                                    </select>
-                                    <select id="birthYear" name="birthYear" required>
-                                        <!-- Options akan diisi oleh JavaScript dengan placeholder -->
-                                    </select>
+                                    <select id="birthDay" name="birthDay" required></select>
+                                    <select id="birthMonth" name="birthMonth" required></select>
+                                    <select id="birthYear" name="birthYear" required></select>
                                 </div>
-                                <!-- Input tersembunyi untuk menyimpan tanggal lengkap -->
                                 <input type="hidden" id="birthDate" name="birthDate" required>
                             </div>
                         </div>
@@ -215,95 +207,95 @@
                 </form>
             </div>
         </section>
+        
+    </main> 
 
-        <section id="appointmentResult" class="appointment-result-container" style="display: none;">
-            <div class="appointment-result">
-                <div class="appointment-header">
-                    <div class="appointment-success-icon">✓</div>
-                    <h2>Konsultasi Berhasil Dijadwalkan!</h2>
-                    <p>Detail konsultasi Anda telah berhasil dicetak.</p>
-                </div>
+    <section id="appointmentResult" class="appointment-result-container" style="display: none;">
+        <div class="appointment-result">
+            <div class="appointment-header">
+                <div class="appointment-success-icon">✓</div>
+                <h2>Konsultasi Berhasil Dijadwalkan!</h2>
+                <p>Detail konsultasi Anda telah berhasil dicetak.</p>
+            </div>
 
-                <div class="appointment-details">
-                    <div class="detail-section">
-                        <h3>Informasi Pasien</h3>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <span class="detail-label">Nama Lengkap</span>
-                                <span class="detail-value" id="resultName">-</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Email</span>
-                                <span class="detail-value" id="resultEmail">-</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">No. Telepon</span>
-                                <span class="detail-value" id="resultPhone">-</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Tanggal Lahir</span>
-                                <span class="detail-value" id="resultBirthDate">-</span>
-                            </div>
+            <div class="appointment-details">
+                <div class="detail-section">
+                    <h3>Informasi Pasien</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">Nama Lengkap</span>
+                            <span class="detail-value" id="resultName">-</span>
                         </div>
-                    </div>
-                    
-                    <div class="detail-section">
-                        <h3>Detail Konsultasi</h3>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <span class="detail-label">Psikolog</span>
-                                <span class="detail-value" id="resultDoctor">-</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Tanggal</span>
-                                <span class="detail-value" id="resultDate">-</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Waktu</span>
-                                <span class="detail-value" id="resultTime">-</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Jenis Konsultasi</span>
-                                <span class="detail-value" id="resultType">-</span>
-                            </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Email</span>
+                            <span class="detail-value" id="resultEmail">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">No. Telepon</span>
+                            <span class="detail-value" id="resultPhone">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Tanggal Lahir</span>
+                            <span class="detail-value" id="resultBirthDate">-</span>
                         </div>
                     </div>
                 </div>
                 
-                <div class="appointment-instructions">
-                    <div class="instructions-header">
-                        Petunjuk Konsultasi
-                    </div>
-                    <div class="instructions-content">
-                        <p>Berikut adalah petunjuk untuk konsultasi online Anda:</p>
-                        <ul>
-                            <li>Pastikan koneksi internet stabil sebelum sesi dimulai</li>
-                            <li>Siapkan ruangan yang nyaman dan privasi terjaga</li>
-                            <li>Gunakan headset untuk kualitas audio yang lebih baik</li>
-                            <li>Bergabunglah 5 menit sebelum jadwal konsultasi dimulai</li>
-                            <li>Siapkan pertanyaan atau topik yang ingin didiskusikan</li>
-                        </ul>
-                        <div class="note-box">
-                            <strong>Catatan:</strong> 
-                            <div id="telegramNote"></div>
+                <div class="detail-section">
+                    <h3>Detail Konsultasi</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">Psikolog</span>
+                            <span class="detail-value" id="resultDoctor">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Tanggal</span>
+                            <span class="detail-value" id="resultDate">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Waktu</span>
+                            <span class="detail-value" id="resultTime">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Jenis Konsultasi</span>
+                            <span class="detail-value" id="resultType">-</span>
                         </div>
                     </div>
                 </div>
-                <div class="appointment-actions">
-                    <button class="btn-back">Kembali ke Beranda</button>
-                    <button class="btn-print">Print</button>
-                    <button class="btn-download">Download Hasil</button>
-                </div>
             </div>
-        </section>
-        
-    </main> 
+            
+            <div class="appointment-instructions">
+                <div class="instructions-header">
+                    Petunjuk Konsultasi
+                </div>
+                <div class="instructions-content">
+                    <p>Berikut adalah petunjuk untuk konsultasi online Anda:</p>
+                    <ul>
+                        <li>Pastikan koneksi internet stabil sebelum sesi dimulai</li>
+                        <li>Siapkan ruangan yang nyaman dan privasi terjaga</li>
+                        <li>Gunakan headset untuk kualitas audio yang lebih baik</li>
+                        <li>Bergabunglah 5 menit sebelum jadwal konsultasi dimulai</li>
+                        <li>Siapkan pertanyaan atau topik yang ingin didiskusikan</li>
+                    </ul>
+                    <div class="note-box">
+                        <strong>Catatan:</strong> 
+                        <div id="telegramNote"></div>
+                    </div>
+                    </div>
+            </div>
+        </div>
+    </section>
+    <div class="appointment-actions" style="display: none;">
+        <button class="btn-back">Kembali ke Beranda</button>
+        <button class="btn-print">Print Hasil</button>
+        <button class="btn-download">Download PDF</button>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/id.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="js/konseling-online.js"></script>
-     <script src="js/script.js"></script>
+    <script src="js/script.js"></script>
      
 </body>
 </html>

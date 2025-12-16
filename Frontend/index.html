@@ -21,7 +21,7 @@
                 <li><a href="index.html" class="active">Beranda</a></li>
                 <li><a href="artikel.html">Artikel</a></li>
                 <li><a href="tentang.html">Tentang kami</a></li>
-                <li><a href="konsultasi.html">Konsultasi</a></li> 
+                <li><a href="javascript:void(0);" onclick="authRedirect('konsultasi.html')">Konsultasi</a></li> 
             </ul>
         </nav>
 
@@ -258,11 +258,15 @@
                 <h5>Newsletter</h5>
                 <p>Dapatkan tips kesehatan mental mingguan</p>
                 <div class="newsletter-form">
-                    <input type="email" placeholder="Email Anda">
-                    <button class="btn-subscribe">Subscribe</button>
+                    <input type="email" id="newsletter-email" placeholder="Email Anda" required>
+                    <button class="btn-subscribe" id="btn-subscribe">Subscribe</button>
+                    <button class="btn-unsubscribe" id="btn-unsubscribe" style="display: none;">Unsubscribe</button>
                 </div>
+                <div id="newsletter-message" class="newsletter-message"></div>
+                <div id="newsletter-status" class="newsletter-status"></div>
             </div>
         </div>
+    </div>
     </div>
 
     <div class="footer-bottom">

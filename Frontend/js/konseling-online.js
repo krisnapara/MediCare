@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const nextButtons = document.querySelectorAll('.btn-next');
     const prevButtons = document.querySelectorAll('.btn-prev');
     const appointmentResult = document.getElementById('appointmentResult');
+    // Ambil elemen actionsArea untuk ditampilkan/disembunyikan
+    const actionsArea = document.querySelector('.appointment-actions'); 
     
     let currentStep = 1;
     let currentFormData = null;
@@ -218,7 +220,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function getTelegramHandle(doctorName) {
-        const myTelegramUsername = "johnismyuncle";
+        // Ganti dengan username Telegram yang valid
+        const myTelegramUsername = "johnismyuncle"; 
         const doctorHandles = {
             "dr. Sinta Maharani, M.Psi": myTelegramUsername,
             "dr. Andi Pratama, M.Psi": myTelegramUsername,
@@ -327,15 +330,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const birthYear = document.getElementById('birthYear').value;
         const birthDateInput = document.getElementById('birthDate');
         
-        if (!birthDay || !birthMonth || !birthYear) {
-            isValid = false;
-            const birthDateContainer = document.querySelector('.birth-date-container');
-            highlightError(birthDateContainer, 'Tanggal lahir wajib diisi');
-        } else {
-            const birthDateContainer = document.querySelector('.birth-date-container');
-            removeErrorHighlight(birthDateContainer);
-            
-            birthDateInput.value = `${birthYear}-${birthMonth}-${birthDay}`;
+        if (document.getElementById('step1') && stepNumber === 1) { // Hanya validasi di Step 1
+            if (!birthDay || !birthMonth || !birthYear) {
+                isValid = false;
+                const birthDateContainer = document.querySelector('.birth-date-container');
+                highlightError(birthDateContainer, 'Tanggal lahir wajib diisi');
+            } else {
+                const birthDateContainer = document.querySelector('.birth-date-container');
+                removeErrorHighlight(birthDateContainer);
+                
+                birthDateInput.value = `${birthYear}-${birthMonth}-${birthDay}`;
+            }
         }
         
         const radioGroups = currentStepElement.querySelectorAll('.radio-group');
@@ -379,10 +384,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (input.tagName === 'LABEL') {
              input.style.color = '#dc3545';
         } else if (input.classList.contains('birth-date-container')) {
+            // Untuk kontainer tanggal lahir, beri highlight pada select
             const selects = input.querySelectorAll('select');
             selects.forEach(select => {
                 select.style.borderColor = '#dc3545';
             });
+            // Gunakan parentNode dari kontainer untuk pesan error
+            parentNode = input.closest('.form-group'); 
         } else {
              input.style.borderColor = '#dc3545';
         }
@@ -407,6 +415,7 @@ document.addEventListener('DOMContentLoaded', function() {
             selects.forEach(select => {
                 select.style.borderColor = '';
             });
+            parentNode = input.closest('.form-group');
         } else {
              input.style.borderColor = '';
         }
@@ -469,8 +478,8 @@ document.addEventListener('DOMContentLoaded', function() {
         return `APT-${timestamp}${random}`;
     }
 
-    // ==================== FUNGSI PDF BARU (DESAIN KARTU) ====================
-
+    // ==================== FUNGSI PDF (MENCIPTAKAN DOKUMEN BARU) ====================
+    // CATATAN: Fungsi ini telah diubah untuk TIDAK menyertakan Catatan konsultasi.
     function generatePDF(formData) {
         const { jsPDF } = window.jspdf;
         
@@ -502,6 +511,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Appointment Number di Kanan Atas
         doc.setFontSize(10);
+        doc.setTextColor(255, 255, 255); // Putih
+        doc.setFont('helvetica', 'normal');
         doc.text('No. Appointment:', pageWidth - margin - 10, margin + 12, { align: 'right' });
         doc.setFontSize(12);
         doc.setFont('helvetica', 'bold');
@@ -612,7 +623,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         yPosition += 60;
 
-        // === KOTAK 3: TELEGRAM INFO ===
+        // === KOTAK 3: TELEGRAM INFO (PENTING) ===
         const telegramHandle = getTelegramHandle(formData.doctor);
         
         doc.setDrawColor(0, 123, 255);
@@ -624,7 +635,7 @@ document.addEventListener('DOMContentLoaded', function() {
         doc.setFontSize(10);
         doc.setTextColor(0, 123, 255);
         doc.setFont('helvetica', 'bold');
-        doc.text('INSTRUKSI MENGHUBUNGI DOKTER:', margin + 10, yPosition + 8);
+        doc.text('INSTRUKSI MENGHUBUNGI DOKTER', margin + 10, yPosition + 8);
 
         doc.setTextColor(50, 50, 50);
         doc.setFont('helvetica', 'normal');
@@ -640,27 +651,11 @@ document.addEventListener('DOMContentLoaded', function() {
         doc.setTextColor(0, 123, 255);
         doc.text(`Link: https://t.me/${telegramHandle}`, margin + 10, yPosition + 28);
 
-        yPosition += 45;
-
         // === FOOTER & CATATAN ===
-        doc.setFontSize(8);
-        doc.setTextColor(100, 100, 100);
-        doc.setFont('helvetica', 'italic');
-        
-        const notes = [
-            'Catatan:',
-            '1. Harap bersiap 10 menit sebelum jadwal dimulai.',
-            '2. Pastikan koneksi internet Anda stabil.',
-            '3. Dokumen ini adalah bukti pendaftaran yang sah.'
-        ];
-
-        notes.forEach((note, index) => {
-            doc.text(note, margin + 5, yPosition + (index * 4));
-        });
-
-        // Tanda Tangan Footer
         const footerY = 260;
         doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.setTextColor(100, 100, 100);
         doc.text('Dicetak secara otomatis oleh sistem MediCare', pageWidth - margin - 5, footerY, { align: 'right' });
         doc.text(`Tanggal Cetak: ${formData.appointmentDate}`, pageWidth - margin - 5, footerY + 4, { align: 'right' });
 
@@ -681,17 +676,23 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function printAppointmentResult() {
-        // Menggunakan window.print() standar, CSS @media print akan menangani tampilannya
+        // CSS @media print di konsultasi.css akan menyembunyikan semua kecuali #appointmentResult
         window.print();
     }
 
     // =========================================================================
 
     function displayAppointmentResult(formData) {
-        // Hide form and progress
-        form.style.display = 'none';
-        document.querySelector('.steps-progress').style.display = 'none';
-        document.querySelector('.consult-hero').style.display = 'none';
+        // Sembunyikan form dan progress
+        const mainElement = document.querySelector('.online-counseling-page');
+        if (mainElement) {
+             mainElement.style.display = 'none';
+        }
+        
+        // Tampilkan area tombol aksi (Fix: memastikan tombol terlihat)
+        if (actionsArea) {
+            actionsArea.style.display = 'flex';
+        }
         
         // Update result elements
         document.getElementById('resultName').textContent = formData.fullName;
@@ -711,43 +712,46 @@ document.addEventListener('DOMContentLoaded', function() {
             telegramNote.innerHTML = `Untuk memulai konsultasi dengan ${doctorShortName}, silahkan klik link berikut: <a href="https://t.me/${telegramHandle}" id="resultTelegramLink" target="_blank" rel="noopener noreferrer">Hubungi via Telegram</a>.`;
         }
 
-        // Show result
+        // Tampilkan Kartu Hasil (Fix: memastikan kartu terlihat)
         appointmentResult.style.display = 'flex';
         
         updateStepProgressToCompleted();
         
-        // Event Listeners (Pastikan tombol ID/Class sesuai HTML)
-        const downloadBtn = document.querySelector('.btn-download');
-        if(downloadBtn) {
-            downloadBtn.addEventListener('click', function() {
-                const originalText = this.textContent;
-                this.textContent = 'Mengunduh...';
-                this.disabled = true;
-                setTimeout(() => {
-                    downloadPDF(currentFormData);
-                    this.textContent = originalText;
-                    this.disabled = false;
-                }, 500);
-            });
-        }
-        
-        const printBtn = document.querySelector('.btn-print');
-        if(printBtn) {
-            printBtn.addEventListener('click', printAppointmentResult);
-        }
-        
-        const backBtn = document.querySelector('.btn-back');
-        if(backBtn) {
-            backBtn.addEventListener('click', () => {
-                window.location.href = 'index.html';
-            });
-        }
+        // PERBAIKAN: Gulirkan halaman ke atas untuk menampilkan hasil konsultasi dari awal
+        window.scrollTo(0, 0); 
     }
     
     function updateStepProgressToCompleted() {
         progressSteps.forEach(step => {
             step.classList.remove('active');
             step.classList.add('completed');
+        });
+    }
+
+    // Pindah event listeners tombol ke sini agar terpasang setelah DOMContentLoaded
+    if (actionsArea) {
+        const downloadBtn = document.querySelector('.btn-download');
+        const downloadPDFHandler = function() {
+            const originalText = this.textContent;
+            this.textContent = 'Mengunduh...';
+            this.disabled = true;
+            setTimeout(() => {
+                // Pastikan currentFormData sudah terisi sebelum download
+                if (currentFormData) { 
+                   downloadPDF(currentFormData);
+                }
+                this.textContent = originalText;
+                this.disabled = false;
+            }, 500);
+        };
+        downloadBtn.addEventListener('click', downloadPDFHandler);
+
+        const printBtn = document.querySelector('.btn-print');
+        printBtn.addEventListener('click', printAppointmentResult);
+        
+        const backBtn = document.querySelector('.btn-back');
+        backBtn.addEventListener('click', () => {
+            window.location.href = 'index.html'; 
         });
     }
 });
