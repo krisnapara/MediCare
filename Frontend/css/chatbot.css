@@ -32,7 +32,7 @@
 .back-button {
     background: transparent;
     border: none;
-    color: black;
+    color: white;
     width: 44px;
     height: 44px;
     border-radius: 0;
@@ -46,7 +46,7 @@
 
 .back-button:hover {
     background: rgba(26, 86, 219, 0.1);
-    color: #164bc1;
+    color: white;
     transform: scale(1.05);
 }
 

@@ -36,6 +36,9 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeChatbotEffects();
     enhanceChatbotColors();
 
+    // Setup newsletter functionality - TAMBAHAN BARU
+    setupNewsletter();
+
     console.log('All enhanced systems initialized');
 
     // Cek dan tampilkan notifikasi jika ada di URL (misalnya dari login)
@@ -44,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Cek dan handle auth redirect jika ada di storage
     checkAndHandleAuthRedirect();
 });
+
 
 // ================================== ENHANCED LOGO CLICK HANDLER ==================================
 function setupEnhancedLogoHandler() {
@@ -141,6 +145,340 @@ function setupEnhancedLogoHandler() {
 function redirectToHomepage() {
     console.log('Redirecting to homepage...');
     window.location.href = 'index.html';
+}
+
+// ================================== ENHANCED NEWSLETTER FUNCTIONALITY ==================================
+function setupNewsletter() {
+    console.log('Setting up enhanced newsletter functionality...');
+    
+    const newsletterBtn = document.getElementById('btn-subscribe');
+    const unsubscribeBtn = document.getElementById('btn-unsubscribe');
+    const newsletterEmail = document.getElementById('newsletter-email');
+    
+    if (!newsletterBtn || !unsubscribeBtn || !newsletterEmail) {
+        console.log('Newsletter elements not found');
+        return;
+    }
+    
+    // Load saved email if exists and update UI
+    updateNewsletterUI();
+    
+    // Handle newsletter subscription
+    newsletterBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        handleNewsletterSubscription();
+    });
+    
+    // Handle unsubscribe
+    unsubscribeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        showUnsubscribeConfirmation();
+    });
+    
+    // Handle Enter key press
+    newsletterEmail.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleNewsletterSubscription();
+        }
+    });
+    
+    // Add input event to show subscribe button when email changes
+    newsletterEmail.addEventListener('input', function() {
+        const email = this.value.trim();
+        const savedEmail = localStorage.getItem('newsletter_subscribed_email');
+        
+        // Jika email diubah dan berbeda dari yang tersimpan, tampilkan tombol subscribe
+        if (email !== savedEmail) {
+            showSubscribeButton();
+        }
+    });
+}
+
+function updateNewsletterUI() {
+    const newsletterBtn = document.getElementById('btn-subscribe');
+    const unsubscribeBtn = document.getElementById('btn-unsubscribe');
+    const newsletterEmail = document.getElementById('newsletter-email');
+    const statusElement = document.getElementById('newsletter-status');
+    
+    const savedEmail = localStorage.getItem('newsletter_subscribed_email');
+    const subscribeDate = localStorage.getItem('newsletter_subscribed_date');
+    
+    if (savedEmail) {
+        // User sudah subscribe
+        newsletterEmail.value = savedEmail;
+        
+        // Update button states
+        newsletterBtn.style.display = 'none';
+        unsubscribeBtn.style.display = 'block';
+        
+        // Update status message
+        if (statusElement) {
+            const date = subscribeDate ? new Date(subscribeDate).toLocaleDateString('id-ID') : 'tidak diketahui';
+            statusElement.innerHTML = `
+                <div class="status-subscribed">
+                    <span class="status-icon">✓</span>
+                    <span class="status-text">Berlangganan aktif sejak ${date}</span>
+                </div>
+                <div class="status-note">Email: ${savedEmail}</div>
+            `;
+            statusElement.classList.add('subscribed');
+        }
+    } else {
+        // User belum subscribe
+        newsletterBtn.style.display = 'block';
+        unsubscribeBtn.style.display = 'none';
+        
+        // Clear status message
+        if (statusElement) {
+            statusElement.innerHTML = '';
+            statusElement.classList.remove('subscribed');
+        }
+    }
+}
+
+function showSubscribeButton() {
+    const newsletterBtn = document.getElementById('btn-subscribe');
+    const unsubscribeBtn = document.getElementById('btn-unsubscribe');
+    const statusElement = document.getElementById('newsletter-status');
+    
+    newsletterBtn.style.display = 'block';
+    unsubscribeBtn.style.display = 'none';
+    
+    if (statusElement) {
+        statusElement.innerHTML = '';
+        statusElement.classList.remove('subscribed');
+    }
+}
+
+function handleNewsletterSubscription() {
+    const emailInput = document.getElementById('newsletter-email');
+    const subscribeBtn = document.getElementById('btn-subscribe');
+    
+    if (!emailInput || !subscribeBtn) return;
+    
+    const email = emailInput.value.trim();
+    
+    // Validasi email sederhana
+    if (!email) {
+        showNewsletterMessage('Mohon masukkan email Anda.', 'error');
+        emailInput.focus();
+        return;
+    }
+    
+    if (!isValidEmail(email)) {
+        showNewsletterMessage('Format email tidak valid.', 'error');
+        emailInput.focus();
+        return;
+    }
+    
+    // Simpan data newsletter
+    localStorage.setItem('newsletter_subscribed_email', email);
+    localStorage.setItem('newsletter_subscribed_date', new Date().toISOString());
+    
+    // Update UI
+    updateNewsletterUI();
+    
+    // Show success message
+    showNewsletterMessage('🎉 Terima kasih! Anda telah berlangganan newsletter kami. Tips kesehatan mental akan dikirim ke email Anda.', 'success');
+    
+    // Simulasi pengiriman email konfirmasi
+    simulateNewsletterConfirmation(email);
+    
+    // Log aktivitas
+    logNewsletterActivity(email, 'subscribe');
+    
+    // Clear input setelah 3 detik
+    setTimeout(() => {
+        emailInput.value = '';
+        showNewsletterMessage('', 'clear');
+    }, 3000);
+}
+
+function showUnsubscribeConfirmation() {
+    const savedEmail = localStorage.getItem('newsletter_subscribed_email');
+    
+    if (!savedEmail) {
+        showNewsletterMessage('Anda belum berlangganan newsletter.', 'error');
+        return;
+    }
+    
+    // Buat dialog konfirmasi
+    const overlay = document.createElement('div');
+    overlay.className = 'newsletter-dialog-overlay';
+    overlay.id = 'unsubscribe-dialog-overlay';
+    
+    const dialog = document.createElement('div');
+    dialog.className = 'newsletter-dialog';
+    dialog.innerHTML = `
+        <h3>Berhenti Berlangganan</h3>
+        <p>Apakah Anda yakin ingin berhenti berlangganan newsletter?</p>
+        <p class="dialog-email">Email: <strong>${savedEmail}</strong></p>
+        <div class="dialog-actions">
+            <button id="dialog-cancel" class="dialog-btn secondary">Batal</button>
+            <button id="dialog-confirm" class="dialog-btn primary">Ya, Berhenti</button>
+        </div>
+    `;
+    
+    overlay.appendChild(dialog);
+    document.body.appendChild(overlay);
+    
+    // Event listeners untuk dialog
+    document.getElementById('dialog-cancel').addEventListener('click', function() {
+        document.body.removeChild(overlay);
+    });
+    
+    document.getElementById('dialog-confirm').addEventListener('click', function() {
+        handleUnsubscribe();
+        document.body.removeChild(overlay);
+    });
+    
+    // Close ketika klik overlay
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) {
+            document.body.removeChild(overlay);
+        }
+    });
+    
+    // Close dengan ESC key
+    const closeOnEsc = function(e) {
+        if (e.key === 'Escape') {
+            document.body.removeChild(overlay);
+            document.removeEventListener('keydown', closeOnEsc);
+        }
+    };
+    document.addEventListener('keydown', closeOnEsc);
+}
+
+function handleUnsubscribe() {
+    const email = localStorage.getItem('newsletter_subscribed_email');
+    
+    if (!email) {
+        showNewsletterMessage('Anda belum berlangganan newsletter.', 'error');
+        return;
+    }
+    
+    // Hapus data dari localStorage
+    localStorage.removeItem('newsletter_subscribed_email');
+    localStorage.removeItem('newsletter_subscribed_date');
+    
+    // Update UI
+    updateNewsletterUI();
+    
+    // Show success message
+    showNewsletterMessage('✅ Anda telah berhenti berlangganan newsletter. Email: ' + email, 'success');
+    
+    // Log aktivitas
+    logNewsletterActivity(email, 'unsubscribe');
+    
+    // Simulasi konfirmasi unsubscription
+    setTimeout(() => {
+        showNewsletterMessage('', 'clear');
+    }, 3000);
+}
+
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function showNewsletterMessage(message, type = 'info') {
+    // Cari atau buat elemen pesan
+    let messageElement = document.getElementById('newsletter-message');
+    
+    if (!messageElement) {
+        messageElement = document.createElement('div');
+        messageElement.id = 'newsletter-message';
+        
+        const newsletterForm = document.querySelector('.newsletter-form');
+        if (newsletterForm) {
+            newsletterForm.parentNode.insertBefore(messageElement, newsletterForm.nextSibling);
+        }
+    }
+    
+    // Set pesan dan styling
+    messageElement.textContent = message;
+    messageElement.className = 'newsletter-message';
+    
+    if (type === 'success') {
+        messageElement.classList.add('success');
+    } else if (type === 'error') {
+        messageElement.classList.add('error');
+    } else if (type === 'clear') {
+        messageElement.textContent = '';
+        messageElement.className = 'newsletter-message';
+    }
+    
+    // Auto-hide pesan setelah 5 detik (kecuali pesan kosong)
+    if (message && type !== 'clear') {
+        setTimeout(() => {
+            messageElement.textContent = '';
+            messageElement.className = 'newsletter-message';
+        }, 5000);
+    }
+}
+
+function simulateNewsletterConfirmation(email) {
+    console.log('Simulating newsletter confirmation for:', email);
+    
+    // Di implementasi nyata, ini akan mengirim request ke server
+    // Simulasi delay server
+    setTimeout(() => {
+        console.log('Newsletter subscription confirmed for:', email);
+    }, 1000);
+}
+
+function logNewsletterActivity(email, action) {
+    // Simpan riwayat newsletter di localStorage
+    let newsletterHistory = JSON.parse(localStorage.getItem('newsletter_history')) || [];
+    
+    const activity = {
+        email: email,
+        date: new Date().toISOString(),
+        action: action,
+        timestamp: Date.now()
+    };
+    
+    newsletterHistory.push(activity);
+    
+    // Simpan maksimal 20 entri terakhir
+    if (newsletterHistory.length > 20) {
+        newsletterHistory = newsletterHistory.slice(-20);
+    }
+    
+    localStorage.setItem('newsletter_history', JSON.stringify(newsletterHistory));
+    console.log('Newsletter activity logged:', activity);
+}
+
+// Function to check subscription status
+function checkNewsletterSubscription() {
+    const email = localStorage.getItem('newsletter_subscribed_email');
+    return {
+        isSubscribed: !!email,
+        email: email,
+        subscribedDate: localStorage.getItem('newsletter_subscribed_date')
+    };
+}
+
+// Function to manually reset newsletter (developer tool)
+function resetNewsletter() {
+    if (confirm('Reset semua data newsletter? Ini akan menghapus semua data langganan.')) {
+        localStorage.removeItem('newsletter_subscribed_email');
+        localStorage.removeItem('newsletter_subscribed_date');
+        localStorage.removeItem('newsletter_history');
+        
+        // Reset UI
+        updateNewsletterUI();
+        
+        showNewsletterMessage('✅ Semua data newsletter telah direset.', 'success');
+        
+        setTimeout(() => {
+            showNewsletterMessage('', 'clear');
+        }, 3000);
+        
+        return true;
+    }
+    return false;
 }
 
 // ================================== KONSULTASI REDIRECT WITH REGISTER FIRST ==================================
@@ -966,7 +1304,16 @@ window.MediCare = {
     handleRegisterSuccess,
     setRedirectUrl,
     showDoctorPopup, 
-    closeDoctorPopup 
+    closeDoctorPopup,
+    // Newsletter functions
+    newsletter: {
+        subscribe: handleNewsletterSubscription,
+        unsubscribe: handleUnsubscribe,
+        checkSubscription: checkNewsletterSubscription,
+        showMessage: showNewsletterMessage,
+        reset: resetNewsletter,
+        updateUI: updateNewsletterUI
+    }
 };
 
 console.log('MediCare JavaScript loaded successfully!');

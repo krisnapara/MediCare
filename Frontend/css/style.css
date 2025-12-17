@@ -300,6 +300,7 @@ main {
     width: 20px;
     height: 20px;
     transition: all 0.3s ease;
+    filter: brightness(0) invert(1);
 }
 
 .footer-brand .social-icon path {
@@ -309,8 +310,7 @@ main {
 }
 
 .footer-brand .social-link:hover .social-icon path {
-    /* MODIFIKASI: Warna hover ikon menjadi biru gelap */
-    fill: #0056b3;
+    filter: invert(24%) sepia(91%) saturate(2378%) hue-rotate(198deg) brightness(91%) contrast(105%);
 }
 
 /* Footer Sections */
@@ -356,7 +356,7 @@ main {
     transform: translateX(5px);
 }
 
-/* ================================== NEWSLETTER IN TENTANG SECTION ================================== */
+/* ================================== ENHANCED NEWSLETTER IN TENTANG SECTION ================================== */
 .footer-section .newsletter {
     margin-top: 25px;
     padding-top: 20px;
@@ -429,6 +429,185 @@ main {
     background: #fff;
     color: #007bff;
     transform: translateY(-1px);
+}
+
+.footer-section .btn-unsubscribe {
+    /* Styling untuk tombol unsubscribe */
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer !important;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.footer-section .btn-unsubscribe:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+}
+
+/* ================================== NEWSLETTER MESSAGE & STATUS STYLES ================================== */
+.newsletter-message {
+    margin-top: 8px;
+    font-size: 12px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    animation: slideIn 0.3s ease forwards;
+}
+
+@keyframes slideIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.newsletter-message.success {
+    background-color: rgba(40, 167, 69, 0.2);
+    color: #d4edda;
+    border: 1px solid rgba(195, 230, 203, 0.3);
+}
+
+.newsletter-message.error {
+    background-color: rgba(220, 53, 69, 0.2);
+    color: #f8d7da;
+    border: 1px solid rgba(245, 198, 203, 0.3);
+}
+
+.newsletter-status {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    line-height: 1.4;
+}
+
+.newsletter-status.subscribed {
+    background-color: rgba(40, 167, 69, 0.1);
+    border: 1px solid rgba(40, 167, 69, 0.3);
+}
+
+.newsletter-status .status-subscribed {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+}
+
+.newsletter-status .status-icon {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.newsletter-status .status-text {
+    color: #d4edda;
+}
+
+.newsletter-status .status-note {
+    color: #aaa;
+    font-size: 0.75rem;
+    font-style: italic;
+}
+
+/* ================================== UNSUBSCRIBE DIALOG STYLES ================================== */
+.newsletter-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.newsletter-dialog {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.newsletter-dialog h3 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.newsletter-dialog p {
+    color: #666;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.newsletter-dialog .dialog-email {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 15px 0;
+    font-size: 0.9rem;
+}
+
+.newsletter-dialog .dialog-email strong {
+    color: #007bff;
+}
+
+.newsletter-dialog .dialog-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.newsletter-dialog .dialog-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.newsletter-dialog .dialog-btn.secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.newsletter-dialog .dialog-btn.secondary:hover {
+    background-color: #5a6268;
+}
+
+.newsletter-dialog .dialog-btn.primary {
+    background-color: #dc3545;
+    color: white;
+}
+
+.newsletter-dialog .dialog-btn.primary:hover {
+    background-color: #c82333;
 }
 
 /* Footer Bottom */
@@ -713,6 +892,31 @@ main {
     .footer-brand .social-link:hover {
         transform: none;
     }
+    
+    /* Responsive untuk newsletter */
+    .footer-section .newsletter-form {
+        flex-direction: column;
+    }
+    
+    .footer-section .newsletter-form input {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+    
+    .footer-section .btn-subscribe,
+    .footer-section .btn-unsubscribe {
+        width: 100%;
+    }
+    
+    /* Responsive untuk dialog unsubscribe */
+    .newsletter-dialog {
+        width: 95%;
+        padding: 20px;
+    }
+    
+    .newsletter-dialog .dialog-actions {
+        flex-direction: column;
+    }
 }
 
 @media (max-width: 480px) {
@@ -783,8 +987,19 @@ main {
         padding: 10px 12px;
     }
     
-    .footer-section .btn-subscribe {
+    .footer-section .btn-subscribe,
+    .footer-section .btn-unsubscribe {
         padding: 10px;
+    }
+    
+    .newsletter-message {
+        font-size: 11px;
+        padding: 6px 10px;
+    }
+    
+    .newsletter-status {
+        font-size: 0.75rem;
+        padding: 8px;
     }
 }
 
