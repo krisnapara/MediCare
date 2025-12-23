@@ -6,7 +6,12 @@ const authMiddleware = (req, res, next) => {
   if (!header || !header.startsWith("Bearer ")) {
     return res
       .status(401)
-      .json({ message: "No token provided or invalid format" });
+      .json({ message: "Unauthorized: token tidak ditemukan" });
+  }
+
+  if (!process.env.JWT_SECRET) {
+    console.error("JWT_SECRET is not defined");
+    return res.status(500).json({ message: "Konfigurasi server belum lengkap" });
   }
 
   const token = header.split(" ")[1];
@@ -16,8 +21,8 @@ const authMiddleware = (req, res, next) => {
     req.user = decoded; 
     next();
   } catch (error) {
-    console.error("Error authMiddleware:", error);
-    return res.status(401).json({ message: "Invalid token" });
+    console.error("JWT verification failed:", error.message);
+    return res.status(401).json({ message: "Token tidak valid atau kadaluarsa" });
   }
 };
 

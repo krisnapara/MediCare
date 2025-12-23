@@ -1,4 +1,4 @@
-import db from "../db.js";
+import db from "../config/db.js";
 
 export const getQuestions = (req, res) => {
   const sql = "SELECT * FROM question";
