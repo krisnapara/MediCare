@@ -27,45 +27,223 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // --- FUNGSI TOMBOL BACA REVIEW ---
-    const reviewButtons = document.querySelectorAll('.btn-review');
+    // --- EVENT LISTENER UNTUK TOMBOL LIHAT PROFIL ---
+    const profileButtons = document.querySelectorAll('.doctor-profile-btn');
     
-    reviewButtons.forEach(button => {
+    profileButtons.forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             
-            const doctorCard = this.closest('.doctor-card');
-            const doctorName = doctorCard.querySelector('h3').textContent;
-            const doctorSpecialty = doctorCard.querySelector('.doctor-specialty').textContent;
-            const reviewCount = this.querySelector('.review-count').textContent;
-            const doctorId = this.getAttribute('data-doctor');
+            const doctorId = this.getAttribute('onclick') ? 
+                this.getAttribute('onclick').match(/'([^']+)'/)[1] : 
+                'sarah-wijaya';
             
-            // Tampilkan modal review
-            showReviewsModal(doctorName, doctorSpecialty, reviewCount, doctorId);
+            // Tampilkan popup profil dokter
+            showDoctorProfilePopup(doctorId);
         });
     });
 
-    // --- KLIK PADA CARD DOKTER (Redirect ke profil) ---
+    // --- KLIK PADA CARD DOKTER (untuk klik di luar tombol) ---
     doctorCards.forEach(card => {
         card.addEventListener('click', function(e) {
-            // Pastikan tidak triggered ketika mengklik tombol review
-            if (!e.target.closest('.btn-review')) {
-                const doctorName = this.querySelector("h3").textContent;
-                const doctorData = {
-                    name: doctorName,
-                    specialty: this.querySelector(".doctor-specialty").textContent,
-                    experience: this.querySelector(".doctor-experience").textContent,
-                    description: this.querySelector(".doctor-desc").textContent,
-                    skills: Array.from(this.querySelectorAll(".skill-tag")).map(tag => tag.textContent)
-                };
-                
-                sessionStorage.setItem('selectedDoctor', JSON.stringify(doctorData));
-                window.location.href = 'profil_dokter.html';
+            // Pastikan tidak triggered ketika mengklik tombol profil
+            if (!e.target.closest('.doctor-profile-btn')) {
+                const doctorBtn = this.querySelector('.doctor-profile-btn');
+                if (doctorBtn) {
+                    const doctorId = doctorBtn.getAttribute('onclick').match(/'([^']+)'/)[1];
+                    
+                    // Tampilkan popup profil dokter
+                    showDoctorProfilePopup(doctorId);
+                }
             }
         });
     });
 });
+
+// ==================================================
+// FUNGSI POPUP PROFIL DOKTER (DESAIN SESUAI GAMBAR)
+// ==================================================
+
+function showDoctorProfilePopup(doctorId) {
+    // Hapus popup yang sudah ada
+    const existingPopup = document.querySelector('.doctor-profile-popup');
+    if (existingPopup) {
+        existingPopup.remove();
+    }
+    
+    // Data dokter berdasarkan ID
+    const doctorsData = {
+        'sarah-wijaya': {
+            name: "Dr. Sarah Wijaya, M.Psi.",
+            specialty: "Psikolog Klinis",
+            experience: "8 Tahun Pengalaman",
+            about: "Spesialis dalam terapi kognitif-perilaku dan penanganan gangguan kecemasan dengan pendekatan holistik. Berpengalaman membantu pasien mengatasi berbagai masalah psikologis dengan pendekatan yang personal dan efektif.",
+            education: [
+                "S2 Psikologi Klinis, Universitas Gadjah Mada",
+                "Sertifikasi Terapi Perilaku Kognitif (CBT)",
+                "Sertifikasi Mindfulness Based Stress Reduction (MBSR)",
+                "Pelatihan Psikoterapi Integratif"
+            ],
+            treatments: ["Kecemasan", "Depresi", "Bipolar"],
+            image: "assets/images/dokter1.jpg"
+        },
+        'ahmad-rahman': {
+            name: "Dr. Ahmad Rahman, Sp.KJ",
+            specialty: "Psikiater",
+            experience: "12 Tahun Pengalaman",
+            about: "Ahli dalam diagnosis dan pengobatan gangguan mental kompleks dengan pendekatan holistik dan farmakoterapi. Berdedikasi memberikan perawatan yang komprehensif untuk berbagai kondisi psikiatri.",
+            education: [
+                "Spesialis Kedokteran Jiwa, Universitas Indonesia",
+                "Sertifikasi Psikofarmakologi",
+                "Fellowship di National Institute of Mental Health",
+                "Pelatihan Neuropsikiatri"
+            ],
+            treatments: ["OCD", "Gangguan Psikotik", "ADHD"],
+            image: "assets/images/dokter2.jpg"
+        },
+        'maya-sari': {
+            name: "Maya Sari, S.Psi.",
+            specialty: "Psikolog Konseling",
+            experience: "6 Tahun Pengalaman",
+            about: "Berpengalaman dalam konseling remaja, masalah hubungan interpersonal, dan perkembangan karir. Pendekatan yang empatik dan solutif untuk membantu klien mencapai kesejahteraan mental.",
+            education: [
+                "S1 Psikologi, Universitas Padjadjaran",
+                "Sertifikasi Konseling Keluarga",
+                "Pelatihan Terapi Pasangan",
+                "Workship Interpersonal Skills"
+            ],
+            treatments: ["Remaja", "Keluarga", "Relationship"],
+            image: "assets/images/dokter3.jpg"
+        },
+        'rina-dewi': {
+            name: "Dr. Rina Dewi, Sp.KJ",
+            specialty: "Psikiater Geriatri",
+            experience: "15 Tahun Pengalaman",
+            about: "Ahli dalam penanganan masalah mental pada lansia, dementia care, dan kesehatan mental usia lanjut. Fokus pada kualitas hidup dan kesejahteraan mental pasien usia senja.",
+            education: [
+                "Spesialis Kedokteran Jiwa Geriatri, Universitas Airlangga",
+                "Sertifikasi Dementia Care Specialist",
+                "Pelatihan Neuropsikiatri Lansia",
+                "Fellowship Geriatric Psychiatry"
+            ],
+            treatments: ["Lansia", "Dementia", "Geriatri"],
+            image: "assets/images/dokter4.jpg"
+        },
+        'lisa-chen': {
+            name: "Dr. Lisa Chen, M.Psi.",
+            specialty: "Psikolog Anak & Remaja",
+            experience: "9 Tahun Pengalaman",
+            about: "Spesialis dalam perkembangan anak, masalah psikologis remaja, dan terapi bermain untuk anak-anak. Pendekatan yang menyenangkan dan efektif untuk membantu anak dan remaja.",
+            education: [
+                "S2 Psikologi Anak & Remaja, Universitas Indonesia",
+                "Sertifikasi Terapi Bermain",
+                "Pelatihan Assesmen Perkembangan Anak",
+                "Workshop Parenting Skills"
+            ],
+            treatments: ["Anak", "Remaja", "Perkembangan"],
+            image: "assets/images/dokter5.jpg"
+        },
+        'budi-santoso': {
+            name: "Dr. Budi Santoso, Sp.KJ",
+            specialty: "Psikiater Umum",
+            experience: "10 Tahun Pengalaman",
+            about: "Berpengalaman menangani berbagai gangguan mental dengan pendekatan biopsikososial yang komprehensif. Kombinasi terapi dan pendekatan holistik untuk hasil optimal.",
+            education: [
+                "Spesialis Kedokteran Jiwa, Universitas Gadjah Mada",
+                "Sertifikasi Psikoterapi Integratif",
+                "Pelatihan Kesehatan Mental Komunitas",
+                "Advance Psychopharmacology"
+            ],
+            treatments: ["Gangguan Mood", "Psikosis"],
+            image: "assets/images/dokter6.jpg"
+        }
+    };
+    
+    // Ambil data dokter berdasarkan ID atau gunakan data default
+    const doctorData = doctorsData[doctorId] || doctorsData['sarah-wijaya'];
+    
+    // Buat elemen popup
+    const popup = document.createElement('div');
+    popup.className = 'doctor-profile-popup active';
+    popup.innerHTML = `
+        <div class="popup-overlay"></div>
+        <div class="popup-content">
+            <button class="popup-close">&times;</button>
+            
+            <div class="doctor-popup-header">
+                <div class="doctor-popup-image">
+                    <img src="${doctorData.image}" alt="${doctorData.name}">
+                </div>
+                <div class="doctor-popup-info">
+                    <h2>${doctorData.name}</h2>
+                    <p class="popup-specialty">${doctorData.specialty}</p>
+                    <p class="popup-experience">${doctorData.experience}</p>
+                </div>
+            </div>
+            
+            <div class="popup-sections">
+                <div class="popup-section">
+                    <h3><i class="fas fa-user-md"></i> Tentang Dokter</h3>
+                    <p>${doctorData.about}</p>
+                </div>
+                
+                <div class="popup-section">
+                    <h3><i class="fas fa-graduation-cap"></i> Pendidikan & Sertifikasi</h3>
+                    <ul class="education-list">
+                        ${doctorData.education.map(item => 
+                            `<li><i class="fas fa-certificate"></i> ${item}</li>`
+                        ).join('')}
+                    </ul>
+                </div>
+                
+                <div class="popup-section">
+                    <h3><i class="fas fa-stethoscope"></i> Fokus Penanganan</h3>
+                    <div class="treatment-focus">
+                        ${doctorData.treatments.map(item => 
+                            `<span class="treatment-tag">${item}</span>`
+                        ).join('')}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(popup);
+    document.body.style.overflow = 'hidden';
+    
+    // Event listener untuk tombol close
+    const closeBtn = popup.querySelector('.popup-close');
+    const overlay = popup.querySelector('.popup-overlay');
+    
+    const closePopup = () => {
+        popup.classList.remove('active');
+        setTimeout(() => {
+            if (popup.parentNode) {
+                popup.remove();
+            }
+            document.body.style.overflow = '';
+        }, 300);
+    };
+    
+    closeBtn.addEventListener('click', closePopup);
+    overlay.addEventListener('click', closePopup);
+    
+    // Prevent popup close when clicking content
+    popup.querySelector('.popup-content').addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
+    // Close popup with Escape key
+    const handleEscapeKey = (e) => {
+        if (e.key === 'Escape') {
+            closePopup();
+            document.removeEventListener('keydown', handleEscapeKey);
+        }
+    };
+    
+    document.addEventListener('keydown', handleEscapeKey);
+}
 
 // ==================================================
 // FUNGSI EFEK BERKILAU OTOMATIS
@@ -129,7 +307,7 @@ function startContinuousRandomParticles(card) {
     // Mulai interval untuk random particles
     setInterval(() => {
         createAutoGlitterParticle(card, container);
-    }, 800 + Math.random() * 1200); // Random interval antara 800-2000ms
+    }, 800 + Math.random() * 1200);
 }
 
 function createAutoGlitterParticle(card, container) {
@@ -146,7 +324,7 @@ function createAutoGlitterParticle(card, container) {
     // Random animation duration
     const duration = 2 + Math.random() * 2;
     
-    // Random color (gold, silver, atau diamond)
+    // Random color
     const colors = ['#FFD700', '#C0C0C0', '#B9F2FF', '#FFFFFF', '#FFA500'];
     const color = colors[Math.floor(Math.random() * colors.length)];
     
@@ -175,326 +353,11 @@ function createAutoGlitterParticle(card, container) {
 }
 
 // ==================================================
-// FUNGSI REVIEW MODAL
+// FUNGSI UNTUK REDIRECT DAN LAINNYA
 // ==================================================
 
-// Data review untuk setiap dokter
-const reviewsData = {
-    'sarah-wijaya': {
-        averageRating: "4.9",
-        reviews: [
-            {
-                name: "Rina Sari",
-                rating: 5,
-                date: "2 hari yang lalu",
-                comment: "Dr. Sarah sangat membantu dalam menangani anxiety saya. Pendekatannya sangat profesional dan membuat saya merasa nyaman. Tools yang diberikan sangat praktis untuk kehidupan sehari-hari.",
-                verified: true
-            },
-            {
-                name: "Budi Pratama",
-                rating: 5,
-                date: "1 minggu yang lalu",
-                comment: "Sesi konsultasi yang sangat insightful. Dr. Sarah memberikan perspektif baru dalam menghadapi stres kerja. Sangat recommended untuk professional muda.",
-                verified: true
-            },
-            {
-                name: "Anita Wijaya",
-                rating: 4,
-                date: "2 minggu yang lalu",
-                comment: "Pelayanan sangat baik, meski agak mahal. Hasilnya sepadan dengan biaya yang dikeluarkan. Proses booking juga mudah dan flexible.",
-                verified: true
-            },
-            {
-                name: "Dewi Anggraeni",
-                rating: 5,
-                date: "3 minggu yang lalu",
-                comment: "Dr. Sarah sangat sabar dan memahami kondisi saya. Setelah 3 sesi, saya merasa lebih bisa mengendalikan anxiety saya. Terima kasih Dr. Sarah!",
-                verified: true
-            },
-            {
-                name: "Michael Tan",
-                rating: 5,
-                date: "1 bulan yang lalu",
-                comment: "Terapis yang sangat empatik dan memahami kebutuhan pasien. Progress terapi saya sangat signifikan dalam waktu singkat.",
-                verified: true
-            }
-        ]
-    },
-    'ahmad-rahman': {
-        averageRating: "4.8",
-        reviews: [
-            {
-                name: "David Lee",
-                rating: 5,
-                date: "3 hari yang lalu",
-                comment: "Dr. Ahmad sangat berpengalaman dalam menangani kasus kompleks. Diagnosisnya akurat dan treatment plan-nya jelas. Sangat membantu keluarga saya.",
-                verified: true
-            },
-            {
-                name: "Sari Dewi",
-                rating: 5,
-                date: "1 minggu yang lalu",
-                comment: "Pendekatan yang komprehensif dan holistik. Dr. Ahmad tidak hanya memberikan obat tapi juga terapi yang tepat. Progress anak saya sangat signifikan.",
-                verified: true
-            },
-            {
-                name: "Rudi Hartono",
-                rating: 4,
-                date: "2 minggu yang lalu",
-                comment: "Dokter yang sangat knowledgeable. Penjelasannya detail dan mudah dimengerti. Hanya saja waiting time agak lama.",
-                verified: true
-            },
-            {
-                name: "Lisa Marbun",
-                rating: 5,
-                date: "3 minggu yang lalu",
-                comment: "Penanganan yang sangat profesional untuk kasus bipolar saudara saya. Keluarga kami sangat berterima kasih.",
-                verified: true
-            }
-        ]
-    },
-    'maya-sari': {
-        averageRating: "4.7",
-        reviews: [
-            {
-                name: "Lisa Permata",
-                rating: 5,
-                date: "4 hari yang lalu",
-                comment: "Bu Maya sangat membantu masalah relationship saya. Pendekatannya lembut tapi efektif. Sangat cocok untuk konseling remaja dan young adult.",
-                verified: true
-            },
-            {
-                name: "Kevin Setiawan",
-                rating: 4,
-                date: "1 minggu yang lalu",
-                comment: "Konseling karir yang sangat membantu. Bu Maya memberikan insight yang valuable untuk perkembangan karir saya.",
-                verified: true
-            },
-            {
-                name: "Diana Putri",
-                rating: 5,
-                date: "2 minggu yang lalu",
-                comment: "Membantu anak saya yang mengalami kesulitan adaptasi di sekolah baru. Pendekatannya sangat cocok untuk remaja.",
-                verified: true
-            },
-            {
-                name: "Robert Chandra",
-                rating: 4,
-                date: "3 minggu yang lalu",
-                comment: "Konseling pre-marital yang sangat membantu. Bu Maya memberikan perspektif yang balanced untuk kedua pihak.",
-                verified: true
-            }
-        ]
-    },
-    'rina-dewi': {
-        averageRating: "4.9",
-        reviews: [
-            {
-                name: "Suryadi",
-                rating: 5,
-                date: "5 hari yang lalu",
-                comment: "Dr. Rina sangat sabar menangani ibu saya yang mengalami dementia. Pendekatannya membuat ibu saya merasa nyaman dan dihargai.",
-                verified: true
-            },
-            {
-                name: "Martha Tilaar",
-                rating: 5,
-                date: "2 minggu yang lalu",
-                comment: "Spesialis geriatri yang sangat langka dan kompeten. Dr. Rina memahami betul kebutuhan kesehatan mental lansia.",
-                verified: true
-            },
-            {
-                name: "Bambang S",
-                rating: 5,
-                date: "3 minggu yang lalu",
-                comment: "Penanganan yang excellent untuk ayah saya yang depresi pasca pensiun. Kualitas hidup ayah saya meningkat signifikan.",
-                verified: true
-            },
-            {
-                name: "Sri Wahyuni",
-                rating: 4,
-                date: "1 bulan yang lalu",
-                comment: "Dr. Rina sangat memahami kompleksitas masalah mental pada lansia. Treatment plan-nya sangat personalized.",
-                verified: true
-            }
-        ]
-    },
-    'lisa-chen': {
-        averageRating: "4.8",
-        reviews: [
-            {
-                name: "Maria Wong",
-                rating: 5,
-                date: "3 hari yang lalu",
-                comment: "Dr. Lisa amazing dengan anak-anak! Anak saya yang biasanya takut bertemu dokter, malah senang bertemu Dr. Lisa. Terapi bermainnya sangat efektif.",
-                verified: true
-            },
-            {
-                name: "Anton Susanto",
-                rating: 5,
-                date: "1 minggu yang lalu",
-                comment: "Anak saya menunjukkan progress yang luar biasa setelah terapi dengan Dr. Lisa. Komunikasi dengan orang tua juga sangat baik.",
-                verified: true
-            },
-            {
-                name: "Grace Halim",
-                rating: 4,
-                date: "2 minggu yang lalu",
-                comment: "Dr. Lisa sangat sabar menghadapi anak saya yang hiperaktif. Teknik terapi yang digunakan sangat kreatif dan engaging.",
-                verified: true
-            },
-            {
-                name: "William Tanoto",
-                rating: 5,
-                date: "3 minggu yang lalu",
-                comment: "Anak kembar saya yang mengalami speech delay menunjukkan improvement yang signifikan setelah terapi dengan Dr. Lisa.",
-                verified: true
-            }
-        ]
-    },
-    'budi-santoso': {
-        averageRating: "4.6",
-        reviews: [
-            {
-                name: "Andi Prabowo",
-                rating: 4,
-                date: "6 hari yang lalu",
-                comment: "Dr. Budi sangat profesional dan empatik. Membantu saya melalui masa-masa sulit dengan pendekatan yang tepat.",
-                verified: true
-            },
-            {
-                name: "Fitriani",
-                rating: 5,
-                date: "2 minggu yang lalu",
-                comment: "Konsultasi yang sangat membantu. Dr. Budi memberikan solusi praktis untuk mengatasi gangguan mood saya.",
-                verified: true
-            },
-            {
-                name: "Joko Widodo",
-                rating: 4,
-                date: "3 minggu yang lalu",
-                comment: "Dokter yang mudah diajak komunikasi. Memberikan penjelasan yang jelas tentang kondisi dan treatment yang diberikan.",
-                verified: true
-            },
-            {
-                name: "Siti Aisyah",
-                rating: 5,
-                date: "1 bulan yang lalu",
-                comment: "Penanganan untuk panic attack yang sangat efektif. Dr. Budi memberikan coping mechanism yang praktis dan mudah diterapkan.",
-                verified: true
-            }
-        ]
-    }
-};
-
-function showReviewsModal(doctorName, specialty, reviewCount, doctorId) {
-    const doctorData = reviewsData[doctorId];
-    
-    if (!doctorData) {
-        console.error('Data dokter tidak ditemukan:', doctorId);
-        return;
-    }
-    
-    const reviews = doctorData.reviews;
-    const averageRating = doctorData.averageRating;
-    
-    // Create modal element
-    const modal = document.createElement('div');
-    modal.className = 'reviews-modal active';
-    modal.innerHTML = `
-        <div class="modal-overlay"></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Review Pasien</h3>
-                <button class="close-modal">&times;</button>
-            </div>
-            
-            <div class="doctor-summary">
-                <h4>${doctorName}</h4>
-                <p>${specialty}</p>
-                <div class="overall-rating">
-                    <span class="rating-stars">${generateStars(averageRating)}</span>
-                    <span class="rating-value">${averageRating}</span>
-                    <span class="review-total">${reviewCount}</span>
-                </div>
-            </div>
-            
-            <div class="reviews-list">
-                ${reviews.length > 0 ? 
-                    reviews.map(review => `
-                        <div class="review-item">
-                            <div class="review-header">
-                                <div class="reviewer-info">
-                                    <div class="reviewer-avatar">${getInitials(review.name)}</div>
-                                    <div>
-                                        <div class="reviewer-name">${review.name} ${review.verified ? '<span class="verified-badge">✓</span>' : ''}</div>
-                                        <div class="review-date">${review.date}</div>
-                                    </div>
-                                </div>
-                                <div class="review-rating">${generateStars(review.rating)}</div>
-                            </div>
-                            <p class="review-comment">${review.comment}</p>
-                        </div>
-                    `).join('') 
-                    : 
-                    '<div class="no-reviews">Belum ada review untuk dokter ini.</div>'
-                }
-            </div>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
-    document.body.style.overflow = 'hidden'; // Prevent background scrolling
-    
-    // Close modal handlers
-    const closeModal = () => {
-        document.body.removeChild(modal);
-        document.body.style.overflow = ''; // Restore scrolling
-    };
-    
-    modal.querySelector('.close-modal').addEventListener('click', closeModal);
-    modal.querySelector('.modal-overlay').addEventListener('click', closeModal);
-    
-    // Prevent modal close when clicking content
-    modal.querySelector('.modal-content').addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
-
-    // Close modal with Escape key
-    const handleEscapeKey = (e) => {
-        if (e.key === 'Escape') {
-            closeModal();
-            document.removeEventListener('keydown', handleEscapeKey);
-        }
-    };
-    
-    document.addEventListener('keydown', handleEscapeKey);
-}
-
-// Helper function to generate star ratings - TANPA PECAHAN
-function generateStars(rating) {
-    const numericRating = parseFloat(rating);
-    const fullStars = Math.floor(numericRating); // Pembulatan ke bawah
-    const emptyStars = 5 - fullStars;
-    
-    let stars = '';
-    
-    // Full stars
-    for (let i = 0; i < fullStars; i++) {
-        stars += '★';
-    }
-    
-    // Empty stars
-    for (let i = 0; i < emptyStars; i++) {
-        stars += '☆';
-    }
-    
-    return stars;
-}
-
-// Helper function to get initials for avatar
-function getInitials(name) {
-    return name.split(' ').map(word => word[0]).join('').toUpperCase();
+function setDoctorProfile(doctorId) {
+    showDoctorProfilePopup(doctorId);
 }
 
 // Fungsi untuk redirect dengan authentication check
@@ -520,4 +383,6 @@ function goToChatbotPage() {
 if (typeof window !== 'undefined') {
     window.authRedirect = authRedirect;
     window.goToChatbotPage = goToChatbotPage;
+    window.setDoctorProfile = setDoctorProfile;
+    window.showDoctorProfilePopup = showDoctorProfilePopup;
 }

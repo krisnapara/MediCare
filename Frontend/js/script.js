@@ -1190,69 +1190,6 @@ window.addEventListener('error', function(e) {
     }
 });
 
-// *Pastikan data doctors ada di script.js atau di file terpisah yang dimuat sebelum ini*
-const doctors = {
-    'doc-001': {
-        name: "Dr. Budi Santoso, SpKJ",
-        specialty: "Psikiater Klinis",
-        experience: "10 Tahun",
-        education: "Spesialis Kedokteran Jiwa, Universitas Gadjah Mada",
-        description: "Dr. Budi fokus pada terapi perilaku kognitif (CBT) dan manajemen stres kerja. Beliau sangat berpengalaman menangani masalah kecemasan umum dan depresi." ,
-        image: "assets/images/doc1.jpg"
-    }
-    // Tambahkan data dokter lain jika ada
-};
-
-// ================================== DOCTOR POPUP FUNCTIONALITY ==================================
-function showDoctorPopup(doctorId) {
-    const popup = document.getElementById('doctor-popup');
-    const popupContent = document.querySelector('.popup-content');
-
-    if (!popup || !popupContent) return;
-
-    const doctor = doctors[doctorId];
-    if (!doctor) return;
-
-    // Update konten popup
-    // Asumsi elemen HTML sudah ada di page_dokter.html
-    const img = popupContent.querySelector('img');
-    const name = popupContent.querySelector('h3');
-    const specialty = popupContent.querySelector('.specialty');
-    const experience = popupContent.querySelector('.experience');
-    const education = popupContent.querySelector('.education');
-    const description = popupContent.querySelector('.description');
-    const consultButton = popupContent.querySelector('.btn-consult');
-
-    if (img) img.src = doctor.image;
-    if (img) img.alt = doctor.name;
-    if (name) name.textContent = doctor.name;
-    if (specialty) specialty.textContent = doctor.specialty;
-    if (experience) experience.textContent = `Pengalaman: ${doctor.experience}`;
-    if (education) education.textContent = doctor.education;
-    if (description) description.textContent = doctor.description;
-
-
-    // *PERBAIKAN FUNGSI TOMBOL DI DALAM POPUP*
-    if (consultButton) {
-        consultButton.onclick = function() {
-            authRedirect('konsultasi.html');
-            closeDoctorPopup();
-        };
-    }
-
-
-    // Tampilkan popup
-    popup.style.display = 'flex';
-    document.body.style.overflow = 'hidden'; // Prevent scrolling
-}
-
-function closeDoctorPopup() {
-    const popup = document.getElementById('doctor-popup');
-    if (popup) {
-        popup.style.display = 'none';
-        document.body.style.overflow = 'auto'; // Enable scrolling again
-    }
-}
 
 
 // ================================== ADDITIONAL UTILITY FUNCTIONS ==================================

@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         messageDiv.innerHTML = `
             <div class="message-avatar">
-                ${isUser ? '👤' : '<img src="assets/icons/flower.svg" alt="Bot">'}
+                ${isUser ? '👤' : '<img src="assets/images/muliadi.jpg" alt="Bot">'}
             </div>
             <div class="message-content">
                 <div class="message-bubble">
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
         indicator.id = 'typingIndicator';
         indicator.className = 'message bot-message';
         indicator.innerHTML = `
-            <div class="message-avatar"><img src="assets/icons/flower.svg" alt="Bot"></div>
+            <div class="message-avatar"><img src="assets/images/profil.jpg" alt="Bot"></div>
             <div class="message-content"><div class="message-bubble typing-dots"><span></span><span></span><span></span></div></div>
         `;
         chatMessages.appendChild(indicator);

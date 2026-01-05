@@ -1,4 +1,4 @@
-import db from "../db.js";
+import db from "../config/db.js";
 import bcrypt from "bcryptjs";
 
 // GET USER BY ID

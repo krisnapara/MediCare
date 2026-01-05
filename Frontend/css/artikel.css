@@ -71,7 +71,6 @@
     border-radius: 15px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
     position: relative;
-    border-left: 4px solid #007bff;
 }
 
 .article-source:before {
@@ -97,17 +96,6 @@
     padding-bottom: 12px;
 }
 
-.article-source h4:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
-    height: 3px;
-    background: #007bff;
-    border-radius: 2px;
-}
 
 .article-source p {
     font-size: 0.9rem;
@@ -118,7 +106,7 @@
 
 /* Style untuk link di article-source */
 .article-source a {
-    color: rgb(11, 134, 210);
+    color: black;;
     text-decoration: none;
     transition: all 0.3s ease;
     font-weight: 600;
@@ -161,7 +149,7 @@
 .article-source li:hover {
     transform: translateX(5px);
     box-shadow: 0 4px 15px rgba(0, 123, 255, 0.1);
-    border-left: 3px solid #007bff;
+    border-left: 3px solid #1D5CA0;
 }
 
 /* Reset counter */
