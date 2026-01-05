@@ -104,7 +104,7 @@ function displayResult(score) {
 
     // Logika Penilaian (Total Skor Maksimal: 9)
     if (score >= 7) {
-        title.textContent = 'Indikasi Gejala Signifikan 🚨';
+        title.textContent = 'Indikasi Gejala Signifikan';
         feedback.textContent = 'Skor Anda tinggi. Kami sangat menyarankan Anda untuk segera mencari **konsultasi tatap muka atau online** dengan profesional kesehatan mental.';
         icon.className = 'fas fa-exclamation-circle';
         modal.classList.add('high');
