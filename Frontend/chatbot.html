@@ -3,29 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot | Medicare</title>
+    <title>Chatbot | MediCare</title>
+    <!-- Hanya load style utama untuk konsistensi -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/chatbot.css">
     <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="chatbot-body">
-    <!-- Header -->
-    <header class="chat-header">
-        
+<body>
+    <header class="header">
+
         <button class="back-button" onclick="window.location.href='index.html'">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
         </button>
-
+        
         <div class="logo">
             <img src="assets/icons/flower.svg" alt="Logo Medicare"> 
             <span class="logo-text">MediCare</span>
         </div>
     
+        <nav class="nav">
+            <ul>
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="artikel.html">Artikel</a></li>
+                <li><a href="tentang.html">Tentang kami</a></li>
+                <li><a href="javascript:void(0);" onclick="authRedirect('konsultasi.html')">Konsultasi</a></li> 
+            </ul>
+        </nav>
+
         <div class="profile-icon">
-            <a href="register.html">
-                <img src="assets/images/profil.jpg" alt="Foto profil pengguna">
+            <a href="profil.html">
+                <img src="assets/images/profil.jpg" alt="Foto profil pengguna" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIyMCIgZmlsbD0iIzAwN2JmZiIvPjxwYXRoIGQ9Ik0yNiAxNkMxNy4xNjM0IDE2IDEwIDIzLjE2MzQgMTAgMzJDMzIgMzIgMjYgMTYgMjYgMTZaIiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg=='">
             </a>
         </div>
     </header>
@@ -35,35 +45,35 @@
             <!-- Welcome Section -->
             <div class="welcome-section" id="welcomeSection">
                 <div class="welcome-icon">
-                    <img src="assets/images/muliadi.jpg" alt="MediCare Bot">
+                    <img src="assets/images/muliadi.jpg" alt="MediCare Bot" onerror="this.src='assets/icons/flower.svg'">
                 </div>
                 <h1>Halo, saya MediCareBot</h1>
                 <p>Ada yang bisa saya bantu terkait kesehatan mental atau layanan MediCare?</p>
                 
                 <div class="suggestion-grid">
                     <div class="suggestion-card" data-message="Saya butuh konsultasi dengan psikolog atau psikiater">
-                        <div class="suggestion-icon">👥</div>
+                        <div class="suggestion-icon"><i class="fas fa-user-md"></i></div>
                         <div class="suggestion-content">
                             <h4>Konsultasi Psikolog atau Psikiater</h4>
                             <p>Jadwalkan sesi dengan profesional</p>
                         </div>
                     </div>
                     <div class="suggestion-card" data-message="Apa saja layanan MediCare?">
-                        <div class="suggestion-icon">🏥</div>
+                        <div class="suggestion-icon"><i class="fas fa-hospital"></i></div>
                         <div class="suggestion-content">
                             <h4>Layanan Kami</h4>
                             <p>Eksplorasi fasilitas MediCare</p>
                         </div>
                     </div>
                     <div class="suggestion-card" data-message="Berapa biaya konsultasi?">
-                        <div class="suggestion-icon">💰</div>
+                        <div class="suggestion-icon"><i class="fas fa-money-bill-wave"></i></div>
                         <div class="suggestion-content">
                             <h4>Informasi Biaya</h4>
                             <p>Lihat tarif konsultasi</p>
                         </div>
                     </div>
                     <div class="suggestion-card" data-message="Bantuan darurat kesehatan mental">
-                        <div class="suggestion-icon">🆘</div>
+                        <div class="suggestion-icon"><i class="fas fa-ambulance"></i></div>
                         <div class="suggestion-content">
                             <h4>Bantuan Darurat</h4>
                             <p>Kontak untuk keadaan mendesak</p>
@@ -72,42 +82,40 @@
                 </div>
             </div>
 
-            <!-- Chat Messages Section (Awalnya tersembunyi) -->
-            <div class="messages-container" id="messagesContainer" style="display: none;">
+            <!-- Chat Messages Section -->
+            <div class="messages-container" id="messagesContainer">
                 <div class="chat-messages" id="chatMessages">
                     <!-- Messages akan dimasukkan di sini oleh JavaScript -->
                 </div>
 
-                <!-- Tombol Reset di bawah chat messages -->
-                <div class="reset-chat-container" id="resetChatContainer" style="display: none;">
+                <!-- Tombol Reset -->
+                <div class="reset-chat-container" id="resetChatContainer">
                     <button class="reset-chat-button" id="resetButton">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4 4V9H4.58152M19.9381 11C19.446 7.05369 16.0796 4 12 4C8.64262 4 5.76829 6.06817 4.58152 9M4.58152 9H9M20 20V15H19.4185M19.4185 15C18.2317 17.9318 15.3574 20 12 20C7.92038 20 4.55399 16.9463 4.06189 13M19.4185 15H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                        <i class="fas fa-redo"></i>
                         Mulai Chat Baru
                     </button>
                 </div>
 
-                <!-- Suggestion Grid untuk Chat Aktif -->
+                <!-- Suggestion Chips untuk Chat Aktif -->
                 <div class="chat-suggestions" id="chatSuggestions">
                     <div class="suggestions-header">
                         <h3>Pertanyaan Lainnya</h3>
                     </div>
                     <div class="suggestion-grid-mini">
                         <button class="suggestion-chip" data-message="Saya butuh konsultasi dengan psikolog atau psikiater">
-                            <span class="suggestion-chip-icon">👥</span>
+                            <i class="fas fa-user-md suggestion-chip-icon"></i>
                             Konsultasi
                         </button>
                         <button class="suggestion-chip" data-message="Apa saja layanan MediCare?">
-                            <span class="suggestion-chip-icon">🏥</span>
+                            <i class="fas fa-hospital suggestion-chip-icon"></i>
                             Layanan
                         </button>
                         <button class="suggestion-chip" data-message="Berapa biaya konsultasi?">
-                            <span class="suggestion-chip-icon">💰</span>
+                            <i class="fas fa-money-bill-wave suggestion-chip-icon"></i>
                             Biaya
                         </button>
                         <button class="suggestion-chip" data-message="Bantuan darurat kesehatan mental">
-                            <span class="suggestion-chip-icon">🆘</span>
+                            <i class="fas fa-ambulance suggestion-chip-icon"></i>
                             Darurat
                         </button>
                     </div>
@@ -122,12 +130,14 @@
                             id="userInput" 
                             placeholder="Tanyakan apapun tentang kesehatan mental..." 
                             rows="1"
-                            class="message-input">
+                            class="message-input"
+                            autocomplete="off"
+                            autocorrect="off"
+                            autocapitalize="sentences"
+                            spellcheck="true">
                         </textarea>
                         <button id="sendButton" class="send-button" disabled>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 19V5M12 5L5 12M12 5L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
+                            <i class="fas fa-paper-plane"></i>
                         </button>
                     </div>
                     <div class="input-footer">
@@ -138,6 +148,13 @@
         </div>
     </main>
 
+    <!-- Hapus chatbot button di halaman chatbot -->
+    
+    <script src="js/script.js"></script>
     <script src="js/chatbot.js"></script>
 </body>
 </html>
+
+
+
+

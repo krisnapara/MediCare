@@ -1,7 +1,7 @@
 /* ================================== GLOBAL BUTTONS STYLES (DITAMBAH BARU) ================================== */
 .btn-primary {
     display: inline-block;
-    background: linear-gradient(45deg, #007bff, #0056b3); /* Gradien Biru */
+    background: #1D5CA0;
     color: white;
     text-decoration: none;
     padding: 15px 35px;
@@ -15,7 +15,7 @@
 }
 
 .btn-primary:hover {
-    background: linear-gradient(45deg, #0056b3, #004085);
+    background: #1D5CA0;
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(0, 123, 255, 0.5);
 }
@@ -41,7 +41,7 @@
 .hero-content h1 {
     font-size: 2.5rem;
     margin-bottom: 20px;
-    color: #007bff;
+    color: #1D5CA0;
     line-height: 1.3;
     font-weight: 700;
 }
@@ -90,7 +90,7 @@
     border-radius: 12px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
     margin-bottom: 30px;
-    border-left: 4px solid #007bff;
+    border-left: 4px solid #1D5CA0;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -101,7 +101,7 @@
 
 .card h3 {
     font-size: 1.6rem;
-    color: #007bff;
+    color: black;
     margin-bottom: 20px;
     font-weight: 600;
 }
@@ -172,7 +172,7 @@
 
 .health-content h4 {
     margin: 0 0 10px 0;
-    color: #007bff;
+    color: #1D5CA0;
     font-size: 1.2rem;
     font-weight: 700;
 }
@@ -191,9 +191,8 @@
 .explore-section {
     text-align: center;
     padding: 20px;
-    background: linear-gradient(135deg, #f8fbff, #e8f2ff);
+    background: #DDF0FF;
     border-radius: 10px;
-    border: 2px dashed #007bff;
     max-width: 800px; 
     margin: 30px auto 0;
 }
@@ -209,7 +208,7 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    background: linear-gradient(135deg, #007bff, #0056b3);
+    background: #1D5CA0;
     color: white;
     text-decoration: none;
     padding: 12px 25px;

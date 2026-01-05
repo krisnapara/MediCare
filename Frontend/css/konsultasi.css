@@ -98,13 +98,13 @@
 }
 
 .step.active .step-number {
-    background-color: #007bff;
+    background-color: #1D5CA0;
     color: white;
-    border-color: #007bff;
+    border-color: #1D5CA0;
 }
 
 .step.active .step-label {
-    color: #007bff;
+    color: #1D5CA0;
     font-weight: 600;
 }
 
@@ -143,8 +143,6 @@
     margin-bottom: 30px;
     text-align: center;
     font-weight: 600;
-    /* Menghilangkan shadow biru */
-    text-shadow: none !important;
 }
 
 .form-group {
@@ -173,7 +171,7 @@
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-    border-color: #007bff;
+    border-color: #1D5CA0;
     outline: none;
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
 }
@@ -224,10 +222,7 @@
     display: none;
 }
 
-/* Styling untuk container form-group yang berisi tanggal lahir */
-.form-group.date-container {
-    margin-bottom: 25px;
-}
+
 
 .form-group.date-container label {
     display: block;
@@ -313,7 +308,7 @@
 }
 
 .btn-prev {
-    background: #8B0000;
+    background: #6B0000;
     color: white;
     box-shadow: 0 4px 15px rgba(139, 0, 0, 0.25);
 }
@@ -324,23 +319,23 @@
 
 .btn-next,
 .btn-submit {
-    background-color: #007bff;
+    background-color: #1D5CA0;
     color: white;
 }
 
 .btn-next:hover,
 .btn-submit:hover {
-    background-color: #0056b3;
+    background-color: #1D5CA0;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
 }
 
 .btn-submit {
-    background-color: #007bff;
+    background-color: #1D5CA0;
 }
 
 .btn-submit:hover {
-    background-color:  #0056b3;
+    background-color:  #1D5CA0;
 }
 
 /* ================================== APPOINTMENT RESULT STYLES ================================== */
@@ -364,7 +359,7 @@
 }
 
 .appointment-header {
-    background: linear-gradient(135deg, #007bff, #0056b3);
+    background-color: #1D5CA0;
     color: white;
     padding: 40px 30px;
     text-align: center;
@@ -425,7 +420,7 @@
     padding: 25px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
     border: 1px solid #e9ecef;
-    border-left: 4px solid #007bff;
+    border-left: #1D5CA0;
 }
 
 .detail-section:last-child {
@@ -476,7 +471,7 @@
 }
 
 .instructions-header {
-    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    background: #1D5CA0;
     color: white;
     padding: 15px 20px;
     font-weight: 700;
@@ -507,7 +502,7 @@
 
 .note-box {
     background: linear-gradient(135deg, #e8f4ff, #d4e7ff); 
-    border-left: 4px solid #007bff;
+    border-left: #1D5CA0;
     padding: 15px;
     border-radius: 8px;
     margin-top: 15px;
@@ -525,7 +520,7 @@
 }
 
 #telegramNote a {
-    color: #007bff;
+    color:#1D5CA0;
     text-decoration: none;
     font-weight: 600;
     border-bottom: 2px solid transparent;
@@ -533,7 +528,7 @@
 }
 
 #telegramNote a:hover {
-    color: #0056b3;
+    color: #1D5CA0;
     border-bottom-color: #0056b3;
 }
 
@@ -564,7 +559,7 @@
 
 /* TOMBOL BACK - WARNA MERAH BURGUNDY */
 .btn-back {
-    background: #8B0000;
+    background: #6B0000;
     color: white;
     box-shadow: 0 4px 15px rgba(139, 0, 0, 0.25);
 }
@@ -634,7 +629,7 @@
 
 /* TOMBOL DOWNLOAD - WARNA BIRU */
 .btn-download {
-    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    background:#1D5CA0;
     color: white;
     box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
 }
@@ -822,7 +817,7 @@
     
     /* Memaksa warna latar belakang header untuk dicetak (tergantung pengaturan printer) */
     .appointment-header {
-        background-color: #007bff !important;
+        background-color: #1D5CA0 !important;
         color: white !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
