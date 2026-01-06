@@ -21,7 +21,7 @@
                 <li><a href="index.html" class="active">Beranda</a></li>
                 <li><a href="artikel.html">Artikel</a></li>
                 <li><a href="tentang.html">Tentang kami</a></li>
-                <li><a href="javascript:void(0);" onclick="authRedirect('konsultasi.html')">Konsultasi</a></li> 
+                <li><a href="javascript:void(0);" onclick="handleConsultationNavigation()">Konsultasi</a></li>
             </ul>
         </nav>
 
@@ -37,7 +37,7 @@
             <div class="hero-content">
                 <h1>Kesehatan Mental Anda Prioritas Kami</h1>
                 <p>MediCare hadir untuk memberikan dukungan dan konsultasi kesehatan mental yang mudah diakses. Dengan tenaga profesional, kami siap membantu Anda melalui masa sulit.</p>
-                <a href="#" onclick="authRedirect('konsultasi.html'); return false;" class="btn-primary">Konsultasi Sekarang</a>
+                <a href="konsultasi.html" onclick="handleConsultationNavigation(event)" class="btn-primary">Konsultasi Sekarang</a>
             </div>
             <div class="hero-image">
                 <img src="assets/images/background.jpg" alt="Dokter memberikan konsultasi online kepada pasien">
@@ -285,5 +285,7 @@
     </div>
 
     <script src="js/script.js"></script>
+
+    
 </body>
 </html>

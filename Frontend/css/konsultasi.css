@@ -37,6 +37,72 @@
     opacity: 0.9;
 }
 
+/* ================================== BACK BUTTON - SIMPLE ARROW ================================== */
+
+.back-button-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+}
+
+.back-home-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    line-height: 1;
+    padding: 0;
+}
+
+.back-home-btn:hover {
+    background: white;
+    color: #1D5CA0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.back-home-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design untuk Back Button */
+@media (max-width: 768px) {
+    .back-button-container {
+        top: 15px;
+        left: 15px;
+    }
+    
+    .back-home-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .back-button-container {
+        top: 10px;
+        left: 10px;
+    }
+    
+    .back-home-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 1.2rem;
+    }
+}
 
 /* ================================== ONLINE COUNSELING PAGE STYLE ================================== */
 .online-counseling-page {

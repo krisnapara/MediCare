@@ -228,10 +228,10 @@
     right: 0;
 }
 
-.auth-submit-btn {
+.auth-btn {
     display: block;
-    width: 85%;
-    margin: 25px auto 0 auto;
+    width: 100%; /* Menyamakan lebar dengan input box */
+    margin: 25px auto 0 auto; /* Memberikan jarak 25px dari input terakhir */
     padding: 16px;
     font-size: 1.1rem;
     font-weight: bold;
@@ -247,7 +247,7 @@
     overflow: hidden;
 }
 
-.auth-submit-btn::before {
+.auth-btn::before {
     content: '';
     position: absolute;
     top: 0;
@@ -258,11 +258,11 @@
     transition: left 0.5s ease;
 }
 
-.auth-submit-btn:hover::before {
+.auth-btn:hover::before {
     left: 100%;
 }
 
-.auth-submit-btn:hover {
+.auth-btn:hover {
     background: linear-gradient(135deg, #0056b3, #004494);
     transform: translateY(-3px);
     box-shadow: 0 10px 25px rgba(0, 123, 255, 0.4);
@@ -270,8 +270,8 @@
 
 .forgot-password {
     text-align: right;
-    margin-bottom: 20px;
-    margin-top: -5px;
+    margin-top: 20px; 
+    margin-bottom: 25px; 
 }
 
 .forgot-password a {
@@ -307,6 +307,75 @@
     text-decoration: none;
     color: #0056b3;
     border-bottom: 2px solid #0056b3;
+}
+
+/* ================================== NOTIFICATION TOAST STYLES ================================== */
+.notification-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #fff;
+    padding: 15px 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transform: translateX(150%); /* Tersembunyi di kanan */
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    border-left: 5px solid #28a745;
+    font-family: 'Segoe UI', sans-serif;
+    max-width: 350px;
+}
+
+.notification-toast.show {
+    transform: translateX(0); /* Muncul */
+}
+
+.notification-toast.success {
+    border-left-color: #28a745;
+}
+
+.notification-toast.error {
+    border-left-color: #dc3545;
+}
+
+.notification-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.notification-toast.success .notification-icon {
+    background: rgba(40, 167, 69, 0.15);
+    color: #28a745;
+}
+
+.notification-toast.error .notification-icon {
+    background: rgba(220, 53, 69, 0.15);
+    color: #dc3545;
+}
+
+.notification-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.notification-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #333;
+    margin-bottom: 2px;
+}
+
+.notification-message {
+    font-size: 0.85rem;
+    color: #666;
 }
 
 /* Form animations */
@@ -356,7 +425,7 @@
         gap: 12px;
     }
     
-    .auth-submit-btn {
+    .auth-btn {
         width: 90%;
     }
 }
@@ -377,7 +446,7 @@
         height: 180px;
     }
     
-    .auth-submit-btn {
+    .auth-btn {
         width: 95%;
         padding: 14px;
     }
@@ -391,12 +460,12 @@
 }
 
 /* Loading state for buttons */
-.auth-submit-btn.loading {
+.auth-btn.loading {
     pointer-events: none;
     opacity: 0.7;
 }
 
-.auth-submit-btn.loading::after {
+.auth-btn.loading::after {
     content: '';
     position: absolute;
     width: 20px;
@@ -544,6 +613,259 @@
 .auth-dialog-close-btn:focus {
     outline: none;
     box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.3);
+}
+
+/* ================================== GUEST MODE DIALOG STYLES ================================== */
+
+/* Guest Dialog Styles */
+.guest-dialog-overlay,
+.consultation-dialog-overlay,
+.upgrade-dialog-overlay,
+.limited-access-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s;
+}
+
+.guest-dialog,
+.consultation-dialog,
+.upgrade-dialog,
+.limited-access-dialog {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    animation: slideUp 0.3s;
+}
+
+.consultation-dialog {
+    max-width: 600px;
+}
+
+.consultation-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.option-card {
+    padding: 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.option-card:hover {
+    border-color: #4CAF50;
+    transform: translateY(-5px);
+}
+
+.option-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.guest-actions,
+.upgrade-actions,
+.limited-actions,
+.access-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.guest-close-btn,
+.dialog-close-btn,
+.upgrade-close-btn,
+.limited-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+}
+
+.guest-close-btn:hover,
+.dialog-close-btn:hover,
+.upgrade-close-btn:hover,
+.limited-close-btn:hover {
+    color: #333;
+}
+
+.upgrade-benefits {
+    text-align: left;
+    margin: 20px 0;
+    padding-left: 20px;
+}
+
+.upgrade-benefits li {
+    margin: 10px 0;
+}
+
+.access-features {
+    margin: 20px 0;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.feature-item.available {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.feature-item.unavailable {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.feature-icon {
+    font-weight: bold;
+}
+
+/* Access Denied Page Styles */
+.access-denied-container,
+.login-required-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+}
+
+.access-denied-card,
+.login-required-card {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+}
+
+.access-denied-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+}
+
+.access-actions,
+.login-actions {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.btn-primary, .btn-secondary, .btn-login, .btn-back {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-primary, .btn-login {
+    background: #4CAF50;
+    color: white;
+}
+
+.btn-primary:hover, .btn-login:hover {
+    background: #45a049;
+}
+
+.btn-secondary, .btn-back {
+    background: #f5f5f5;
+    color: #333;
+}
+
+.btn-secondary:hover, .btn-back:hover {
+    background: #e0e0e0;
+}
+
+.register-link {
+    margin-top: 20px;
+    color: #666;
+}
+
+.register-link a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .guest-dialog,
+    .consultation-dialog,
+    .upgrade-dialog,
+    .limited-access-dialog,
+    .access-denied-card,
+    .login-required-card {
+        width: 95%;
+        padding: 20px;
+    }
+    
+    .consultation-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .guest-actions,
+    .upgrade-actions,
+    .limited-actions,
+    .access-actions,
+    .login-actions {
+        flex-direction: column;
+    }
+    
+    .access-denied-icon {
+        font-size: 60px;
+    }
 }
 
 /* Responsive untuk layar kecil */

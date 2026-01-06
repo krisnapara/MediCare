@@ -1,523 +1,491 @@
+// ================================== GLOBAL USER STATE MANAGEMENT ==================================
+let userState = {
+    isLoggedIn: false,
+    isGuest: false,
+    userData: null
+};
+
+// ================================== INITIALIZATION ==================================
 document.addEventListener('DOMContentLoaded', function() {
-    // Set menu aktif berdasarkan halaman saat ini
+    // 1. Inisialisasi state user
+    initializeUserState();
+    
+    // 2. Set menu aktif berdasarkan halaman saat ini
     setActiveMenuByPage();
 
-    // Setup enhanced logo handler - HARUS DIPANGGIL PERTAMA
+    // 3. Setup enhanced logo handler
     setupEnhancedLogoHandler();
 
-    // Setup authentication redirect system
+    // 4. Setup authentication redirect system
     setupAuthRedirectSystem();
 
-    // Setup consultation auth flow
+    // 5. Setup consultation auth flow dengan guest mode
     setupConsultationAuthFlow();
 
-    // Tambahkan event listener untuk klik menu navigasi
+    // 6. Tambahkan event listener untuk klik menu navigasi
     const navLinks = document.querySelectorAll('nav ul li a');
-
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            // Hapus active dari semua menu
             navLinks.forEach(l => l.classList.remove('active'));
-            // Tambahkan active ke menu yang diklik
             this.classList.add('active');
         });
     });
 
-    // Inisialisasi video player
+    // 7. Inisialisasi video player
     initializeVideoPlayer();
 
-    // Inisialisasi mood tracker
+    // 8. Inisialisasi mood tracker
     initializeMoodTracker();
 
-    // Setup redirect untuk link konsultasi di mood tracker
+    // 9. Setup redirect untuk link konsultasi di mood tracker
     setupKonsultasiRedirect();
 
-    // Enhanced chatbot effects
+    // 10. Enhanced chatbot effects
     initializeChatbotEffects();
     enhanceChatbotColors();
 
-    // Setup newsletter functionality - TAMBAHAN BARU
+    // 11. Setup newsletter functionality
     setupNewsletter();
 
-    console.log('All enhanced systems initialized');
-
-    // Cek dan tampilkan notifikasi jika ada di URL (misalnya dari login)
+    // 12. Cek dan tampilkan notifikasi jika ada di URL
     checkAndShowNotification();
 
-    // Cek dan handle auth redirect jika ada di storage
+    // 13. Cek dan handle auth redirect jika ada di storage
     checkAndHandleAuthRedirect();
+
+    console.log('All enhanced systems initialized with guest mode support');
 });
 
-
-// ================================== ENHANCED LOGO CLICK HANDLER ==================================
-function setupEnhancedLogoHandler() {
-    console.log('Setting up enhanced logo handler...');
-
-    // Handle header logo
-    const headerLogo = document.querySelector('.header .logo');
-    if (headerLogo) {
-        console.log('Header logo found, adding click handler');
-        headerLogo.style.cursor = 'pointer';
-
-        // Remove any existing click handlers to avoid duplicates
-        headerLogo.onclick = null;
-
-        // Add event listener
-        headerLogo.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('Header logo clicked - redirecting to homepage');
-            redirectToHomepage();
-        });
-
-        // Also make child elements clickable
-        const headerLogoImg = headerLogo.querySelector('img');
-        const headerLogoText = headerLogo.querySelector('.logo-text');
-
-        if (headerLogoImg) {
-            headerLogoImg.style.cursor = 'pointer';
-            headerLogoImg.onclick = null;
-            headerLogoImg.addEventListener('click', function(e) {
-                e.stopPropagation();
-                e.preventDefault();
-                console.log('Header logo image clicked - redirecting to homepage');
-                redirectToHomepage();
-            });
-        }
-
-        if (headerLogoText) {
-            headerLogoText.style.cursor = 'pointer';
-            headerLogoText.onclick = null;
-            headerLogoText.addEventListener('click', function(e) {
-                e.stopPropagation();
-                e.preventDefault();
-                console.log('Header logo text clicked - redirecting to homepage');
-                redirectToHomepage();
-            });
-        }
-    } else {
-        console.log('Header logo not found');
-    }
-
-    // Handle footer logo
-    const footerLogo = document.querySelector('.footer-logo');
-    if (footerLogo) {
-        console.log('Footer logo found, adding click handler');
-        footerLogo.style.cursor = 'pointer';
-        footerLogo.onclick = null;
-        footerLogo.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('Footer logo clicked - redirecting to homepage');
-            redirectToHomepage();
-        });
-
-        // Also make child elements clickable
-        const footerLogoImg = footerLogo.querySelector('img');
-        const footerLogoText = footerLogo.querySelector('.logo-text');
-
-        if (footerLogoImg) {
-            footerLogoImg.style.cursor = 'pointer';
-            footerLogoImg.onclick = null;
-            footerLogoImg.addEventListener('click', function(e) {
-                e.stopPropagation();
-                e.preventDefault();
-                console.log('Footer logo image clicked - redirecting to homepage');
-                redirectToHomepage();
-            });
-        }
-
-        if (footerLogoText) {
-            footerLogoText.style.cursor = 'pointer';
-            footerLogoText.onclick = null;
-            footerLogoText.addEventListener('click', function(e) {
-                e.stopPropagation();
-                e.preventDefault();
-                console.log('Footer logo text clicked - redirecting to homepage');
-                redirectToHomepage();
-            });
-        }
-    } else {
-        console.log('Footer logo not found');
-    }
+// ================================== USER STATE MANAGEMENT ==================================
+function initializeUserState() {
+    const token = localStorage.getItem('token');
+    const user = localStorage.getItem('user');
+    const isGuest = localStorage.getItem('isGuest') === 'true';
+    
+    userState = {
+        isLoggedIn: !!token,
+        isGuest: isGuest,
+        userData: user ? JSON.parse(user) : null
+    };
+    
+    console.log('User State Initialized:', userState);
+    updateUIForUserState();
 }
 
-function redirectToHomepage() {
-    console.log('Redirecting to homepage...');
-    window.location.href = 'index.html';
-}
-
-// ================================== ENHANCED NEWSLETTER FUNCTIONALITY ==================================
-function setupNewsletter() {
-    console.log('Setting up enhanced newsletter functionality...');
+function updateUIForUserState() {
+    const profileIcon = document.querySelector('.profile-icon');
+    const profileLink = profileIcon ? profileIcon.querySelector('a') : null;
     
-    const newsletterBtn = document.getElementById('btn-subscribe');
-    const unsubscribeBtn = document.getElementById('btn-unsubscribe');
-    const newsletterEmail = document.getElementById('newsletter-email');
-    
-    if (!newsletterBtn || !unsubscribeBtn || !newsletterEmail) {
-        console.log('Newsletter elements not found');
-        return;
-    }
-    
-    // Load saved email if exists and update UI
-    updateNewsletterUI();
-    
-    // Handle newsletter subscription
-    newsletterBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        handleNewsletterSubscription();
-    });
-    
-    // Handle unsubscribe
-    unsubscribeBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        showUnsubscribeConfirmation();
-    });
-    
-    // Handle Enter key press
-    newsletterEmail.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            handleNewsletterSubscription();
-        }
-    });
-    
-    // Add input event to show subscribe button when email changes
-    newsletterEmail.addEventListener('input', function() {
-        const email = this.value.trim();
-        const savedEmail = localStorage.getItem('newsletter_subscribed_email');
-        
-        // Jika email diubah dan berbeda dari yang tersimpan, tampilkan tombol subscribe
-        if (email !== savedEmail) {
-            showSubscribeButton();
-        }
-    });
-}
-
-function updateNewsletterUI() {
-    const newsletterBtn = document.getElementById('btn-subscribe');
-    const unsubscribeBtn = document.getElementById('btn-unsubscribe');
-    const newsletterEmail = document.getElementById('newsletter-email');
-    const statusElement = document.getElementById('newsletter-status');
-    
-    const savedEmail = localStorage.getItem('newsletter_subscribed_email');
-    const subscribeDate = localStorage.getItem('newsletter_subscribed_date');
-    
-    if (savedEmail) {
-        // User sudah subscribe
-        newsletterEmail.value = savedEmail;
-        
-        // Update button states
-        newsletterBtn.style.display = 'none';
-        unsubscribeBtn.style.display = 'block';
-        
-        // Update status message
-        if (statusElement) {
-            const date = subscribeDate ? new Date(subscribeDate).toLocaleDateString('id-ID') : 'tidak diketahui';
-            statusElement.innerHTML = `
-                <div class="status-subscribed">
-                    <span class="status-icon">✓</span>
-                    <span class="status-text">Berlangganan aktif sejak ${date}</span>
-                </div>
-                <div class="status-note">Email: ${savedEmail}</div>
-            `;
-            statusElement.classList.add('subscribed');
-        }
-    } else {
-        // User belum subscribe
-        newsletterBtn.style.display = 'block';
-        unsubscribeBtn.style.display = 'none';
-        
-        // Clear status message
-        if (statusElement) {
-            statusElement.innerHTML = '';
-            statusElement.classList.remove('subscribed');
+    if (profileIcon && profileLink) {
+        if (userState.isLoggedIn) {
+            // User sudah login - akses penuh
+            profileIcon.style.display = 'block';
+            profileLink.href = 'profil.html';
+            profileLink.onclick = null;
+            profileLink.style.cursor = 'pointer';
+            
+            // Update profile image if available
+            if (userState.userData && userState.userData.profileImage) {
+                const profileImg = profileLink.querySelector('img');
+                if (profileImg) {
+                    profileImg.src = userState.userData.profileImage;
+                    profileImg.alt = userState.userData.name || 'Profil Pengguna';
+                }
+            }
+            
+        } else if (userState.isGuest) {
+            // User sebagai tamu - akses terbatas
+            profileIcon.style.display = 'block';
+            profileLink.href = 'javascript:void(0)';
+            profileLink.onclick = showGuestProfileDialog;
+            profileLink.style.cursor = 'pointer';
+            
+            // Update guest indicator
+            const profileImg = profileLink.querySelector('img');
+            if (profileImg) {
+                profileImg.alt = 'Guest Mode';
+                profileImg.style.filter = 'grayscale(50%) opacity(0.8)';
+                profileImg.title = 'Mode Tamu - Klik untuk upgrade';
+            }
+            
+        } else {
+            // User belum login dan bukan tamu
+            profileIcon.style.display = 'block';
+            profileLink.href = 'javascript:void(0)';
+            profileLink.onclick = redirectToLogin;
+            profileLink.style.cursor = 'pointer';
         }
     }
 }
 
-function showSubscribeButton() {
-    const newsletterBtn = document.getElementById('btn-subscribe');
-    const unsubscribeBtn = document.getElementById('btn-unsubscribe');
-    const statusElement = document.getElementById('newsletter-status');
-    
-    newsletterBtn.style.display = 'block';
-    unsubscribeBtn.style.display = 'none';
-    
-    if (statusElement) {
-        statusElement.innerHTML = '';
-        statusElement.classList.remove('subscribed');
-    }
+// ================================== GUEST MODE FUNCTIONS ==================================
+function setGuestMode() {
+    localStorage.setItem('isGuest', 'true');
+    userState.isGuest = true;
+    userState.isLoggedIn = false;
+    updateUIForUserState();
+    console.log('Guest mode activated');
+    showNotification('Mode tamu diaktifkan. Akses fitur terbatas.', 'info');
 }
 
-function handleNewsletterSubscription() {
-    const emailInput = document.getElementById('newsletter-email');
-    const subscribeBtn = document.getElementById('btn-subscribe');
-    
-    if (!emailInput || !subscribeBtn) return;
-    
-    const email = emailInput.value.trim();
-    
-    // Validasi email sederhana
-    if (!email) {
-        showNewsletterMessage('Mohon masukkan email Anda.', 'error');
-        emailInput.focus();
-        return;
-    }
-    
-    if (!isValidEmail(email)) {
-        showNewsletterMessage('Format email tidak valid.', 'error');
-        emailInput.focus();
-        return;
-    }
-    
-    // Simpan data newsletter
-    localStorage.setItem('newsletter_subscribed_email', email);
-    localStorage.setItem('newsletter_subscribed_date', new Date().toISOString());
-    
-    // Update UI
-    updateNewsletterUI();
-    
-    // Show success message
-    showNewsletterMessage('🎉 Terima kasih! Anda telah berlangganan newsletter kami. Tips kesehatan mental akan dikirim ke email Anda.', 'success');
-    
-    // Simulasi pengiriman email konfirmasi
-    simulateNewsletterConfirmation(email);
-    
-    // Log aktivitas
-    logNewsletterActivity(email, 'subscribe');
-    
-    // Clear input setelah 3 detik
-    setTimeout(() => {
-        emailInput.value = '';
-        showNewsletterMessage('', 'clear');
-    }, 3000);
+function clearGuestMode() {
+    localStorage.removeItem('isGuest');
+    userState.isGuest = false;
+    updateUIForUserState();
+    console.log('Guest mode cleared');
 }
 
-function showUnsubscribeConfirmation() {
-    const savedEmail = localStorage.getItem('newsletter_subscribed_email');
-    
-    if (!savedEmail) {
-        showNewsletterMessage('Anda belum berlangganan newsletter.', 'error');
-        return;
-    }
-    
-    // Buat dialog konfirmasi
+function showGuestProfileDialog() {
     const overlay = document.createElement('div');
-    overlay.className = 'newsletter-dialog-overlay';
-    overlay.id = 'unsubscribe-dialog-overlay';
+    overlay.className = 'guest-dialog-overlay';
     
     const dialog = document.createElement('div');
-    dialog.className = 'newsletter-dialog';
+    dialog.className = 'guest-dialog';
     dialog.innerHTML = `
-        <h3>Berhenti Berlangganan</h3>
-        <p>Apakah Anda yakin ingin berhenti berlangganan newsletter?</p>
-        <p class="dialog-email">Email: <strong>${savedEmail}</strong></p>
-        <div class="dialog-actions">
-            <button id="dialog-cancel" class="dialog-btn secondary">Batal</button>
-            <button id="dialog-confirm" class="dialog-btn primary">Ya, Berhenti</button>
+        <h3>Mode Tamu</h3>
+        <p>Anda sedang mengakses sebagai tamu. Fitur yang tersedia terbatas.</p>
+        <div class="guest-actions">
+            <button id="btn-guest-upgrade" class="btn-primary">Buat Akun untuk Akses Penuh</button>
+            <button id="btn-guest-login" class="btn-secondary">Masuk dengan Akun</button>
+            <button id="btn-guest-continue" class="btn-secondary">Lanjut sebagai Tamu</button>
         </div>
+        <button class="guest-close-btn">&times;</button>
     `;
     
     overlay.appendChild(dialog);
     document.body.appendChild(overlay);
     
-    // Event listeners untuk dialog
-    document.getElementById('dialog-cancel').addEventListener('click', function() {
+    // Event listeners
+    document.getElementById('btn-guest-upgrade').addEventListener('click', function() {
+        document.body.removeChild(overlay);
+        window.location.href = 'register.html?return=' + encodeURIComponent(window.location.pathname);
+    });
+    
+    document.getElementById('btn-guest-login').addEventListener('click', function() {
+        document.body.removeChild(overlay);
+        window.location.href = 'login.html?return=' + encodeURIComponent(window.location.pathname);
+    });
+    
+    document.getElementById('btn-guest-continue').addEventListener('click', function() {
         document.body.removeChild(overlay);
     });
     
-    document.getElementById('dialog-confirm').addEventListener('click', function() {
-        handleUnsubscribe();
+    dialog.querySelector('.guest-close-btn').addEventListener('click', function() {
         document.body.removeChild(overlay);
     });
     
-    // Close ketika klik overlay
     overlay.addEventListener('click', function(e) {
         if (e.target === overlay) {
             document.body.removeChild(overlay);
         }
     });
-    
-    // Close dengan ESC key
-    const closeOnEsc = function(e) {
-        if (e.key === 'Escape') {
-            document.body.removeChild(overlay);
-            document.removeEventListener('keydown', closeOnEsc);
-        }
-    };
-    document.addEventListener('keydown', closeOnEsc);
 }
 
-function handleUnsubscribe() {
-    const email = localStorage.getItem('newsletter_subscribed_email');
-    
-    if (!email) {
-        showNewsletterMessage('Anda belum berlangganan newsletter.', 'error');
-        return;
-    }
-    
-    // Hapus data dari localStorage
-    localStorage.removeItem('newsletter_subscribed_email');
-    localStorage.removeItem('newsletter_subscribed_date');
-    
-    // Update UI
-    updateNewsletterUI();
-    
-    // Show success message
-    showNewsletterMessage('✅ Anda telah berhenti berlangganan newsletter. Email: ' + email, 'success');
-    
-    // Log aktivitas
-    logNewsletterActivity(email, 'unsubscribe');
-    
-    // Simulasi konfirmasi unsubscription
-    setTimeout(() => {
-        showNewsletterMessage('', 'clear');
-    }, 3000);
-}
-
-function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-function showNewsletterMessage(message, type = 'info') {
-    // Cari atau buat elemen pesan
-    let messageElement = document.getElementById('newsletter-message');
-    
-    if (!messageElement) {
-        messageElement = document.createElement('div');
-        messageElement.id = 'newsletter-message';
-        
-        const newsletterForm = document.querySelector('.newsletter-form');
-        if (newsletterForm) {
-            newsletterForm.parentNode.insertBefore(messageElement, newsletterForm.nextSibling);
-        }
-    }
-    
-    // Set pesan dan styling
-    messageElement.textContent = message;
-    messageElement.className = 'newsletter-message';
-    
-    if (type === 'success') {
-        messageElement.classList.add('success');
-    } else if (type === 'error') {
-        messageElement.classList.add('error');
-    } else if (type === 'clear') {
-        messageElement.textContent = '';
-        messageElement.className = 'newsletter-message';
-    }
-    
-    // Auto-hide pesan setelah 5 detik (kecuali pesan kosong)
-    if (message && type !== 'clear') {
-        setTimeout(() => {
-            messageElement.textContent = '';
-            messageElement.className = 'newsletter-message';
-        }, 5000);
-    }
-}
-
-function simulateNewsletterConfirmation(email) {
-    console.log('Simulating newsletter confirmation for:', email);
-    
-    // Di implementasi nyata, ini akan mengirim request ke server
-    // Simulasi delay server
-    setTimeout(() => {
-        console.log('Newsletter subscription confirmed for:', email);
-    }, 1000);
-}
-
-function logNewsletterActivity(email, action) {
-    // Simpan riwayat newsletter di localStorage
-    let newsletterHistory = JSON.parse(localStorage.getItem('newsletter_history')) || [];
-    
-    const activity = {
-        email: email,
-        date: new Date().toISOString(),
-        action: action,
-        timestamp: Date.now()
-    };
-    
-    newsletterHistory.push(activity);
-    
-    // Simpan maksimal 20 entri terakhir
-    if (newsletterHistory.length > 20) {
-        newsletterHistory = newsletterHistory.slice(-20);
-    }
-    
-    localStorage.setItem('newsletter_history', JSON.stringify(newsletterHistory));
-    console.log('Newsletter activity logged:', activity);
-}
-
-// Function to check subscription status
-function checkNewsletterSubscription() {
-    const email = localStorage.getItem('newsletter_subscribed_email');
-    return {
-        isSubscribed: !!email,
-        email: email,
-        subscribedDate: localStorage.getItem('newsletter_subscribed_date')
-    };
-}
-
-// Function to manually reset newsletter (developer tool)
-function resetNewsletter() {
-    if (confirm('Reset semua data newsletter? Ini akan menghapus semua data langganan.')) {
-        localStorage.removeItem('newsletter_subscribed_email');
-        localStorage.removeItem('newsletter_subscribed_date');
-        localStorage.removeItem('newsletter_history');
-        
-        // Reset UI
-        updateNewsletterUI();
-        
-        showNewsletterMessage('✅ Semua data newsletter telah direset.', 'success');
-        
-        setTimeout(() => {
-            showNewsletterMessage('', 'clear');
-        }, 3000);
-        
-        return true;
-    }
-    return false;
-}
-
-// ================================== KONSULTASI REDIRECT WITH REGISTER FIRST ==================================
-function redirectToKonsultasiWithRegister() {
-    // Set redirect URL untuk setelah register dan login
-    setRedirectUrl('konsultasi.html');
-
-    // Langsung arahkan ke halaman register
-    window.location.href = `register.html?return=${encodeURIComponent('konsultasi.html')}`;
-}
-
-// Fungsi untuk handle konsultasi dari header navigation DENGAN NOTIFIKASI
+// ================================== CONSULTATION NAVIGATION WITH GUEST MODE ==================================
+// Fungsi untuk mengatur navigasi konsultasi
 function handleConsultationNavigation() {
-    showConsultationAuthDialog('konsultasi.html'); // Memanggil fungsi baru dengan target page
+    const token = localStorage.getItem('token');
+    const user = localStorage.getItem('user');
+
+    // CEK: Jika sudah ada token dan data user (berarti sudah login)
+    if (token && user) {
+        // Langsung arahkan ke halaman konsultasi tanpa notifikasi
+        window.location.href = 'konsultasi.html';
+    } else {
+        // Jika belum login, jalankan logika notifikasi/dialog yang sudah Anda buat
+        // Ini akan memicu modal "Login Required" atau "Guest Mode" yang ada di script Anda
+        showLoginRequiredDialog(); 
+    }
 }
 
-// Fungsi untuk setup consultation auth flow
-function setupConsultationAuthFlow() {
-    console.log('Setting up consultation auth flow...');
-
-    // Untuk tombol konsultasi di header
-    const consultationLinks = document.querySelectorAll('nav a[href="konsultasi.html"]');
-    consultationLinks.forEach(link => {
-        link.href = 'javascript:void(0);';
-        link.onclick = handleConsultationNavigation;
-        link.style.cursor = 'pointer';
+function showConsultationGuestDialog() {
+    const overlay = document.createElement('div');
+    overlay.className = 'consultation-dialog-overlay';
+    
+    const dialog = document.createElement('div');
+    dialog.className = 'consultation-dialog';
+    dialog.innerHTML = `
+        <h3>Akses Layanan Konsultasi</h3>
+        <p>Untuk mengakses layanan konsultasi, Anda perlu:</p>
+        <div class="consultation-options">
+            <div class="option-card" id="option-login">
+                <div class="option-icon">👤</div>
+                <h4>Masuk ke Akun</h4>
+                <p>Masuk dengan akun yang sudah ada</p>
+                <small>Cepat dan Mudah</small>
+            </div>
+            <div class="option-card" id="option-register">
+                <div class="option-icon">📝</div>
+                <h4>Buat Akun Baru</h4>
+                <p>Daftar gratis dalam 2 menit</p>
+                <small>Rekomendasi</small>
+            </div>
+            <div class="option-card" id="option-guest">
+                <div class="option-icon">👁️</div>
+                <h4>Jelajah sebagai Tamu</h4>
+                <p>Akses terbatas tanpa akun</p>
+                <small>Tidak bisa konsultasi</small>
+            </div>
+        </div>
+        <p class="dialog-note"><strong>Perhatian:</strong> Mode tamu tidak memberikan akses ke layanan konsultasi. Hanya untuk melihat konten umum.</p>
+        <button class="dialog-close-btn">&times;</button>
+    `;
+    
+    overlay.appendChild(dialog);
+    document.body.appendChild(overlay);
+    
+    // Event listeners
+    document.getElementById('option-login').addEventListener('click', function() {
+        document.body.removeChild(overlay);
+        const currentPage = window.location.pathname.split('/').pop();
+        window.location.href = `login.html?return=${encodeURIComponent(currentPage)}`;
     });
+    
+    document.getElementById('option-register').addEventListener('click', function() {
+        document.body.removeChild(overlay);
+        const currentPage = window.location.pathname.split('/').pop();
+        window.location.href = `register.html?return=${encodeURIComponent(currentPage)}`;
+    });
+    
+    document.getElementById('option-guest').addEventListener('click', function() {
+        document.body.removeChild(overlay);
+        setGuestMode();
+        showGuestLimitedAccessDialog();
+    });
+    
+    dialog.querySelector('.dialog-close-btn').addEventListener('click', function() {
+        document.body.removeChild(overlay);
+    });
+    
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) {
+            document.body.removeChild(overlay);
+        }
+    });
+}
 
-    // *PENAMBAHAN BARU: Handle tombol konsultasi di halaman beranda (index.html)*
-    // Cari semua tombol dengan kelas 'btn-primary' yang digunakan untuk konsultasi di home/hero
-    const homeConsultationButtons = document.querySelectorAll('.hero-section .btn-primary, .services-section .btn-primary');
-    homeConsultationButtons.forEach(button => {
-        // Pastikan tombol ini tidak memiliki onclick lain yang menimpa
-        button.onclick = null;
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            authRedirect('konsultasi.html');
+function showGuestUpgradeDialog(targetPage) {
+    const overlay = document.createElement('div');
+    overlay.className = 'upgrade-dialog-overlay';
+    
+    const dialog = document.createElement('div');
+    dialog.className = 'upgrade-dialog';
+    dialog.innerHTML = `
+        <h3>Akses Konsultasi Dibatasi</h3>
+        <p>Anda sedang dalam <strong>Mode Tamu</strong>. Untuk mengakses layanan konsultasi, Anda perlu membuat akun.</p>
+        <div class="upgrade-benefits">
+            <h4>Keuntungan memiliki akun:</h4>
+            <ul>
+                <li>✓ Konsultasi langsung dengan psikolog profesional</li>
+                <li>✓ Buat janji temu online kapan saja</li>
+                <li>✓ Riwayat konsultasi dan progress tracking</li>
+                <li>✓ Notifikasi dan pengingat janji temu</li>
+                <li>✓ Akses ke semua fitur premium</li>
+            </ul>
+        </div>
+        <div class="upgrade-actions">
+            <button id="btn-upgrade-now" class="btn-primary">Buat Akun Sekarang (Gratis)</button>
+            <button id="btn-login-now" class="btn-secondary">Sudah Punya Akun? Masuk</button>
+            <button id="btn-stay-guest" class="btn-tertiary">Tetap sebagai Tamu</button>
+        </div>
+        <button class="upgrade-close-btn">&times;</button>
+    `;
+    
+    overlay.appendChild(dialog);
+    document.body.appendChild(overlay);
+    
+    document.getElementById('btn-upgrade-now').addEventListener('click', function() {
+        document.body.removeChild(overlay);
+        window.location.href = `register.html?return=${encodeURIComponent(targetPage)}`;
+    });
+    
+    document.getElementById('btn-login-now').addEventListener('click', function() {
+        document.body.removeChild(overlay);
+        window.location.href = `login.html?return=${encodeURIComponent(targetPage)}`;
+    });
+    
+    document.getElementById('btn-stay-guest').addEventListener('click', function() {
+        document.body.removeChild(overlay);
+        showGuestLimitedAccessDialog();
+    });
+    
+    dialog.querySelector('.upgrade-close-btn').addEventListener('click', function() {
+        document.body.removeChild(overlay);
+    });
+    
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) {
+            document.body.removeChild(overlay);
+        }
+    });
+}
+
+function showGuestLimitedAccessDialog() {
+    const overlay = document.createElement('div');
+    overlay.className = 'limited-access-overlay';
+    
+    const dialog = document.createElement('div');
+    dialog.className = 'limited-access-dialog';
+    dialog.innerHTML = `
+        <h3>Akses Terbatas - Mode Tamu</h3>
+        <p>Fitur yang tersedia dalam mode tamu:</p>
+        <div class="access-features">
+            <div class="feature-item available">
+                <span class="feature-icon">✓</span>
+                <span>Melihat artikel kesehatan mental</span>
+            </div>
+            <div class="feature-item available">
+                <span class="feature-icon">✓</span>
+                <span>Menggunakan mood tracker dasar</span>
+            </div>
+            <div class="feature-item available">
+                <span class="feature-icon">✓</span>
+                <span>Menonton video edukasi</span>
+            </div>
+            <div class="feature-item unavailable">
+                <span class="feature-icon">✗</span>
+                <span>Konsultasi dengan psikolog</span>
+            </div>
+            <div class="feature-item unavailable">
+                <span class="feature-icon">✗</span>
+                <span>Membuat janji temu online</span>
+            </div>
+            <div class="feature-item unavailable">
+                <span class="feature-icon">✗</span>
+                <span>Riwayat konsultasi</span>
+            </div>
+        </div>
+        <div class="limited-actions">
+            <button id="btn-limited-upgrade" class="btn-primary">Buat Akun untuk Akses Penuh</button>
+            <button id="btn-limited-ok" class="btn-secondary">Mengerti, Tetap sebagai Tamu</button>
+        </div>
+        <button class="limited-close-btn">&times;</button>
+    `;
+    
+    overlay.appendChild(dialog);
+    document.body.appendChild(overlay);
+    
+    document.getElementById('btn-limited-upgrade').addEventListener('click', function() {
+        document.body.removeChild(overlay);
+        window.location.href = 'register.html?return=' + encodeURIComponent(window.location.pathname);
+    });
+    
+    document.getElementById('btn-limited-ok').addEventListener('click', function() {
+        document.body.removeChild(overlay);
+    });
+    
+    dialog.querySelector('.limited-close-btn').addEventListener('click', function() {
+        document.body.removeChild(overlay);
+    });
+    
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) {
+            document.body.removeChild(overlay);
+        }
+    });
+}
+
+// ================================== SETUP CONSULTATION AUTH FLOW ==================================
+// Fungsi untuk mengatur navigasi konsultasi
+function handleConsultationNavigation() {
+    const token = localStorage.getItem('token');
+    const user = localStorage.getItem('user');
+
+    // CEK: Jika sudah ada token dan data user (berarti sudah login)
+    if (token && user) {
+        // Langsung arahkan ke halaman konsultasi tanpa notifikasi
+        window.location.href = 'konsultasi.html';
+    } else {
+        // Jika belum login, jalankan logika notifikasi/dialog yang sudah Anda buat
+        // Ini akan memicu modal "Login Required" atau "Guest Mode" yang ada di script Anda
+        showLoginRequiredDialog(); 
+    }
+}
+
+// Pastikan fungsi ini dipanggil di semua link/tombol konsultasi
+function setupConsultationAuthFlow() {
+    const consultLinks = document.querySelectorAll('a[href*="konsultasi.html"], [onclick*="handleConsultationNavigation"]');
+    
+    consultLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Cek apakah user sudah login
+            const isLoggedIn = localStorage.getItem('token') !== null;
+            
+            if (!isLoggedIn) {
+                e.preventDefault(); // Cegah pindah halaman langsung
+                handleConsultationNavigation();
+            }
+            // Jika sudah login, biarkan link berjalan normal ke konsultasi.html
         });
     });
+
+
+    // Untuk tombol konsultasi di halaman beranda
+    const homeConsultationButtons = document.querySelectorAll('a[href="konsultasi.html"], .btn-primary[href="konsultasi.html"]');
+    homeConsultationButtons.forEach(button => {
+        button.href = 'javascript:void(0);';
+        button.onclick = handleConsultationNavigation;
+        button.style.cursor = 'pointer';
+    });
+
+    // Untuk tombol di mood tracker
+    const moodConsultationButtons = document.querySelectorAll('#btn-mood-konsultasi, .feedback-btn.primary');
+    moodConsultationButtons.forEach(button => {
+        button.onclick = handleConsultationNavigation;
+    });
+}
+
+// ================================== REDIRECT FUNCTIONS ==================================
+function redirectToLogin() {
+    const currentPage = window.location.pathname.split('/').pop();
+    window.location.href = 'login.html?return=' + encodeURIComponent(currentPage);
+}
+
+// ================================== AUTHENTICATION REDIRECT SYSTEM ==================================
+function setupAuthRedirectSystem() {
+    console.log('Setting up auth redirect system...');
+
+    // Setup untuk login success
+    window.handleLoginSuccess = function() {
+        // Clear guest mode when logging in
+        clearGuestMode();
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const returnUrl = urlParams.get('return') || 'index.html';
+
+        // Hapus parameter return dari URL
+        urlParams.delete('return');
+        const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+        window.history.replaceState({}, document.title, newUrl);
+
+        console.log('Login success - redirecting to:', returnUrl);
+        window.location.href = returnUrl;
+    };
+
+    // Setup untuk register success
+    window.handleRegisterSuccess = function() {
+        // Clear guest mode when registering
+        clearGuestMode();
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const returnUrl = urlParams.get('return') || 'konsultasi.html';
+
+        console.log('Register success - redirecting to login with return:', returnUrl);
+        window.location.href = `login.html?return=${encodeURIComponent(returnUrl)}&notif=success&message=${encodeURIComponent('Registrasi Berhasil! Silakan Masuk.')}`;
+    };
+
+    // Handle redirect parameters from URL
+    function handleUrlRedirectParams() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirectParam = urlParams.get('redirect');
+
+        if (redirectParam && !sessionStorage.getItem('redirectAfterAuth')) {
+            sessionStorage.setItem('redirectAfterAuth', redirectParam);
+        }
+    }
+
+    // Panggil fungsi untuk handle URL parameters
+    handleUrlRedirectParams();
 }
 
 // ================================== NOTIFICATION SYSTEM ==================================
@@ -530,7 +498,7 @@ function showNotification(message, type = 'success') {
     if (body) {
         body.appendChild(notification);
 
-        // Atur posisi agar tidak mengganggu (misalnya di atas)
+        // Atur posisi agar tidak mengganggu
         notification.style.cssText = `
             position: fixed;
             top: 20px;
@@ -579,92 +547,9 @@ function checkAndShowNotification() {
     }
 }
 
-// ================================== AUTHENTICATION REDIRECT SYSTEM ==================================
-function setupAuthRedirectSystem() {
-    console.log('Setting up auth redirect system...');
-
-    // Setup untuk login success
-    window.handleLoginSuccess = function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const returnUrl = urlParams.get('return') || 'index.html';
-
-        // Hapus parameter return dari URL
-        urlParams.delete('return');
-        const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
-        window.history.replaceState({}, document.title, newUrl);
-
-        console.log('Login success - redirecting to:', returnUrl);
-        window.location.href = returnUrl;
-    };
-
-    // Setup untuk register success
-    window.handleRegisterSuccess = function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const returnUrl = urlParams.get('return') || sessionStorage.getItem('redirectAfterAuth') || 'konsultasi.html';
-
-        console.log('Register success - redirecting to login with return:', returnUrl);
-        window.location.href = `login.html?return=${encodeURIComponent(returnUrl)}&notif=success&message=${encodeURIComponent('Registrasi Berhasil! Silakan Masuk.')}`;
-    };
-
-    // Handle redirect parameters from URL
-    function handleUrlRedirectParams() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const redirectParam = urlParams.get('redirect');
-
-        if (redirectParam && !sessionStorage.getItem('redirectAfterAuth')) {
-            sessionStorage.setItem('redirectAfterAuth', redirectParam);
-        }
-    }
-
-    // Panggil fungsi untuk handle URL parameters
-    handleUrlRedirectParams();
-}
-
-// Fungsi untuk set redirect URL (digunakan di chatbot)
-function setRedirectUrl(url) {
-    sessionStorage.setItem('redirectAfterAuth', url);
-    console.log('Redirect URL set to:', url);
-}
-
-function authRedirect(targetPage) {
-    // Set redirect URL di sessionStorage
-    setRedirectUrl(targetPage);
-    // Tampilkan custom dialog
-    showConsultationAuthDialog(targetPage); // Menggunakan fungsi dialog konsultasi yang baru
-}
-
-function handleLogin() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const returnUrl = urlParams.get('return') || sessionStorage.getItem('redirectAfterAuth') || 'index.html';
-
-    // Hapus redirect URL dari storage setelah digunakan
-    if (sessionStorage.getItem('redirectAfterAuth')) {
-        sessionStorage.removeItem('redirectAfterAuth');
-    }
-
-    // Tampilkan notifikasi sukses login
-    const successMessage = encodeURIComponent('Berhasil Masuk! Anda diarahkan ke halaman tujuan.');
-
-    console.log('Login successful - redirecting to:', returnUrl);
-    window.location.href = `${returnUrl}?notif=success&message=${successMessage}`;
-}
-
-function handleRegister() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const returnUrl = urlParams.get('return') || sessionStorage.getItem('redirectAfterAuth') || 'konsultasi.html';
-
-    // Tetap simpan redirect URL untuk digunakan setelah login
-    if (!sessionStorage.getItem('redirectAfterAuth')) {
-        setRedirectUrl(returnUrl);
-    }
-
-    console.log('Register successful - redirecting to login with return:', returnUrl);
-    window.location.href = `login.html?return=${encodeURIComponent(returnUrl)}&notif=success&message=${encodeURIComponent('Registrasi Berhasil! Silakan Masuk.')}`;
-}
-
 // ================================== AUTH REDIRECT CHECKER ==================================
 function checkAndHandleAuthRedirect() {
-    // Cek jika ada redirect URL di sessionStorage (misalnya dari chatbot)
+    // Cek jika ada redirect URL di sessionStorage
     const redirectUrl = sessionStorage.getItem('redirectAfterAuth');
     if (redirectUrl) {
         console.log('Found redirect URL in storage:', redirectUrl);
@@ -675,10 +560,7 @@ function checkAndHandleAuthRedirect() {
             return;
         }
 
-        // Untuk halaman lain, jika user sudah login (dalam real app, cek session/token)
-        // Di sini kita asumsikan jika ada redirectUrl, maka perlu diarahkan
-        // Dalam implementasi real, Anda akan cek status login terlebih dahulu
-        console.log('Redirect URL found but not on auth page - clearing storage');
+        // Hapus dari storage
         sessionStorage.removeItem('redirectAfterAuth');
     }
 }
@@ -690,16 +572,12 @@ function setupKonsultasiRedirect() {
     if (konsultasiLink) {
         konsultasiLink.addEventListener('click', function(e) {
             e.preventDefault();
-            redirectToKonsultasi();
+            handleConsultationNavigation();
         });
     }
 }
 
-function redirectToKonsultasi() {
-    authRedirect('konsultasi.html');
-}
-
-// Fungsi untuk set menu aktif berdasarkan halaman
+// ================================== SET MENU ACTIVE ==================================
 function setActiveMenuByPage() {
     const currentPage = window.location.pathname.split('/').pop();
     const navLinks = document.querySelectorAll('nav ul li a');
@@ -722,9 +600,178 @@ function setActiveMenuByPage() {
     });
 }
 
-// Fungsi untuk redirect ke halaman chatbot dari tombol pop-up
-function goToChatbotPage() {
-    window.location.href = 'chatbot.html';
+// ================================== ENHANCED LOGO CLICK HANDLER ==================================
+function setupEnhancedLogoHandler() {
+    console.log('Setting up enhanced logo handler...');
+
+    // Handle header logo
+    const headerLogo = document.querySelector('.header .logo');
+    if (headerLogo) {
+        console.log('Header logo found, adding click handler');
+        headerLogo.style.cursor = 'pointer';
+        headerLogo.onclick = null;
+        headerLogo.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Header logo clicked - redirecting to homepage');
+            redirectToHomepage();
+        });
+    }
+
+    // Handle footer logo
+    const footerLogo = document.querySelector('.footer-logo');
+    if (footerLogo) {
+        console.log('Footer logo found, adding click handler');
+        footerLogo.style.cursor = 'pointer';
+        footerLogo.onclick = null;
+        footerLogo.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Footer logo clicked - redirecting to homepage');
+            redirectToHomepage();
+        });
+    }
+}
+
+function redirectToHomepage() {
+    console.log('Redirecting to homepage...');
+    window.location.href = 'index.html';
+}
+
+// ================================== MOOD TRACKER FUNCTIONS ==================================
+function initializeMoodTracker() {
+    const moodButtons = document.querySelectorAll('.mood-btn');
+
+    moodButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const mood = this.getAttribute('data-mood');
+            showMoodFeedback(mood);
+        });
+    });
+}
+
+function showMoodFeedback(mood) {
+    const feedbackMessages = {
+        happy: {
+            title: "Senang Mendengarnya! 🎉",
+            message: "Luar biasa! Terus pertahankan energi positif Anda.",
+            emoji: "😊"
+        },
+        neutral: {
+            title: "Terima kasih sudah berbagi perasaan!",
+            message: "Terkadang merasa biasa saja itu wajar. 😊",
+            emoji: "😐"
+        },
+        sad: {
+            title: "Kami di Sini untuk Anda 💙",
+            message: "Perasaan sedih adalah bagian dari kehidupan. Anda tidak sendirian.",
+            emoji: "😔"
+        },
+        anxious: {
+            title: "Tenang, Kami Bersama Anda 🕊️",
+            message: "Kecemasan bisa terasa berat, tetapi Anda lebih kuat dari yang Anda kira.",
+            emoji: "😰"
+        },
+        angry: {
+            title: "Kami Memahami Perasaan Anda 🔥",
+            message: "Marah adalah emosi yang valid.",
+            emoji: "😠"
+        }
+    };
+
+    const feedback = feedbackMessages[mood];
+
+    // Hapus dulu elemen yang mungkin masih ada
+    closeMoodFeedback();
+
+    // Buat overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'mood-feedback-overlay';
+    overlay.id = 'mood-feedback-overlay';
+
+    // Buat elemen feedback
+    const feedbackElement = document.createElement('div');
+    feedbackElement.className = 'mood-feedback';
+    feedbackElement.id = 'mood-feedback-element';
+    feedbackElement.setAttribute('data-mood', mood);
+
+    feedbackElement.innerHTML = `
+        <h3>${feedback.title}</h3>
+        <div class="feedback-message">
+            ${feedback.message}
+        </div>
+        <hr>
+        <p>${userState.isLoggedIn 
+            ? 'Ingin berbicara dengan profesional?' 
+            : 'Ingin berbicara dengan profesional tentang perasaan Anda?'}</p>
+        <div class="feedback-actions">
+            <button id="btn-mood-konsultasi" class="feedback-btn primary">
+                ${userState.isLoggedIn ? 'Konsultasi Sekarang' : 'Akses Konsultasi'}
+            </button>
+            <button id="btn-mood-tamu" class="feedback-btn secondary">Tutup</button>
+        </div>
+    `;
+
+    // Tambahkan ke body
+    document.body.appendChild(overlay);
+    document.body.appendChild(feedbackElement);
+
+    // Event listener untuk tombol konsultasi
+    const consultButton = feedbackElement.querySelector('#btn-mood-konsultasi');
+    if (consultButton) {
+        consultButton.addEventListener('click', function() {
+            closeMoodFeedback();
+            setTimeout(() => {
+                handleConsultationNavigation();
+            }, 300);
+        });
+    }
+
+    // Event listener untuk tombol tamu
+    const guestButton = feedbackElement.querySelector('#btn-mood-tamu');
+    if (guestButton) {
+        guestButton.addEventListener('click', function() {
+            closeMoodFeedback();
+        });
+    }
+
+    // Event listener untuk overlay
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) {
+            closeMoodFeedback();
+        }
+    });
+
+    // Trigger animation
+    setTimeout(() => {
+        overlay.classList.add('show');
+        feedbackElement.classList.add('show');
+    }, 10);
+}
+
+function closeMoodFeedback() {
+    const overlay = document.getElementById('mood-feedback-overlay');
+    const feedback = document.getElementById('mood-feedback-element');
+    
+    // Hapus event listener ESC key
+    document.removeEventListener('keydown', closeMoodFeedback);
+
+    if (overlay) {
+        overlay.classList.remove('show');
+    }
+    if (feedback) {
+        feedback.classList.remove('show');
+    }
+
+    // Hapus elemen dari DOM setelah animasi
+    setTimeout(() => {
+        if (overlay && overlay.parentNode) {
+            overlay.parentNode.removeChild(overlay);
+        }
+        if (feedback && feedback.parentNode) {
+            feedback.parentNode.removeChild(feedback);
+        }
+    }, 300);
 }
 
 // ================================== VIDEO PLAYER FUNCTIONALITY ==================================
@@ -868,249 +915,7 @@ function playPauseVideo() {
     }
 }
 
-// ================================== MOOD TRACKER FUNCTIONALITY ==================================
-function initializeMoodTracker() {
-    const moodButtons = document.querySelectorAll('.mood-btn');
-
-    moodButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const mood = this.getAttribute('data-mood');
-            showMoodFeedback(mood);
-        });
-    });
-}
-
-function showMoodFeedback(mood) {
-    const feedbackMessages = {
-        happy: {
-            title: "Senang Mendengarnya! 🎉",
-            message: "Luar biasa! Terus pertahankan energi positif Anda. Jika ingin berbagi kebahagiaan lebih lanjut, kami siap mendengarkan.",
-            emoji: "😊"
-        },
-        neutral: {
-            title: "Terima kasih sudah berbagi perasaan!",
-            message: "Terkadang merasa biasa saja itu wajar. 😊 Jika butuh teman bicara, kami di sini untuk Anda.",
-            emoji: "😐"
-        },
-        sad: {
-            title: "Kami di Sini untuk Anda 💙",
-            message: "Perasaan sedih adalah bagian dari kehidupan. Anda tidak sendirian. Mari bicarakan apa yang Anda rasakan.",
-            emoji: "😔"
-        },
-        anxious: {
-            title: "Tenang, Kami Bersama Anda 🕊️",
-            message: "Kecemasan bisa terasa berat, tetapi Anda lebih kuat dari yang Anda kira. Mari kita atasi bersama.",
-            emoji: "😰"
-        },
-        angry: {
-            title: "Kami Memahami Perasaan Anda 🔥",
-            message: "Marah adalah emosi yang valid. Mari kita cari cara sehat untuk mengekspresikannya.",
-            emoji: "😠"
-        }
-    };
-
-    const feedback = feedbackMessages[mood];
-
-    // Hapus dulu elemen yang mungkin masih ada
-    closeMoodFeedback();
-
-    // Buat overlay
-    const overlay = document.createElement('div');
-    overlay.className = 'mood-feedback-overlay';
-    overlay.id = 'mood-feedback-overlay';
-
-    // Buat elemen feedback
-    const feedbackElement = document.createElement('div');
-    feedbackElement.className = 'mood-feedback';
-    feedbackElement.id = 'mood-feedback-element';
-    feedbackElement.setAttribute('data-mood', mood);
-
-    feedbackElement.innerHTML = `
-        <h3>${feedback.title}</h3>
-        <div class="feedback-message">
-            ${feedback.message}
-        </div>
-        <hr>
-        <p>Ingin berbicara dengan profesional tentang perasaan Anda?</p>
-        <div class="feedback-actions">
-            <button id="btn-mood-konsultasi" class="feedback-btn primary">Konsultasi Sekarang</button>
-            <button id="btn-mood-tamu" class="feedback-btn secondary">Ingin Menjadi Tamu Saja</button>
-        </div>
-    `;
-
-    // Tambahkan ke body
-    document.body.appendChild(overlay);
-    document.body.appendChild(feedbackElement);
-
-    // Event listener untuk tombol konsultasi
-    const consultButton = feedbackElement.querySelector('#btn-mood-konsultasi');
-    if (consultButton) {
-        consultButton.addEventListener('click', function() {
-            redirectToKonsultasiFromMood();
-        });
-    }
-
-    // Event listener untuk tombol tamu - PERBAIKAN: langsung panggil close
-    const guestButton = feedbackElement.querySelector('#btn-mood-tamu');
-    if (guestButton) {
-        guestButton.addEventListener('click', function() {
-            closeMoodFeedback(); // Langsung tutup tanpa delay
-        });
-    }
-
-    // Event listener untuk overlay - tutup saat klik di luar
-    overlay.addEventListener('click', function(e) {
-        if (e.target === overlay) {
-            closeMoodFeedback();
-        }
-    });
-
-    // Event listener untuk ESC key
-    const closeOnEsc = function(e) {
-        if (e.key === 'Escape') {
-            closeMoodFeedback();
-            document.removeEventListener('keydown', closeOnEsc);
-        }
-    };
-    document.addEventListener('keydown', closeOnEsc);
-
-    // Trigger animation
-    setTimeout(() => {
-        overlay.classList.add('show');
-        feedbackElement.classList.add('show');
-    }, 10);
-}
-
-// PERBAIKAN FUNGSI CLOSE - lebih agresif dalam menghapus
-function closeMoodFeedback() {
-    const overlay = document.getElementById('mood-feedback-overlay');
-    const feedback = document.getElementById('mood-feedback-element');
-    
-    // Hapus event listener ESC key
-    document.removeEventListener('keydown', closeMoodFeedback);
-
-    if (overlay) {
-        overlay.classList.remove('show');
-    }
-    if (feedback) {
-        feedback.classList.remove('show');
-    }
-
-    // Hapus elemen dari DOM setelah animasi
-    setTimeout(() => {
-        if (overlay && overlay.parentNode) {
-            overlay.parentNode.removeChild(overlay);
-        }
-        if (feedback && feedback.parentNode) {
-            feedback.parentNode.removeChild(feedback);
-        }
-    }, 300);
-}
-
-// Fungsi untuk redirect ke konsultasi dari mood tracker
-function redirectToKonsultasiFromMood() {
-    closeMoodFeedback();
-    // Tampilkan dialog auth untuk konsultasi
-    setTimeout(() => {
-        authRedirect('konsultasi.html');
-    }, 300);
-}
-
-// Fungsi lama untuk kompatibilitas
-function trackMood(mood) {
-    showMoodFeedback(mood);
-}
-
-// Fungsi untuk reset mood tracker (guest mode)
-function resetMoodTracker() {
-    closeMoodFeedback();
-}
-
-// ================================== CONSULTATION AUTH DIALOG (UNTUK SEMUA TOMBOL KONSULTASI) ==================================
-function showConsultationAuthDialog(targetPage = 'konsultasi.html') {
-    // Buat overlay
-    const overlay = document.createElement('div');
-    // Menggunakan kelas untuk styling dari auth.css
-    overlay.className = 'auth-dialog-overlay';
-
-    // Buat dialog box
-    const dialog = document.createElement('div');
-    // Menggunakan kelas untuk styling dari auth.css
-    dialog.className = 'consultation-auth-dialog';
-
-    // TAMBAHKAN TOMBOL CLOSE (X) DI POJOK KANAN ATAS
-    const closeButton = document.createElement('button');
-    closeButton.className = 'auth-dialog-close-btn';
-    closeButton.innerHTML = '&times;'; // Tanda silang
-    closeButton.setAttribute('aria-label', 'Tutup dialog');
-    
-    // Fungsi untuk menutup dialog
-    closeButton.addEventListener('click', function() {
-        if (document.body.contains(overlay)) {
-            document.body.removeChild(overlay);
-        }
-    });
-
-    // HILANGKAN ICON KUNCI - Dihapus dari sini
-    // Icon Kunci dihapus sesuai permintaan
-
-    // Isi Konten Dialog
-    dialog.innerHTML = `
-        <h3 class="auth-dialog-title">Akses Konsultasi</h3>
-        <p class="auth-dialog-message">
-            Untuk mengakses layanan konsultasi, Anda perlu memiliki akun terlebih dahulu.<br>
-            Apakah Anda sudah memiliki akun?
-        </p>
-        <div class="auth-dialog-actions">
-            <button id="btn-sudah-punya" class="auth-btn-primary">Sudah Punya Akun</button>
-            <button id="btn-belum-punya" class="auth-btn-primary">Belum Punya Akun</button>
-        </div>
-    `;
-
-    // TAMBAHKAN TOMBOL CLOSE KE DIALOG
-    dialog.appendChild(closeButton);
-
-    overlay.appendChild(dialog);
-    document.body.appendChild(overlay);
-
-    // Event listeners untuk tombol
-    document.getElementById('btn-sudah-punya').addEventListener('click', function() {
-        if (document.body.contains(overlay)) {
-            document.body.removeChild(overlay);
-        }
-        // Redirect ke Login dengan return ke targetPage
-        window.location.href = `login.html?return=${encodeURIComponent(targetPage)}`;
-    });
-
-    document.getElementById('btn-belum-punya').addEventListener('click', function() {
-        if (document.body.contains(overlay)) {
-            document.body.removeChild(overlay);
-        }
-        // Redirect ke Register dengan return ke targetPage
-        window.location.href = `register.html?return=${encodeURIComponent(targetPage)}`;
-    });
-
-    // Close ketika klik overlay
-    overlay.addEventListener('click', function(e) {
-        if (e.target === overlay) {
-            if (document.body.contains(overlay)) {
-                document.body.removeChild(overlay);
-            }
-        }
-    });
-
-    // Close dengan ESC key
-    document.addEventListener('keydown', function closeOnEsc(e) {
-        if (e.key === 'Escape') {
-            if (document.body.contains(overlay)) {
-                document.body.removeChild(overlay);
-            }
-            document.removeEventListener('keydown', closeOnEsc);
-        }
-    });
-}
-
-// ================================== CHATBOT EFFECTS ==================================
+// ================================== CHATBOT FUNCTIONS ==================================
 function initializeChatbotEffects() {
     const chatbotBtn = document.querySelector('.chatbot-toggle-btn');
 
@@ -1151,137 +956,219 @@ function createEnhancedRippleEffect(event) {
     button.appendChild(circle);
 }
 
-// Enhanced ripple effect function
-function createEnhancedRippleEffect(event) {
-    const button = event.currentTarget;
-    const circle = document.createElement('span');
-    const diameter = Math.max(button.clientWidth, button.clientHeight);
-    const radius = diameter / 2;
+function goToChatbotPage() {
+    window.location.href = 'chatbot.html';
+}
 
-    circle.style.width = circle.style.height = `${diameter}px`;
-    circle.style.left = `${event.clientX - button.getBoundingClientRect().left - radius}px`;
-    circle.style.top = `${event.clientY - button.getBoundingClientRect().top - radius}px`;
-    circle.classList.add('ripple');
-
-    // Remove existing ripples
-    const ripples = button.getElementsByClassName('ripple');
-    while (ripples[0]) {
-        ripples[0].remove();
+// ================================== NEWSLETTER FUNCTIONS ==================================
+function setupNewsletter() {
+    console.log('Setting up enhanced newsletter functionality...');
+    
+    const newsletterBtn = document.getElementById('btn-subscribe');
+    const unsubscribeBtn = document.getElementById('btn-unsubscribe');
+    const newsletterEmail = document.getElementById('newsletter-email');
+    
+    if (!newsletterBtn || !unsubscribeBtn || !newsletterEmail) {
+        console.log('Newsletter elements not found');
+        return;
     }
-
-    button.appendChild(circle);
+    
+    // Load saved email if exists and update UI
+    updateNewsletterUI();
+    
+    // Handle newsletter subscription
+    newsletterBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        handleNewsletterSubscription();
+    });
+    
+    // Handle unsubscribe
+    unsubscribeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        showUnsubscribeConfirmation();
+    });
+    
+    // Handle Enter key press
+    newsletterEmail.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleNewsletterSubscription();
+        }
+    });
+    
+    // Add input event to show subscribe button when email changes
+    newsletterEmail.addEventListener('input', function() {
+        const email = this.value.trim();
+        const savedEmail = localStorage.getItem('newsletter_subscribed_email');
+        
+        // Jika email diubah dan berbeda dari yang tersimpan, tampilkan tombol subscribe
+        if (email !== savedEmail) {
+            showSubscribeButton();
+        }
+    });
 }
 
-
-// ================================== SIMPLE REDIRECT FOR OTHER PAGES ==================================
-// Fungsi sederhana untuk redirect ke konsultasi dari tombol lain
-function redirectToKonsultasiSimple() {
-    authRedirect('konsultasi.html');
-}
-
-// Error handling untuk video
-window.addEventListener('error', function(e) {
-    if (e.target.tagName === 'VIDEO') {
-        console.error('Video error:', e);
-        const videoTitleElement = document.getElementById('video-title');
-        if (videoTitleElement) {
-            videoTitleElement.textContent = 'Video tidak dapat dimuat. Silakan refresh halaman.';
+function updateNewsletterUI() {
+    const newsletterBtn = document.getElementById('btn-subscribe');
+    const unsubscribeBtn = document.getElementById('btn-unsubscribe');
+    const newsletterEmail = document.getElementById('newsletter-email');
+    const statusElement = document.getElementById('newsletter-status');
+    
+    const savedEmail = localStorage.getItem('newsletter_subscribed_email');
+    const subscribeDate = localStorage.getItem('newsletter_subscribed_date');
+    
+    if (savedEmail) {
+        // User sudah subscribe
+        newsletterEmail.value = savedEmail;
+        
+        // Update button states
+        newsletterBtn.style.display = 'none';
+        unsubscribeBtn.style.display = 'block';
+        
+        // Update status message
+        if (statusElement) {
+            const date = subscribeDate ? new Date(subscribeDate).toLocaleDateString('id-ID') : 'tidak diketahui';
+            statusElement.innerHTML = `
+                <div class="status-subscribed">
+                    <span class="status-icon">✓</span>
+                    <span class="status-text">Berlangganan aktif sejak ${date}</span>
+                </div>
+                <div class="status-note">Email: ${savedEmail}</div>
+            `;
+            statusElement.classList.add('subscribed');
+        }
+    } else {
+        // User belum subscribe
+        newsletterBtn.style.display = 'block';
+        unsubscribeBtn.style.display = 'none';
+        
+        // Clear status message
+        if (statusElement) {
+            statusElement.innerHTML = '';
+            statusElement.classList.remove('subscribed');
         }
     }
-});
-
-
-
-// ================================== ADDITIONAL UTILITY FUNCTIONS ==================================
-function isMobileDevice() {
-    return /Android|webOS|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
-function getRandomBlueShade() {
-    const shades = [
-        '#007bff', '#0066cc', '#0056b3', '#004494', '#003366',
-        '#0088ff', '#0077e6', '#0066cc', '#0055b3', '#004499'
-    ];
-    return shades[Math.floor(Math.random() * shades.length)];
+function handleNewsletterSubscription() {
+    const emailInput = document.getElementById('newsletter-email');
+    const subscribeBtn = document.getElementById('btn-subscribe');
+    
+    if (!emailInput || !subscribeBtn) return;
+    
+    const email = emailInput.value.trim();
+    
+    // Validasi email sederhana
+    if (!email) {
+        showNewsletterMessage('Mohon masukkan email Anda.', 'error');
+        emailInput.focus();
+        return;
+    }
+    
+    if (!isValidEmail(email)) {
+        showNewsletterMessage('Format email tidak valid.', 'error');
+        emailInput.focus();
+        return;
+    }
+    
+    // Simpan data newsletter
+    localStorage.setItem('newsletter_subscribed_email', email);
+    localStorage.setItem('newsletter_subscribed_date', new Date().toISOString());
+    
+    // Update UI
+    updateNewsletterUI();
+    
+    // Show success message
+    showNewsletterMessage('🎉 Terima kasih! Anda telah berlangganan newsletter kami. Tips kesehatan mental akan dikirim ke email Anda.', 'success');
+    
+    // Clear input setelah 3 detik
+    setTimeout(() => {
+        emailInput.value = '';
+        showNewsletterMessage('', 'clear');
+    }, 3000);
 }
 
-// ================================== INITIALIZE ALL EFFECTS ==================================
-// Initialize additional effects after a short delay
-setTimeout(() => {
-
-    // Add loading state to chatbot button
-    const chatbotBtn = document.querySelector('.chatbot-toggle-btn');
-    if (chatbotBtn) {
+function showNewsletterMessage(message, type = 'info') {
+    // Cari atau buat elemen pesan
+    let messageElement = document.getElementById('newsletter-message');
+    
+    if (!messageElement) {
+        messageElement = document.createElement('div');
+        messageElement.id = 'newsletter-message';
+        
+        const newsletterForm = document.querySelector('.newsletter-form');
+        if (newsletterForm) {
+            newsletterForm.parentNode.insertBefore(messageElement, newsletterForm.nextSibling);
+        }
+    }
+    
+    // Set pesan dan styling
+    messageElement.textContent = message;
+    messageElement.className = 'newsletter-message';
+    
+    if (type === 'success') {
+        messageElement.classList.add('success');
+    } else if (type === 'error') {
+        messageElement.classList.add('error');
+    } else if (type === 'clear') {
+        messageElement.textContent = '';
+        messageElement.className = 'newsletter-message';
+    }
+    
+    // Auto-hide pesan setelah 5 detik
+    if (message && type !== 'clear') {
         setTimeout(() => {
-            chatbotBtn.style.opacity = '1';
-            chatbotBtn.style.transform = 'scale(1)';
-        }, 500);
+            messageElement.textContent = '';
+            messageElement.className = 'newsletter-message';
+        }, 5000);
     }
-}, 1000);
+}
 
-// Export functions for global access (if needed)
-window.MediCare = {
-    authRedirect,
-    redirectToKonsultasi,
-    redirectToKonsultasiWithRegister,
-    handleConsultationNavigation,
-    showConsultationAuthDialog,
-    showNotification,
-    initializeChatbotEffects,
-    goToChatbotPage,
-    trackMood,
-    resetMoodTracker,
-    showMoodFeedback,
-    closeMoodFeedback,
-    redirectToKonsultasiFromMood,
-    goToBerandaAsGuest,
-    redirectToHomepage,
-    setupEnhancedLogoHandler,
-    handleLoginSuccess,
-    handleRegisterSuccess,
-    setRedirectUrl,
-    showDoctorPopup, 
-    closeDoctorPopup,
-    // Newsletter functions
-    newsletter: {
-        subscribe: handleNewsletterSubscription,
-        unsubscribe: handleUnsubscribe,
-        checkSubscription: checkNewsletterSubscription,
-        showMessage: showNewsletterMessage,
-        reset: resetNewsletter,
-        updateUI: updateNewsletterUI
-    }
-};
-
-console.log('MediCare JavaScript loaded successfully!');
-
-// Error boundary for chatbot effects
-window.addEventListener('error', function(e) {
-    if (e.target && e.target.classList && e.target.classList.contains('chatbot-toggle-btn')) {
-        console.error('Chatbot effect error:', e);
-        // Fallback: ensure button remains functional
-        const chatbotBtn = document.querySelector('.chatbot-toggle-btn');
-        if (chatbotBtn) {
-            chatbotBtn.onclick = goToChatbotPage;
-        }
-    }
-});
-
-// Tambahkan event listener untuk ESC key untuk mood feedback
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        closeMoodFeedback();
-    }
-});
+// ================================== UTILITY FUNCTIONS ==================================
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
 
 function enhanceChatbotColors() {
     // Function implementation
 }
 
-function addChatbotInteractionEffects() {
-    // Function implementation
-}
+// ================================== GLOBAL EXPORTS ==================================
+window.MediCare = {
+    // Auth & Guest Functions
+    initializeUserState,
+    setGuestMode,
+    clearGuestMode,
+    handleConsultationNavigation,
+    showGuestProfileDialog,
+    
+    // Navigation Functions
+    redirectToHomepage,
+    goToChatbotPage,
+    
+    // Mood Tracker Functions
+    trackMood: showMoodFeedback,
+    resetMoodTracker: closeMoodFeedback,
+    
+    // Video Functions
+    nextVideo,
+    previousVideo,
+    playPauseVideo,
+    
+    // Notification Functions
+    showNotification,
+    
+    // Newsletter Functions
+    newsletter: {
+        subscribe: handleNewsletterSubscription,
+        updateUI: updateNewsletterUI
+    }
+};
 
-function optimizeChatbotPerformance() {
-    // Function implementation
-}
+console.log('MediCare JavaScript loaded successfully with guest mode support!');
+
+// Error boundary
+window.addEventListener('error', function(e) {
+    console.error('Global error:', e);
+});
