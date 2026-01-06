@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const chatSuggestions = document.getElementById('chatSuggestions');
     const suggestionChips = document.querySelectorAll('.suggestion-chip');
 
-    const N8N_WEBHOOK_URL = 'https://jegem.app.n8n.cloud/webhook/website-chatbot';
+    const N8N_WEBHOOK_URL = 'https://pabafim.app.n8n.cloud/webhook-test/website-chatbot';
 
     let isFirstMessage = true;
     let sessionId = 'session_' + Math.random().toString(36).substr(2, 9); // ID unik sesi chat
