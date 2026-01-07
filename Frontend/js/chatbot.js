@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
         indicator.id = 'typingIndicator';
         indicator.className = 'message bot-message';
         indicator.innerHTML = `
-            <div class="message-avatar"><img src="assets/images/profil.jpg" alt="Bot"></div>
+            <div class="message-avatar"><img src="assets/images/muliadi.jpg" alt="Bot"></div>
             <div class="message-content"><div class="message-bubble typing-dots"><span></span><span></span><span></span></div></div>
         `;
         chatMessages.appendChild(indicator);
