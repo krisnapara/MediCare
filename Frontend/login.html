@@ -11,78 +11,152 @@
 <body class="auth-page-body">
 
     <div class="auth-container single-card"> 
-        
         <div class="auth-image-top">
             <img src="assets/images/background3.jpg" alt="Gambar Latar Login" class="card-top-img">
         </div>
 
-        <div class="auth-form-side full-width">
-            <div class="auth-form">
-
+        <div class="auth-form-side">
+            <form class="auth-form">
                 <div class="input-group">
-                    <input type="email" id="email" name="email" placeholder="Masukkan email Anda" required>
+                    <input type="email" id="email" placeholder="Email Anda" required>
                 </div>
                 <div class="input-group">
-                    <input type="password" id="password" name="password" placeholder="Masukkan kata sandi" required>
+                    <input type="password" id="password" placeholder="Kata Sandi" required>
                 </div>
                 
-                <div class="forgot-password">
-                    <a href="#">Lupa Kata Sandi?</a>
-                </div>
-                
-             <div class="separator">ATAU GUNAKAN EMAIL</div>
-                
-                <div class="social-login">
-                    <button class="social-btn google"><i class="fab fa-google"></i> Google</button>
-                    <button class="social-btn facebook"><i class="fab fa-facebook-f"></i> Facebook</button>
-                </div>
+                <button type="submit" class="auth-btn">MASUK</button>
+            </form>
 
-                <button type="button" class="auth-submit-btn" onclick="handleLogin()">Masuk</button>
-                
-                <div class="switch-link-bottom">
-                    Belum punya akun? <a href="register.html" id="register-link">Daftar Sekarang</a>
-                </div>
+
+            <div class="forgot-password">
+                <a href="#">Lupa Kata Sandi?</a>
+            </div>
+            
+            <div class="separator">ATAU GUNAKAN EMAIL</div>
+            
+            <div class="social-login">
+                <button class="social-btn google"><i class="fab fa-google"></i> Google</button>
+                <button class="social-btn facebook"><i class="fab fa-facebook-f"></i> Facebook</button>
+            </div>
+
+            <div class="switch-link-bottom">
+                Belum punya akun? <a href="register.html" id="register-link">Daftar Sekarang</a>
             </div>
         </div>
-  </div>
+    </div>
 
-  <script src="js/script.js"></script>
-  <script>
-    // Fungsi ini DUA kali didefinisikan (di script.js dan di sini)
-    // Saya akan menggunakan yang di sini untuk memastikan alur berjalan di halaman login
-    function handleLogin() {
-        // ALUR BARU: Tampilkan notifikasi dan redirect ke halaman tujuan
-        const urlParams = new URLSearchParams(window.location.search);
-        const returnUrl = urlParams.get('return');
+    <script>
+    // Fungsi Utility untuk menampilkan Notifikasi
+    function showNotification(title, message, type = 'success') {
+        // Hapus notifikasi lama jika ada
+        const existingToast = document.querySelector('.notification-toast');
+        if (existingToast) existingToast.remove();
+
+        // Buat elemen HTML notifikasi
+        const toast = document.createElement('div');
+        toast.className = `notification-toast ${type}`;
         
-        // Tampilkan notifikasi sukses login
-        const successMessage = encodeURIComponent('Berhasil Masuk! Anda diarahkan ke halaman konsultasi.');
+        const iconClass = type === 'success' ? 'fa-check' : 'fa-times';
         
-        // Redirect ke halaman tujuan (konsultasi.html) dengan notif sukses login
-        if (returnUrl) {
-            // Karena notifikasi harus ditampilkan setelah redirect, kita kirim notifikasi melalui URL
-            window.location.href = `${returnUrl}?notif=success&message=${successMessage}`;
-        } else {
-            // Default jika tidak ada returnUrl
-            window.location.href = `index.html?notif=success&message=${successMessage}`;
-        }
+        toast.innerHTML = `
+            <div class="notification-icon">
+                <i class="fas ${iconClass}"></i>
+            </div>
+            <div class="notification-content">
+                <span class="notification-title">${title}</span>
+                <span class="notification-message">${message}</span>
+            </div>
+        `;
+
+        document.body.appendChild(toast);
+
+        // Animasi Masuk (perlu sedikit delay agar transisi CSS jalan)
+        setTimeout(() => {
+            toast.classList.add('show');
+        }, 100);
+
+        // Animasi Keluar otomatis setelah 3 detik
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.remove();
+            }, 400); // Tunggu transisi selesai baru remove dari DOM
+        }, 3000);
     }
 
-    // Handle register link dengan return URL
     document.addEventListener('DOMContentLoaded', function() {
-        const registerLink = document.getElementById('register-link');
+        // 1. Cek Parameter URL (Untuk notifikasi dari Register)
         const urlParams = new URLSearchParams(window.location.search);
-        const returnUrl = urlParams.get('return');
-        
-        if (returnUrl && registerLink) {
-            registerLink.href = `register.html?return=${encodeURIComponent(returnUrl)}`;
+        const notifType = urlParams.get('notif');
+        const notifMessage = urlParams.get('message');
+
+        if (notifType === 'success' && notifMessage) {
+            showNotification('Berhasil!', decodeURIComponent(notifMessage), 'success');
+            
+            // Bersihkan URL agar notifikasi tidak muncul lagi saat refresh
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        // Hapus guest mode jika ada
+        if (localStorage.getItem('isGuest')) {
+            localStorage.removeItem('isGuest');
         }
         
-        // Memanggil fungsi checkAndShowNotification dari script.js
-        // Ini akan menampilkan notifikasi sukses register dari halaman sebelumnya jika ada.
-        checkAndShowNotification();
+        // 2. Handle Form Login
+        const loginForm = document.querySelector('.auth-form');
+        const submitBtn = document.querySelector('.auth-btn');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Efek Loading pada tombol
+            const originalBtnText = submitBtn.innerText;
+            submitBtn.innerText = 'MEMUAT...';
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch('http://localhost:5055/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Simpan data
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    localStorage.removeItem('isGuest');
+                    
+                    // TAMPILKAN NOTIFIKASI SUKSES
+                    showNotification('Login Berhasil', 'Mengalihkan ke halaman utama...', 'success');
+
+                    // Tunggu 1.5 detik agar user sempat membaca notifikasi sebelum redirect
+                    setTimeout(() => {
+                        const returnUrl = urlParams.get('return') || 'index.html';
+                        window.location.href = returnUrl;
+                    }, 1500);
+
+                } else {
+                    // Tampilkan notifikasi error tanpa alert
+                    showNotification('Login Gagal', data.message || "Email atau password salah", 'error');
+                    submitBtn.innerText = originalBtnText;
+                    submitBtn.classList.remove('loading');
+                    submitBtn.disabled = false;
+                }
+            } catch (error) {
+                showNotification('Error', "Gagal terhubung ke server.", 'error');
+                submitBtn.innerText = originalBtnText;
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+            }
+        });
     });
-  </script>
+</script>
 
 </body>
 </html>

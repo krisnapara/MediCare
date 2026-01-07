@@ -115,7 +115,6 @@ main {
 
 .nav a {
     text-decoration: none;
-    /* MODIFIKASI: Teks menjadi putih */
     color: #fff; 
     padding: 8px 16px;
     transition: all 0.3s ease;
@@ -125,10 +124,18 @@ main {
 }
 
 .nav a.active {
-    /* Background tetap biru, tambahkan border putih halus */
+    
     background-color: #D9D9D9;
 }
 
+.nav ul li a.active {
+    color: #1D5CA0 !important; /* Warna biru */
+    font-weight: bold; 
+}
+
+.nav ul li a:hover {
+    color: #fff;
+}
 /* Style untuk Foto Profil */
 .profile-icon {
     width: 40px;
@@ -1361,3 +1368,4 @@ main {
     background: #5a6268;
     transform: translateY(-1px);
 }
+

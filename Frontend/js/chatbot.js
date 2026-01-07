@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const N8N_WEBHOOK_URL = 'https://pabafim.app.n8n.cloud/webhook/website-chatbot';
 
     let isFirstMessage = true;
-    let sessionId = 'session_' + Math.random().toString(36).substr(2, 9); // ID unik sesi chat
+    let sessionId = 'session_' + Math.random().toString(36).substr(2, 9);
 
     userInput.addEventListener('input', function() {
         this.style.height = 'auto';
@@ -22,20 +22,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function startNewChat() {
         chatMessages.innerHTML = '';
-        welcomeSection.style.display = 'block';
+        welcomeSection.style.display = 'flex'; // Ubah ke flex
+        welcomeSection.style.overflowY = 'auto'; // Biarkan scroll
         messagesContainer.style.display = 'none';
         chatSuggestions.style.display = 'none';
         isFirstMessage = true;
-        sessionId = 'session_' + Math.random().toString(36).substr(2, 9); // Reset session
+        sessionId = 'session_' + Math.random().toString(36).substr(2, 9);
         userInput.value = '';
         userInput.style.height = 'auto';
         userInput.focus();
+        
+        // Hapus overflow hidden dari body/html
+        document.body.style.overflow = 'auto';
+        document.documentElement.style.overflow = 'auto';
     }
 
     function addMessage(text, isUser = false) {
         if (isFirstMessage) {
             welcomeSection.style.display = 'none';
-            messagesContainer.style.display = 'block';
+            messagesContainer.style.display = 'flex'; // Ubah ke flex
+            messagesContainer.style.overflowY = 'auto';
             chatSuggestions.style.display = 'flex';
             isFirstMessage = false;
         }
@@ -43,8 +49,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
         
-        // Format text (menangani baris baru dan Markdown sederhana)
-        // Jika text kosong/undefined, beri fallback agar tidak crash
         const safeText = text ? text.replace(/\n/g, '<br>') : "...";
 
         messageDiv.innerHTML = `
@@ -60,6 +64,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         chatMessages.appendChild(messageDiv);
         chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        // Scroll ke bawah untuk melihat pesan baru
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
     function showTypingIndicator() {
@@ -72,6 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         chatMessages.appendChild(indicator);
         chatMessages.scrollTop = chatMessages.scrollHeight;
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
     function hideTypingIndicator() {
@@ -150,6 +158,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Initialize - jangan set overflow hidden
+    document.body.style.overflow = 'auto';
+    document.documentElement.style.overflow = 'auto';
+    
     // Jalankan chat awal
     startNewChat();
 });

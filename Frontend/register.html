@@ -17,23 +17,20 @@
         </div>
 
         <div class="auth-form-side full-width">
-            <div class="auth-form">
-                <div class="input-group">
-                    <input type="text" id="name" name="name" placeholder="Masukkan nama Anda" required>
-                </div>
-                <div class="input-group">
-                    <input type="email" id="email" name="email" placeholder="Masukkan email Anda" required>
-                </div>
-                <div class="input-group">
-                    <input type="password" id="password" name="password" placeholder="Buat kata sandi" required>
-                </div>
+            <form class="auth-form">
+        <div class="input-group">
+            <input type="text" id="name" placeholder="Nama Lengkap" required>
+        </div>
+            <div class="input-group">
+            <input type="email" id="email" placeholder="Email" required>
+        </div>
+        <div class="input-group">
+            <input type="password" id="password" placeholder="Kata Sandi" required>
+        </div>
+        <div class="input-group">
+            <input type="password" id="confirm-password" placeholder="Konfirmasi Kata Sandi" required>
+        </div>
 
-                <div class="input-group">
-                    <input type="password" id="confirm-password" name="confirm-password" placeholder="Konfirmasi kata sandi" required>
-                </div>
-                
-                <div class="separator">ATAU DAFTAR DENGAN EMAIL</div>
-            
                 <div class="social-login">
                     <button class="social-btn google">
                     <i class="fab fa-google"></i> Google
@@ -43,47 +40,66 @@
                     <i class="fab fa-facebook-f"></i> Facebook
                     </button>
                 </div>
-                
-                <button type="button" class="btn-primary auth-submit-btn" onclick="handleRegister()">Daftar</button>
-                
+    
+    <button type="submit" class="auth-btn">DAFTAR</button>
+</form>
+
                 <div class="switch-link-bottom">
                     Sudah punya akun? <a href="login.html" id="login-link">Masuk di Sini</a>
                 </div>
-            </div>
-        </div>
-        
-    </div>
-    
-    <script>
-    function handleRegister() {
-        // ALUR BARU: Tampilkan notifikasi dan redirect ke login dengan notif sukses
-        // Fungsi ini DUA kali didefinisikan (di script.js dan di sini)
-        // Saya akan menggunakan yang di sini untuk memastikan alur berjalan di halaman register
-        const urlParams = new URLSearchParams(window.location.search);
-        const returnUrl = urlParams.get('return');
-        
-        // Siapkan notifikasi sukses registrasi untuk halaman login
-        const successMessage = encodeURIComponent('Registrasi Berhasil! Silakan Masuk.');
-        
-        if (returnUrl) {
-            window.location.href = `login.html?return=${encodeURIComponent(returnUrl)}&notif=success&message=${successMessage}`;
-        } else {
-            window.location.href = `login.html?notif=success&message=${successMessage}`;
-        }
-    }
 
-    // Handle login link dengan return URL
-    document.addEventListener('DOMContentLoaded', function() {
-        const loginLink = document.getElementById('login-link');
-        const urlParams = new URLSearchParams(window.location.search);
-        const returnUrl = urlParams.get('return');
-        
-        if (returnUrl && loginLink) {
-            loginLink.href = `login.html?return=${encodeURIComponent(returnUrl)}`;
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Clear guest mode when registering
+    if (localStorage.getItem('isGuest')) {
+        localStorage.removeItem('isGuest');
+    }
+    
+    // Existing register code...
+    const regForm = document.querySelector('.auth-form');
+    regForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        console.log("Tombol daftar diklik!");
+
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+
+        if (password !== confirmPassword) {
+            alert("Kata sandi tidak cocok!");
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:5055/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Clear guest mode
+                localStorage.removeItem('isGuest');
+                
+                const urlParams = new URLSearchParams(window.location.search);
+                const returnUrl = urlParams.get('return') || 'index.html'; // Default ke index jika tidak ada return
+                
+                window.location.href = `login.html?return=${encodeURIComponent(returnUrl)}&notif=success&message=${encodeURIComponent('Akun berhasil dibuat! Silakan masuk.')}`;
+            } else {
+                
+                alert(data.message || "Registrasi Gagal");
+            }
+        } catch (error) {
+            alert("Server tidak merespon. Pastikan Backend (Node.js) sudah dijalankan.");
         }
     });
-    </script>
+});
+</script>
     </body>
 </html>
 
 
+ 
